@@ -32,6 +32,13 @@
                 <h1 class="all-tittles">Sistema Restaurante Los Dragones <small>Añadir Articulo</small></h1>
             </div>
         </div>
+        <div class="container-fluid">
+            <ul class="nav nav-tabs nav-justified" style="font-size: 17px;">
+                <li><a asp-controller="Administracion" asp-action="Restaurante">Restaurante</a></li>
+                <li><a asp-controller="Administracion" asp-action="Proveedor">Proveedor</a></li>
+                <li class="active"><a asp-controller="Administracion" asp-action="AgregarComida">Nueva Comida</a></li>
+            </ul>
+        </div>
         <div class="container-fluid" style="margin: 50px 0;">
             <div class="row">
                 <div class="col-xs-12 col-sm-4 col-md-3">
@@ -41,6 +48,7 @@
                     Bienvenido a la sección para agregar nuevos Articulos, deberas de llenar todos los campos para poder registrar el Articulo
                 </div>
             </div>
+
         </div>
         <div class="container-fluid">
             <div class="container-flat-form">
@@ -48,7 +56,7 @@
                 <form class="form-padding">
                     <div class="row">
                         <div class="col-xs-12">
-                            <legend><i class="zmdi zmdi-account-box"></i> &nbsp; Información básica</legend><br>
+                            <legend><i class="zmdi zmdi-pizza"></i> &nbsp; Información básica</legend><br>
                         </div>
                         <div class="col-xs-12 col-sm-6">
                             <div class="group-material">

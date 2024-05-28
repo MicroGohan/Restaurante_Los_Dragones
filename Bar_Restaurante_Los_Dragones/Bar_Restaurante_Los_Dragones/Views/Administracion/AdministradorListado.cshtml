@@ -1,11 +1,12 @@
 ﻿<!DOCTYPE html>
 <html lang="es">
+
 <body>
     <div class="content-page-container full-reset custom-scroll-containers">
         <nav class="navbar-user-top full-reset">
             <ul class="list-unstyled full-reset">
                 <figure>
-                    <img src="~/assets/img/user01.png" alt="user-picture" class="img-responsive img-circle center-box">
+                    <img src="assets/img/user01.png" alt="user-picture" class="img-responsive img-circle center-box">
                 </figure>
                 <li style="color:#fff; cursor:default;">
                     <span class="all-tittles">Admin Name</span>
@@ -29,16 +30,16 @@
         </nav>
         <div class="container">
             <div class="page-header">
-                <h1 class="all-tittles">Sistema Restaurante Los Dragones <small>Inicio</small></h1>
+                <h1 class="all-tittles">Sistema Restaurante Los Dragones <small>Administración Usuarios</small></h1>
             </div>
         </div>
         <div class="container-fluid" style="margin: 50px 0;">
             <div class="row">
                 <div class="col-xs-12 col-sm-4 col-md-3">
-                    <img src="assets/img/user04.png" alt="user" class="img-responsive center-box" style="max-width: 110px;">
+                    <img src="assets/img/user01.png" alt="user" class="img-responsive center-box" style="max-width: 110px;">
                 </div>
                 <div class="col-xs-12 col-sm-8 col-md-8 text-justify lead">
-                    Bienvenido a la sección donde se encuentra el listado de proveedores de libros. Puedes actualizar o eliminar los datos del proveedor, si hay libros asociados al proveedor no podrás eliminarlo.
+                    Bienvenido a la sección donde se encuentra el listado de los administradores, puedes desactivar la cuenta de cualquier administrador o eliminar los datos si no hay préstamos asociados a la cuenta
                 </div>
             </div>
         </div>
@@ -46,32 +47,34 @@
             <div class="row">
                 <div class="col-xs-12 lead">
                     <ol class="breadcrumb">
-                        <li><a asp-controller="Administracion" asp-action="Proveedor">Nuevo proveedor</a></li>
-                        <li class="active">Listado de proveedores</li>
+                        <li><a asp-controller="Administracion" asp-action="CrearAdministrador">Nuevo Administrador</a></li>
+                        <li class="active">listado de administradores</li>
                     </ol>
                 </div>
             </div>
         </div>
         <div class="container-fluid">
-            <h2 class="text-center all-tittles">listado de proveedores</h2>
+            <h2 class="text-center all-tittles">Lista de administradores</h2>
             <div class="div-table">
                 <div class="div-table-row div-table-head">
                     <div class="div-table-cell">#</div>
                     <div class="div-table-cell">Nombre</div>
+                    <div class="div-table-cell">Nombre de usuario</div>
                     <div class="div-table-cell">Email</div>
-                    <div class="div-table-cell">Dirección</div>
-                    <div class="div-table-cell">Teléfono</div>
-                    <div class="div-table-cell">Responsable</div>
+                    <div class="div-table-cell">Estado</div>
+                    <div class="div-table-cell">Cambiar E.</div>
                     <div class="div-table-cell">Actualizar</div>
                     <div class="div-table-cell">Eliminar</div>
                 </div>
                 <div class="div-table-row">
                     <div class="div-table-cell">#</div>
                     <div class="div-table-cell">Nombre</div>
+                    <div class="div-table-cell">Nombre de usuario</div>
                     <div class="div-table-cell">Email</div>
-                    <div class="div-table-cell">Dirección</div>
-                    <div class="div-table-cell">Teléfono</div>
-                    <div class="div-table-cell">Responsable</div>
+                    <div class="div-table-cell">Estado</div>
+                    <div class="div-table-cell">
+                        <button type="submit" class="btn btn-info tooltips-general" data-toggle="tooltip" data-placement="top" title="Cuenta desactivada, pulsa el botón para activarla"><i class="zmdi zmdi-swap"></i></button>
+                    </div>
                     <div class="div-table-cell">
                         <button class="btn btn-success"><i class="zmdi zmdi-refresh"></i></button>
                     </div>
@@ -82,10 +85,12 @@
                 <div class="div-table-row">
                     <div class="div-table-cell">#</div>
                     <div class="div-table-cell">Nombre</div>
+                    <div class="div-table-cell">Nombre de usuario</div>
                     <div class="div-table-cell">Email</div>
-                    <div class="div-table-cell">Dirección</div>
-                    <div class="div-table-cell">Teléfono</div>
-                    <div class="div-table-cell">Responsable</div>
+                    <div class="div-table-cell">Estado</div>
+                    <div class="div-table-cell">
+                        <button type="submit" class="btn btn-info tooltips-general" data-toggle="tooltip" data-placement="top" title="Cuenta desactivada, pulsa el botón para activarla"><i class="zmdi zmdi-swap"></i></button>
+                    </div>
                     <div class="div-table-cell">
                         <button class="btn btn-success"><i class="zmdi zmdi-refresh"></i></button>
                     </div>
@@ -96,10 +101,12 @@
                 <div class="div-table-row">
                     <div class="div-table-cell">#</div>
                     <div class="div-table-cell">Nombre</div>
+                    <div class="div-table-cell">Nombre de usuario</div>
                     <div class="div-table-cell">Email</div>
-                    <div class="div-table-cell">Dirección</div>
-                    <div class="div-table-cell">Teléfono</div>
-                    <div class="div-table-cell">Responsable</div>
+                    <div class="div-table-cell">Estado</div>
+                    <div class="div-table-cell">
+                        <button type="submit" class="btn btn-info tooltips-general" data-toggle="tooltip" data-placement="top" title="Cuenta desactivada, pulsa el botón para activarla"><i class="zmdi zmdi-swap"></i></button>
+                    </div>
                     <div class="div-table-cell">
                         <button class="btn btn-success"><i class="zmdi zmdi-refresh"></i></button>
                     </div>
@@ -110,10 +117,28 @@
                 <div class="div-table-row">
                     <div class="div-table-cell">#</div>
                     <div class="div-table-cell">Nombre</div>
+                    <div class="div-table-cell">Nombre de usuario</div>
                     <div class="div-table-cell">Email</div>
-                    <div class="div-table-cell">Dirección</div>
-                    <div class="div-table-cell">Teléfono</div>
-                    <div class="div-table-cell">Responsable</div>
+                    <div class="div-table-cell">Estado</div>
+                    <div class="div-table-cell">
+                        <button type="submit" class="btn btn-info tooltips-general" data-toggle="tooltip" data-placement="top" title="Cuenta desactivada, pulsa el botón para activarla"><i class="zmdi zmdi-swap"></i></button>
+                    </div>
+                    <div class="div-table-cell">
+                        <button class="btn btn-success"><i class="zmdi zmdi-refresh"></i></button>
+                    </div>
+                    <div class="div-table-cell">
+                        <button class="btn btn-danger"><i class="zmdi zmdi-delete"></i></button>
+                    </div>
+                </div>
+                <div class="div-table-row">
+                    <div class="div-table-cell">#</div>
+                    <div class="div-table-cell">Nombre</div>
+                    <div class="div-table-cell">Nombre de usuario</div>
+                    <div class="div-table-cell">Email</div>
+                    <div class="div-table-cell">Estado</div>
+                    <div class="div-table-cell">
+                        <button type="submit" class="btn btn-info tooltips-general" data-toggle="tooltip" data-placement="top" title="Cuenta desactivada, pulsa el botón para activarla"><i class="zmdi zmdi-swap"></i></button>
+                    </div>
                     <div class="div-table-cell">
                         <button class="btn btn-success"><i class="zmdi zmdi-refresh"></i></button>
                     </div>
@@ -139,6 +164,25 @@
                 </div>
             </div>
         </div>
+        <footer class="footer full-reset">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6">
+                        <h4 class="all-tittles">Acerca de</h4>
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam quam dicta et, ipsum quo. Est saepe deserunt, adipisci eos id cum, ducimus rem, dolores enim laudantium eum repudiandae temporibus sapiente.
+                        </p>
+                    </div>
+                    <div class="col-xs-12 col-sm-6">
+                        <h4 class="all-tittles">Desarrollador</h4>
+                        <ul class="list-unstyled">
+                            <li><i class="zmdi zmdi-check zmdi-hc-fw"></i>&nbsp; Carlos Alfaro <i class="zmdi zmdi-facebook zmdi-hc-fw footer-social"></i><i class="zmdi zmdi-twitter zmdi-hc-fw footer-social"></i></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-copyright full-reset all-tittles">© 2018 Carlos Alfaro</div>
+        </footer>
     </div>
 </body>
 </html>
