@@ -36,7 +36,7 @@
         </div>
         <div class="container-fluid">
             <ul class="nav nav-tabs nav-justified" style="font-size: 17px;">
-                <li ><a asp-controller="Ordenes" asp-action="NuevaOrden">Nueva orden</a></li>
+                <li><a asp-controller="Ordenes" asp-action="NuevaOrden">Nueva orden</a></li>
                 <li><a asp-controller="Ordenes" asp-action="Orden">Listado Ordenes</a></li>
                 <li class="active"><a asp-controller="Ordenes" asp-action="Historial">Historial de Ordenes</a></li>
             </ul>
@@ -52,61 +52,48 @@
             </div>
         </div>
         <div class="container-fluid">
-            <div class="container-flat-form">
-                <div class="title-flat-form title-flat-blue">Agregar un nuevo proveedor</div>
-                <form class="form-padding">
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <legend><i class="zmdi zmdi-truck"></i> &nbsp; Datos del proveedor</legend><br>
-                        </div>
-                        <div class="col-xs-12 col-sm-6">
-                            <div class="group-material">
-                                <input type="text" class="material-control tooltips-general" placeholder="Nombre de proveedor" required="" maxlength="50" data-toggle="tooltip" data-placement="top" title="Escribe el nombre del proveedor">
-                                <span class="highlight"></span>
-                                <span class="bar"></span>
-                                <label>Nombre del proveedor</label>
-                            </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-6">
-                            <div class="group-material">
-                                <input type="email" class="material-control tooltips-general" placeholder="Email de proveedor" maxlength="50" data-toggle="tooltip" data-placement="top" title="Escribe el Email del proveedor">
-                                <span class="highlight"></span>
-                                <span class="bar"></span>
-                                <label>Email</label>
-                            </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-6">
-                            <div class="group-material">
-                                <input type="text" class="material-control tooltips-general" placeholder="Dirección de proveedor" required="" maxlength="70" data-toggle="tooltip" data-placement="top" title="Escribe la dirección del proveedor">
-                                <span class="highlight"></span>
-                                <span class="bar"></span>
-                                <label>Dirección</label>
-                            </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-6">
-                            <div class="group-material">
-                                <input type="text" class="material-control tooltips-general" placeholder="Teléfono de proveedor" required="" pattern="[0-9]{8,8}" maxlength="8" data-toggle="tooltip" data-placement="top" title="Solo números, mínimo 8 dígitos">
-                                <span class="highlight"></span>
-                                <span class="bar"></span>
-                                <label>Teléfono</label>
-                            </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-6">
-                            <div class="group-material">
-                                <input type="text" class="material-control tooltips-general" placeholder="Responsable de atención" required="" maxlength="50" data-toggle="tooltip" data-placement="top" title="Responsable de atención">
-                                <span class="highlight"></span>
-                                <span class="bar"></span>
-                                <label>Responsable de atención</label>
-                            </div>
-                        </div>
-                        <div class="col-xs-12">
-                            <p class="text-center">
-                                <button type="reset" class="btn btn-info" style="margin-right: 20px;"><i class="zmdi zmdi-roller"></i> &nbsp;&nbsp; Limpiar</button>
-                                <button type="submit" class="btn btn-primary"><i class="zmdi zmdi-floppy"></i> &nbsp;&nbsp; Guardar</button>
-                            </p>
-                        </div>
-                    </div>
-                </form>
+            <h2 class="text-center all-tittles">Historial de Ordenes</h2>
+            <div class="div-table">
+                <div class="div-table-row div-table-head">
+                    <div class="div-table-cell">Pedido #</div>
+                    <div class="div-table-cell">Plato</div>
+                    <div class="div-table-cell">Mesa</div>
+                    <div class="div-table-cell">Monto</div>
+                    <div class="div-table-cell">Responsable</div>
+                    <div class="div-table-cell">Dividido entre</div>
+                </div>
+                <div class="div-table-row">
+                    <div class="div-table-cell">1111</div>
+                    <div class="div-table-cell">Nombre</div>
+                    <div class="div-table-cell">4</div>
+                    <div class="div-table-cell">₡</div>
+                    <div class="div-table-cell">Name de la persona logueada</div>
+                    <div class="div-table-cell">1</div>
+                </div>
+                <div class="div-table-row">
+                    <div class="div-table-cell">1111</div>
+                    <div class="div-table-cell">Nombre</div>
+                    <div class="div-table-cell">4</div>
+                    <div class="div-table-cell">₡</div>
+                    <div class="div-table-cell">Name de la persona logueada</div>
+                    <div class="div-table-cell">1</div>
+                </div>
+                <div class="div-table-row">
+                    <div class="div-table-cell">1111</div>
+                    <div class="div-table-cell">Nombre</div>
+                    <div class="div-table-cell">4</div>
+                    <div class="div-table-cell">₡</div>
+                    <div class="div-table-cell">Name de la persona logueada</div>
+                    <div class="div-table-cell">1</div>
+                </div>
+                <div class="div-table-row">
+                    <div class="div-table-cell">1111</div>
+                    <div class="div-table-cell">Nombre</div>
+                    <div class="div-table-cell">4</div>
+                    <div class="div-table-cell">₡</div>
+                    <div class="div-table-cell">Name de la persona logueada</div>
+                    <div class="div-table-cell">1</div>
+                </div>
             </div>
         </div>
         <div class="modal fade" tabindex="-1" role="dialog" id="ModalHelp">
@@ -121,6 +108,9 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="zmdi zmdi-thumb-up"></i> &nbsp; De acuerdo</button>
+                    </div>
+                    <div class="div-table-cell">
+                        <button class="btn btn-danger"><i class="zmdi zmdi-grid-off"></i></button>
                     </div>
                 </div>
             </div>
