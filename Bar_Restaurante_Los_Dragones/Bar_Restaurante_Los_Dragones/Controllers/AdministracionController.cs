@@ -25,5 +25,10 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
         {
             return View();
         }
+
+        public ActionResult AgregarComida()
+        {
+            return View();
+        }
     }
 }

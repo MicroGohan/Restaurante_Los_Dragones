@@ -1,0 +1,135 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<body>
+    <div class="content-page-container full-reset custom-scroll-containers">
+        <nav class="navbar-user-top full-reset">
+            <ul class="list-unstyled full-reset">
+                <figure>
+                    <img src="assets/img/user01.png" alt="user-picture" class="img-responsive img-circle center-box">
+                </figure>
+                <li style="color:#fff; cursor:default;">
+                    <span class="all-tittles">Admin Name</span>
+                </li>
+                <li class="tooltips-general exit-system-button" data-href="index.html" data-placement="bottom" title="Salir del sistema">
+                    <i class="zmdi zmdi-power"></i>
+                </li>
+                <li class="tooltips-general search-book-button" data-href="searchbook.html" data-placement="bottom" title="Buscar libro">
+                    <i class="zmdi zmdi-search"></i>
+                </li>
+                <li class="tooltips-general btn-help" data-placement="bottom" title="Ayuda">
+                    <i class="zmdi zmdi-help-outline zmdi-hc-fw"></i>
+                </li>
+                <li class="mobile-menu-button visible-xs" style="float: left !important;">
+                    <i class="zmdi zmdi-menu"></i>
+                </li>
+                <li class="desktop-menu-button hidden-xs" style="float: left !important;">
+                    <i class="zmdi zmdi-swap"></i>
+                </li>
+            </ul>
+        </nav>
+        <div class="container">
+            <div class="page-header">
+                <h1 class="all-tittles">Sistema Restaurante Los Dragones <small>Añadir Articulo</small></h1>
+            </div>
+        </div>
+        <div class="container-fluid" style="margin: 50px 0;">
+            <div class="row">
+                <div class="col-xs-12 col-sm-4 col-md-3">
+                    <img src="assets/img/flat-book.png" alt="pdf" class="img-responsive center-box" style="max-width: 110px;">
+                </div>
+                <div class="col-xs-12 col-sm-8 col-md-8 text-justify lead">
+                    Bienvenido a la sección para agregar nuevos Articulos, deberas de llenar todos los campos para poder registrar el Articulo
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="container-flat-form">
+                <div class="title-flat-form title-flat-blue">Nuevo Articulo</div>
+                <form class="form-padding">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <legend><i class="zmdi zmdi-account-box"></i> &nbsp; Información básica</legend><br>
+                        </div>
+                        <div class="col-xs-12 col-sm-6">
+                            <div class="group-material">
+                                <input type="text" class="tooltips-general material-control" placeholder="Escribe aquí el nombre del articulo" required="" maxlength="70" data-toggle="tooltip" data-placement="top" title="Escribe el nombre del articulo">
+                                <span class="highlight"></span>
+                                <span class="bar"></span>
+                                <label>Nombre</label>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6">
+                            <div class="group-material">
+                                <input type="text" class="tooltips-general material-control" placeholder="Escribe aquí el Precio del articulo" required="" maxlength="70" data-toggle="tooltip" data-placement="top" title="Escribe el precio del articulo">
+                                <span class="highlight"></span>
+                                <span class="bar"></span>
+                                <label>Precio</label>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6">
+                            <div class="group-material">
+                                <input type="text" class="tooltips-general material-control" placeholder="Escribe aquí la cantidad de articulos" required="" maxlength="50" data-toggle="tooltip" data-placement="top" title="Escribe la cantidad de articulos">
+                                <span class="highlight"></span>
+                                <span class="bar"></span>
+                                <label>Cantidad</label>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6">
+                            <div class="group-material">
+                                <input type="text" class="tooltips-general material-control" placeholder="Escribe aquí el proveedor del articulo" required="" maxlength="50" data-toggle="tooltip" data-placement="top" title="Escribe el proveedor del articulo">
+                                <span class="highlight"></span>
+                                <span class="bar"></span>
+                                <label>Proveedor</label>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6">
+                            <div class="group-material">
+                                <input type="text" class="tooltips-general material-control" placeholder="Escribe aquí el proveedor del articulo" required="" maxlength="50" data-toggle="tooltip" data-placement="top" title="Escribe el proveedor del articulo">
+                                <span class="highlight"></span>
+                                <span class="bar"></span>
+                                <label>Proveedor</label>
+                            </div>
+                        </div>
+                        <div class="col-xs-12">
+                            <legend><i class="zmdi zmdi-bookmark-outline"></i> &nbsp; Categoría</legend><br>
+                        </div>
+                        <div class="col-xs-12">
+                            <div class="group-material">
+                                <span>Categoría</span>
+                                <select class="tooltips-general material-control" data-toggle="tooltip" data-placement="top" title="Elige la categoría del articulo">
+                                    <option value="" disabled="" selected="">Selecciona una categoría</option>
+                                    <option value="categoria">Bebida</option>
+                                    <option value="categoria">Comida</option>
+                                    <option value="categoria">Otro</option>
+                                </select>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="col-xs-12">
+                            <p class="text-center">
+                                <button type="reset" class="btn btn-info" style="margin-right: 20px;"><i class="zmdi zmdi-roller"></i> &nbsp;&nbsp; Limpiar</button>
+                                <button type="submit" class="btn btn-primary"><i class="zmdi zmdi-floppy"></i> &nbsp;&nbsp; Guardar</button>
+                            </p>
+                        </div>
+                </form>
+                    </div>
+            </div>
+        </div>
+        <div class="modal fade" tabindex="-1" role="dialog" id="ModalHelp">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title text-center all-tittles">ayuda del sistema</h4>
+                    </div>
+                    <div class="modal-body">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore dignissimos qui molestias ipsum officiis unde aliquid consequatur, accusamus delectus asperiores sunt. Quibusdam veniam ipsa accusamus error. Animi mollitia corporis iusto.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="zmdi zmdi-thumb-up"></i> &nbsp; De acuerdo</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
