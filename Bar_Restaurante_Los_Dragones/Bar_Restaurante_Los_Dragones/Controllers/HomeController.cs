@@ -18,6 +18,11 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
             return View();
         }
 
+        public IActionResult home()
+        {
+            return View();
+        }
+
         public IActionResult Privacy()
         {
             return View();
