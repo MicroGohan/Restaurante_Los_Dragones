@@ -1,52 +1,82 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Bar_Restaurante_Los_Dragones</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/Bar_Restaurante_Los_Dragones.styles.css" asp-append-version="true" />
+    <title>Inicio</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="Shortcut Icon" type="image/x-icon" href="~assets/icons/book.ico" />
+    <script src="~js/sweet-alert.min.js"></script>
+    <link rel="stylesheet" href="~/css/">
+    <link rel="stylesheet" href="~/css/material-design-iconic-font.min.css">
+    <link rel="stylesheet" href="~/css/normalize.css">
+    <link rel="stylesheet" href="~/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/css/jquery.mCustomScrollbar.css">
+    <link rel="stylesheet" href="~/css/style.css">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="js/jquery-1.11.2.min.js"><\/script>')</script>
+    <script src="~/js/modernizr.js"></script>
+    <script src="~/js/bootstrap.min.js"></script>
+    <script src="~/js/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="~/js/main.js"></script>
 </head>
-<body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Bar_Restaurante_Los_Dragones</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">index</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="home">Inicio</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
+    <body>
+    <div class="navbar-lateral full-reset">
+        <div class="visible-xs font-movile-menu mobile-menu-button"></div>
+        <div class="full-reset container-menu-movile nav-lateral-scroll">
+            <div class="logo full-reset all-tittles">
+                <i class="visible-xs zmdi zmdi-close pull-left mobile-menu-button" style="line-height: 55px; cursor: pointer; padding: 0 10px; margin-left: 7px;"></i>
+                Sistema Restaurante Los Dragones
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
-
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2024 - Bar_Restaurante_Los_Dragones - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <div class="nav-lateral-divider full-reset"></div>
+            <div class="full-reset" style="padding: 10px 0; color:#fff;">
+                <figure>
+                    <img src="~/assets/img/Logo_LosDragones.png" alt="Biblioteca" class="img-responsive center-box" style="width:55%;">
+                </figure>
+                <p class="text-center" style="padding-top: 15px;">Sistema Restaurante Los Dragones</p>
+            </div>
+            <div class="nav-lateral-divider full-reset"></div>
+            <div class="full-reset nav-lateral-list-menu">
+                <ul class="list-unstyled">
+                    <li><a asp-controller="Home" asp-action="home"><i class="zmdi zmdi-home zmdi-hc-fw"></i>&nbsp;&nbsp; Inicio</a></li>
+                    <li>
+                        <div class="dropdown-menu-button"><i class="zmdi zmdi-case zmdi-hc-fw"></i>&nbsp;&nbsp; Administración <i class="zmdi zmdi-chevron-down pull-right zmdi-hc-fw icon-sub-menu"></i></div>
+                        <ul class="list-unstyled">
+                            <li><a asp-controller="Administracion" asp-action="Restaurante"><i class="zmdi zmdi-balance zmdi-hc-fw"></i>&nbsp;&nbsp; Datos Restaurante</a></li>
+                            <li><a asp-controller="Administracion" asp-action="Proveedor"><i class="zmdi zmdi-truck zmdi-hc-fw"></i>&nbsp;&nbsp; Nuevo proveedor</a></li>
+                            <li><a asp-controller="Administracion" asp-action="Comida"><i class="zmdi zmdi-bookmark-outline zmdi-hc-fw"></i>&nbsp;&nbsp; Nueva Comida</a></li>
+                            <li><a asp-controller="Administracion" asp-action="Categoria"><i class="zmdi zmdi-assignment-account zmdi-hc-fw"></i>&nbsp;&nbsp; Nueva Categoria</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <div class="dropdown-menu-button"><i class="zmdi zmdi-account-add zmdi-hc-fw"></i>&nbsp;&nbsp; Registro de usuarios <i class="zmdi zmdi-chevron-down pull-right zmdi-hc-fw icon-sub-menu"></i></div>
+                        <ul class="list-unstyled">
+                            <li><a asp-controller="Usuarios" asp-action="Administrador"><i class="zmdi zmdi-face zmdi-hc-fw"></i>&nbsp;&nbsp; Nuevo administrador</a></li>
+                            <li><a asp-controller="Usuarios" asp-action="Empleado"><i class="zmdi zmdi-male-alt zmdi-hc-fw"></i>&nbsp;&nbsp; Nuevo empleado</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <div class="dropdown-menu-button"><i class="zmdi zmdi-assignment-o zmdi-hc-fw"></i>&nbsp;&nbsp; Menus <i class="zmdi zmdi-chevron-down pull-right zmdi-hc-fw icon-sub-menu"></i></div>
+                        <ul class="list-unstyled">
+                            <li><a asp-controller="Menu" asp-action="Menu"><i class="zmdi zmdi-book zmdi-hc-fw"></i>&nbsp;&nbsp; Nuevo Menu</a></li>
+                            <li><a asp-controller="Menu" asp-action="MenuListado"><i class="zmdi zmdi-bookmark-outline zmdi-hc-fw"></i>&nbsp;&nbsp; Menu</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <div class="dropdown-menu-button"><i class="zmdi zmdi-alarm zmdi-hc-fw"></i>&nbsp;&nbsp; Reservaciones <i class="zmdi zmdi-chevron-down pull-right zmdi-hc-fw icon-sub-menu"></i></div>
+                        <ul class="list-unstyled">
+                            <li>
+                                <a asp-controller="Reservaciones" asp-action="Reservacion"><i class="zmdi zmdi-timer zmdi-hc-fw"></i>&nbsp;&nbsp; Reservaciones <span class="label label-danger pull-right label-mhover">7</span></a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><a asp-controller="Reportes" asp-action="Reporte"></i>&nbsp;&nbsp; Reportes y estadísticas</a></li>
+                    <li><a asp-controller="Configuraciones" asp-action="Configurar"></i>&nbsp;&nbsp; Configuraciones avanzadas</a></li>
+                </ul>
+            </div>
         </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+    </div>
+    @RenderBody()
 </body>
+
+
 </html>
