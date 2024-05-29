@@ -1,6 +1,52 @@
 ﻿<!DOCTYPE html>
 <html lang="es">
+<style>
+    .product-list-container {
+        border: 2px solid #333;
+        border-radius: 10px;
+        padding: 20px;
+        max-width: 400px;
+        margin: 0 auto;
+        background-color: #f9f9f9;
+    }
 
+    .product-list {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+
+        .product-list li {
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #ccc;
+        }
+
+            .product-list li:last-child {
+                border-bottom: none;
+            }
+
+        .product-list input[type="checkbox"] {
+            margin-right: 10px;
+        }
+
+    button {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        border: none;
+        background-color: #333;
+        color: #fff;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+
+        button:hover {
+            background-color: #555;
+        }
+</style>
 <body>
 
     <div class="content-page-container full-reset custom-scroll-containers">
@@ -55,56 +101,49 @@
             <div class="container-flat-form">
                 <div class="title-flat-form title-flat-blue">Agregar una nueva orden</div>
                 <form class="form-padding">
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <legend><i class="zmdi zmdi-truck"></i> &nbsp; Datos del proveedor</legend><br>
-                        </div>
-                        <div class="col-xs-12 col-sm-6">
-                            <div class="group-material">
-                                <input type="text" class="material-control tooltips-general" placeholder="Nombre de proveedor" required="" maxlength="50" data-toggle="tooltip" data-placement="top" title="Escribe el nombre del proveedor">
-                                <span class="highlight"></span>
-                                <span class="bar"></span>
-                                <label>Nombre del proveedor</label>
-                            </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-6">
-                            <div class="group-material">
-                                <input type="email" class="material-control tooltips-general" placeholder="Email de proveedor" maxlength="50" data-toggle="tooltip" data-placement="top" title="Escribe el Email del proveedor">
-                                <span class="highlight"></span>
-                                <span class="bar"></span>
-                                <label>Email</label>
-                            </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-6">
-                            <div class="group-material">
-                                <input type="text" class="material-control tooltips-general" placeholder="Dirección de proveedor" required="" maxlength="70" data-toggle="tooltip" data-placement="top" title="Escribe la dirección del proveedor">
-                                <span class="highlight"></span>
-                                <span class="bar"></span>
-                                <label>Dirección</label>
-                            </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-6">
-                            <div class="group-material">
-                                <input type="text" class="material-control tooltips-general" placeholder="Teléfono de proveedor" required="" pattern="[0-9]{8,8}" maxlength="8" data-toggle="tooltip" data-placement="top" title="Solo números, mínimo 8 dígitos">
-                                <span class="highlight"></span>
-                                <span class="bar"></span>
-                                <label>Teléfono</label>
-                            </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-6">
-                            <div class="group-material">
-                                <input type="text" class="material-control tooltips-general" placeholder="Responsable de atención" required="" maxlength="50" data-toggle="tooltip" data-placement="top" title="Responsable de atención">
-                                <span class="highlight"></span>
-                                <span class="bar"></span>
-                                <label>Responsable de atención</label>
-                            </div>
-                        </div>
-                        <div class="col-xs-12">
-                            <p class="text-center">
-                                <button type="reset" class="btn btn-info" style="margin-right: 20px;"><i class="zmdi zmdi-roller"></i> &nbsp;&nbsp; Limpiar</button>
-                                <button type="submit" class="btn btn-primary"><i class="zmdi zmdi-floppy"></i> &nbsp;&nbsp; Guardar</button>
-                            </p>
-                        </div>
+                    
+                    <div class="product-list-container">
+                        <p> lista de productos</p>
+                    <form id="productForm">
+                        <ul class="product-list">
+                            <li>
+                                <input type="checkbox" id="product1" name="product" value="Producto 1">
+                                <label for="product1">Producto 1</label>
+                            </li>
+                            <li>
+                                <input type="checkbox" id="product2" name="product" value="Producto 2">
+                                <label for="product2">Producto 2</label>
+                            </li>
+                            <li>
+                                <input type="checkbox" id="product3" name="product" value="Producto 3">
+                                <label for="product3">Producto 3</label>
+                            </li>
+                            <li>
+                                <input type="checkbox" id="product4" name="product" value="Producto 4">
+                                <label for="product4">Producto 4</label>
+                            </li>
+                            <li>
+                                <input type="checkbox" id="product5" name="product" value="Producto 5">
+                                <label for="product5">Producto 5</label>
+                            </li>
+                        </ul>
+                    </form>
+                    </div>
+                    <div class="product-list-container">
+                        <p> lista de productos</p>
+                        <form id="productForm">
+                            <ul class="product-list">
+                                <li>
+                                    <input type="checkbox" id="product1" name="product" value="Producto 1">
+                                    <label for="product1">Producto 1</label>
+                                </li>
+                                <li>
+                                    <input type="checkbox" id="product2" name="product" value="Producto 2">
+                                    <label for="product2">Producto 2</label>
+                                </li>
+                            </ul>
+                            <button type="submit">Enviar Selección</button>
+                        </form>
                     </div>
                 </form>
             </div>
