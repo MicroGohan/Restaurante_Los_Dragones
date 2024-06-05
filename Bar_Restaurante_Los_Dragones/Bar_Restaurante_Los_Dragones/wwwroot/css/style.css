@@ -6,9 +6,9 @@
     font-family: "Parrafos";
     src: url("../fonts/OpenSans-CondLight.ttf"), url("../fonts/OpenSans-CondLight.eot"), url("../fonts/OpenSans-CondLight.woff"), url("../fonts/OpenSans-CondLight.woff2"), url("../fonts/OpenSans-CondLight.svg");
 }
-:root{
+:root {
     --first-color: #33414E;
-    --second-color: #2B3D51;
+    --second-color: #556B2F;
     --option-nav: rgba(204,122,0,.5);
     --option-infoBar: #FFD559;
 }
@@ -244,32 +244,33 @@ select.material-control-login:hover{
     font-size: 27px;
     line-height: 55px;
 }
-.navbar-user-top > ul > figure > img{
-    width: 45px;
-    float: right;
-    height: 45px;
-    border: 2px solid #728890;
-    margin-top: 5px;
-}
+    .navbar-user-top > ul > figure > img {
+        width: 45px;
+        float: right;
+        height: 45px;
+        border: 2px solid #95C492;
+        /*#728890*/
+        margin-top: 5px;
+    }
 
 
 .navbar-lateral{
     width: 300px;
-    background-image: url('../assets/img/nav-lateral.jpg');
+    /*background-image: url('../assets/img/nav--lateral.jpg');*/
     height: 100%;
     position: absolute;
     top: 0;
     left: 0;
     z-index: 2;
 }
-.nav-lateral-divider{
+.nav-lateral-divider {
     border-top: 1px solid rgba(255,255,255,.2);
     width: 90%;
     margin: 0 auto;
 }
-.container-menu-movile{
+.container-menu-movile {
     height: 100% !important;
-    background-color: rgba(43,61,81,.8);
+    background-color: #51662D;
 }
 .logo{
     height: 55px;
