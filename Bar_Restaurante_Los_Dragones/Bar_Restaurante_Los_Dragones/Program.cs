@@ -7,8 +7,17 @@ var connectionString = builder.Configuration.GetConnectionString("ConnDB") ?? th
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddDbContext<LosDragonesDBContext>(options => options.UseSqlServer("name=ConnDB"));
-builder.Services.AddDbContext<AuthContext>(options => options.UseSqlServer("name=ConnDB"));
+
+builder.Services.AddRazorPages();
+
+builder.Services.AddDbContext<LosDragonesDBContext>(options => options
+.UseSqlServer("name=ConnDB")
+.LogTo(Console.WriteLine, LogLevel.Information));
+
+
+builder.Services.AddDbContext<AuthContext>(options => options
+.UseSqlServer("name=ConnDB")
+.LogTo(Console.WriteLine, LogLevel.Information));
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddEntityFrameworkStores<AuthContext>()
@@ -20,19 +29,20 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=home}/{id?}");
+    pattern: "{controller=Home}/{action=Home}/{id?}");
+
+app.MapRazorPages();
 
 app.Run();
