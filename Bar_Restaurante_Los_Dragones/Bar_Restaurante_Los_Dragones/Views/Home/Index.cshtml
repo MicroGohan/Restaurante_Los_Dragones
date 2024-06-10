@@ -1,8 +1,13 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+    Layout = "";
 }
+
+<partial name="_LoginPartial" />
 
 <div class="text-center">
     <h1 class="display-4">creacion del proyecto</h1>
     <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
+
+<li><a asp-area="Identity" asp-page="/Account/Register">Register</a></li>
