@@ -10,9 +10,6 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<LosDragonesDBContext>(options => options.UseSqlServer("name=ConnDB"));
 builder.Services.AddDbContext<AuthContext>(options => options.UseSqlServer("name=ConnDB"));
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).
-    AddEntityFrameworkStores<AuthContext>();
-
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddEntityFrameworkStores<AuthContext>()
     .AddDefaultUI();
