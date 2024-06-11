@@ -1,4 +1,9 @@
-﻿<!DOCTYPE html>
+﻿@using Bar_Restaurante_Los_Dragones.Models.ViewModels
+@model UserControllerViewModel
+@{
+    ViewData["Title"] = "Crear Nuevo Usuario";
+}
+
 <html lang="es">
 <body>
     
@@ -62,60 +67,90 @@
         <div class="container-fluid">
             <div class="container-flat-form">
                 <div class="title-flat-form title-flat-blue">Registrar un nuevo empleado</div>
+
                 <form class="form-padding">
+
                     <div class="row">
                         <div class="col-xs-12">
                             <legend><i class="zmdi zmdi-account-box"></i> &nbsp; Datos básicos</legend><br>
                         </div>
+
                         <div class="col-xs-12 col-sm-6">
                             <div class="group-material">
-                                <input type="text" class="material-control tooltips-general" placeholder="Nombre completo" required="" maxlength="70" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{1,70}" data-toggle="tooltip" data-placement="top" title="Escribe el nombre del administrador">
+                                <input asp-for="Nombre" type="text" class="material-control tooltips-general" placeholder="Nombre" required="" maxlength="70" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{1,70}" data-toggle="tooltip" data-placement="top" title="Escribe el nombre del Empleado o Administrador">
                                 <span class="highlight"></span>
                                 <span class="bar"></span>
-                                <label>Nombre completo</label>
+                                <label asp-for="Nombre"></label>
+                                <span asp-validation-for="Nombre" class="text-danger"></span>
                             </div>
                         </div>
+                       
                         <div class="col-xs-12 col-sm-6">
                             <div class="group-material">
-                                <input type="email" class="material-control tooltips-general" placeholder="E-mail" maxlength="50" data-toggle="tooltip" data-placement="top" title="Escribe el Email del administrador">
+                                <input asp-for="PrimerApellido" type="text" class="material-control tooltips-general" placeholder="PrimerApellido" required="" maxlength="70" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{1,70}" data-toggle="tooltip" data-placement="top" title="Escribe el Primer Apellido del Empleado o Administrador">
                                 <span class="highlight"></span>
                                 <span class="bar"></span>
-                                <label>Email</label>
+                                <label asp-for="PrimerApellido"></label>
+                                <span asp-validation-for="PrimerApellido" class="text-danger"></span>
                             </div>
                         </div>
+
+                        <div class="col-xs-12 col-sm-6">
+                            <div class="group-material">
+                                <input asp-for="SegundoApellido" type="text" class="material-control tooltips-general" placeholder="SegundoApellido" required="" maxlength="70" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{1,70}" data-toggle="tooltip" data-placement="top" title="Escribe el Segundo Apellido del Empleado o Administrador">
+                                <span class="highlight"></span>
+                                <span class="bar"></span>
+                                <label asp-for="SegundoApellido"></label>
+                                <span asp-validation-for="SegundoApellido" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12 col-sm-6">
+                            <div class="group-material">
+                                <input asp-for="Email" type="email" class="material-control tooltips-general" placeholder="Email" required="" maxlength="70" data-toggle="tooltip" data-placement="top" title="Escribe el Email del Empleado o Administrador">
+                                <span class="highlight"></span>
+                                <span class="bar"></span>
+                                <label asp-for="Email"></label>
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <select asp-for="IdRol" asp-items="ViewBag.Roles" class="form-control"></select>
+                            <label asp-for="IdRol"></label>
+                            <span asp-validation-for="IdRol" class="text-danger"></span>
+                        </div>
+
+
                         <div class="col-xs-12">
                             <legend><i class="zmdi zmdi-lock"></i> &nbsp; Datos de la cuenta</legend><br>
                         </div>
-                        <div class="col-xs-12">
-                            <div class="group-material">
-                                <input type="text" class="material-control tooltips-general input-check-user" placeholder="Nombre de usuario" required="" maxlength="20" pattern="[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ]{1,20}" data-toggle="tooltip" data-placement="top" title="Escribe un nombre de usuario sin espacios, que servira para iniciar sesión">
-                                <span class="highlight"></span>
-                                <span class="bar"></span>
-                                <label>Nombre de usuario</label>
-                            </div>
-                        </div>
+
                         <div class="col-xs-12 col-sm-6">
                             <div class="group-material">
-                                <input type="password" class="material-control tooltips-general" placeholder="Contraseña" required="" maxlength="200" data-toggle="tooltip" data-placement="top" title="Escribe una contraseña">
+                                <input asp-for="Password" type="password" class="material-control tooltips-general" placeholder="Contraseña" required="" maxlength="200" data-toggle="tooltip" data-placement="top" title="Escribe una contraseña">
                                 <span class="highlight"></span>
-                                <span class="bar"></span>
-                                <label>Contraseña</label>
+                                <span asp-validation-for="Password" class="bar"></span>
+                                <label asp-for="Password">Contraseña</label>
                             </div>
                         </div>
+
                         <div class="col-xs-12 col-sm-6">
                             <div class="group-material">
-                                <input type="password" class="material-control tooltips-general" placeholder="Repite la contraseña" required="" maxlength="200" data-toggle="tooltip" data-placement="top" title="Repite la contraseña">
+                                <input asp-for="ConfirmPassword" type="password" class="material-control tooltips-general" placeholder="Repite la contraseña" required="" maxlength="200" data-toggle="tooltip" data-placement="top" title="Repite la contraseña">
                                 <span class="highlight"></span>
                                 <span class="bar"></span>
-                                <label>Repetir contraseña</label>
+                                <label asp-for="ConfirmPassword">Repetir contraseña</label>
                             </div>
                         </div>
+
                         <div class="col-xs-12">
                             <p class="text-center">
                                 <button type="reset" class="btn btn-info" style="margin-right: 20px;"><i class="zmdi zmdi-roller"></i> &nbsp;&nbsp; Limpiar</button>
-                                <button type="submit" class="btn btn-primary"><i class="zmdi zmdi-floppy"></i> &nbsp;&nbsp; Guardar</button>
+                                <button id="registerSubmit" type="submit" class="btn btn-primary"><i class="zmdi zmdi-floppy"></i> &nbsp;&nbsp; Guardar</button>
                             </p>
                         </div>
+
                     </div>
                 </form>
             </div>
@@ -137,5 +172,7 @@
             </div>
         </div>
     </div>
+
+
 </body>
 </html>
