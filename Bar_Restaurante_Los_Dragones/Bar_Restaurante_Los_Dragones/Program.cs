@@ -1,6 +1,7 @@
 
 using Bar_Restaurante_Los_Dragones.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -22,6 +23,8 @@ builder.Services.AddDbContext<AuthContext>(options => options.UseSqlServer("name
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<AuthContext>()
     .AddDefaultTokenProviders();
+
+//builder.Services.AddSingleton<IEmailSender, YourEmailSenderImplementation>(); // Reemplaza YourEmailSenderImplementation con tu propia implementación si la tienes
 
 
 builder.Services.ConfigureApplicationCookie(options =>
@@ -48,7 +51,7 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.Use(async (context, next) =>
+/*app.Use(async (context, next) =>
 {
     if (!context.User.Identity.IsAuthenticated && !context.Request.Path.StartsWithSegments("/Identity/Account/Login"))
     {
@@ -56,7 +59,7 @@ app.Use(async (context, next) =>
         return;
     }
     await next();
-});
+});*/
 
 app.MapControllerRoute(
     name: "default",
