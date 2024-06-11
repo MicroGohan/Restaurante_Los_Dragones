@@ -2,85 +2,68 @@
 @model LoginModel
 
 @{
-    ViewData["Title"] = "Log in";
     Layout = "";
 }
 
-<h2>@ViewData["Title"]</h2>
-<div class="row">
-    <div class="col-md-4">
-        <section>
-            <form id="account" method="post">
-                <h4>Use a local account to log in.</h4>
-                <hr />
-                <div asp-validation-summary="All" class="text-danger"></div>
-                <div class="form-group">
-                    <label asp-for="Input.Email"></label>
-                    <input asp-for="Input.Email" class="form-control" />
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <title>Inicio</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="Shortcut Icon" type="image/x-icon" href="~assets/icons/book.ico" />
+    <script src="~js/sweet-alert.min.js"></script>
+    <link rel="stylesheet" href="~/css/">
+    <link rel="stylesheet" href="~/css/material-design-iconic-font.min.css">
+    <link rel="stylesheet" href="~/css/normalize.css">
+    <link rel="stylesheet" href="~/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/css/jquery.mCustomScrollbar.css">
+    <link rel="stylesheet" href="~/css/style.css">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="js/jquery-1.11.2.min.js"><\/script>')</script>
+    <script src="~/js/modernizr.js"></script>
+    <script src="~/js/bootstrap.min.js"></script>
+    <script src="~/js/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="~/js/main.js"></script>
+</head>
+<body>
+    <div class="login-container full-cover-background">
+        <div class="form-container">
+            <p class="text-center" style="margin-top: 17px;">
+                <i class="zmdi zmdi-account-circle zmdi-hc-5x"></i>
+            </p>
+            <h4 class="text-center all-tittles" style="margin-bottom: 30px;">Inicia sesión con tu cuenta</h4>
+            <form method="post">
+                <div class="group-material-login">
+                    <input asp-for="Input.Email" class="material-login-control" required maxlength="70">
+                    <span class="highlight-login"></span>
+                    <span class="bar-login"></span>
+                    <label><i class="zmdi zmdi-account"></i> &nbsp; Email</label>
                     <span asp-validation-for="Input.Email" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Input.Password"></label>
-                    <input asp-for="Input.Password" class="form-control" />
+                </div><br>
+                <div class="group-material-login">
+                    <input asp-for="Input.Password" type="password" class="material-login-control" required maxlength="70">
+                    <span class="highlight-login"></span>
+                    <span class="bar-login"></span>
+                    <label><i class="zmdi zmdi-lock"></i> &nbsp; Contraseña</label>
                     <span asp-validation-for="Input.Password" class="text-danger"></span>
                 </div>
-                <div class="form-group">
-                    <div class="checkbox">
-                        <label asp-for="Input.RememberMe">
-                            <input asp-for="Input.RememberMe" />
-                            @Html.DisplayNameFor(m => m.Input.RememberMe)
-                        </label>
-                    </div>
+
+                <div class="group-material">
+                    <span class="checkbox">
+                        <input asp-for="Input.RememberMe" type="checkbox" id="check" />
+                        <label for="check">@Html.DisplayNameFor(m => m.Input.RememberMe)</label>
+                    </span>
+                    <a id="forgot-password" asp-page="./ForgotPassword" class="forgot_pw">¿Olvidaste tu contraseña?</a>
                 </div>
-                <div class="form-group">
-                    <button type="submit" class="btn btn-default">Log in</button>
-                </div>
-                <div class="form-group">
-                    <p>
-                        <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
-                    </p>
-                    <p>
-                        <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
-                    </p>
-                    <p>
-                        <a id="resend-confirmation" asp-page="./ResendEmailConfirmation">Resend email confirmation</a>
-                    </p>
-                </div>
+                <button class="btn-login" type="submit">Ingresar al sistema &nbsp; <i class="zmdi zmdi-arrow-right"></i></button>
             </form>
-        </section>
+        </div>
     </div>
-    <div class="col-md-6 col-md-offset-2">
-        <section>
-            <h4>Use another service to log in.</h4>
-            <hr />
-            @{
-                if ((Model.ExternalLogins?.Count ?? 0) == 0)
-                {
-                    <div>
-                        <p>
-                            There are no external authentication services configured. See <a href="https://go.microsoft.com/fwlink/?LinkID=532715">this article</a>
-                            for details on setting up this ASP.NET application to support logging in via external services.
-                        </p>
-                    </div>
-                }
-                else
-                {
-                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
-                        <div>
-                            <p>
-                                @foreach (var provider in Model.ExternalLogins)
-                                {
-                                    <button type="submit" class="btn btn-default" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
-                                }
-                            </p>
-                        </div>
-                    </form>
-                }
-            }
-        </section>
-    </div>
-</div>
+</body>
+</html>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
+
