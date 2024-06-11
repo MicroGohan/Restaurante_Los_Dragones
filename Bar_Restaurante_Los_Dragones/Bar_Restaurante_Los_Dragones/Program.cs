@@ -2,6 +2,7 @@
 using Bar_Restaurante_Los_Dragones.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,14 +13,15 @@ var connectionString = builder.Configuration.GetConnectionString("ConnDB") ?? th
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddDbContext<LosDragonesDBContext>(options => options.UseSqlServer("name=ConnDB"));
+//builder.Services.AddDbContext<LosDragonesDBContext>(options => options.UseSqlServer("name=ConnDB"));
 
 builder.Services.AddDbContext<AuthContext>(options => options.UseSqlServer("name=ConnDB"));
 
 
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<AuthContext>().AddDefaultTokenProviders();
+builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<AuthContext>()
+    .AddDefaultTokenProviders();
 
 
 builder.Services.ConfigureApplicationCookie(options =>
