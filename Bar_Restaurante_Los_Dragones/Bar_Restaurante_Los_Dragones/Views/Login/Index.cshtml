@@ -1,0 +1,56 @@
+﻿
+
+@model Dal.Dragones.Usuario
+
+
+@{
+    ViewData["Title"] = "Inicio de Sesión";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+
+    .form-container {
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+    }
+</style>
+
+<div class="container-fluid mt-5">
+    <div class="row justify-content-center">
+        <div class="col-sm-4">
+            <div class="form-container">
+                <h2 class="text-center mb-4">Inicio de Sesión</h2>
+                <form asp-controller="Login" asp-action="Index" method="post">
+                    <div class="mb-3">
+                        <label asp-for="Correo" class="form-label">Correo Electrónico</label>
+                        <input type="email" class="form-control" asp-for="Correo" placeholder="Ingresa tu correo electrónico" required>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Clave" class="form-label">Contraseña</label>
+                        <input type="password" class="form-control" asp-for="Clave" placeholder="Ingresa tu contraseña" required>
+                    </div>
+                    @if (ViewData["Error"] != null)
+                    {
+                        <div class="alert alert-danger" role="alert">
+                            @ViewData["Error"]
+                        </div>
+                    }
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+                    </div>
+                </form>
+
+                <div class="mt-4 text-center">
+                    <p class="mb-0">¿No tienes una cuenta?</p>
+                    <a href="@Url.Action("Register", "Login")" class="btn btn-secondary">Registrarse</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

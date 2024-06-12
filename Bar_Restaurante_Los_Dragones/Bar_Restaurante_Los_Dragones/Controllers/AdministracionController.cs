@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bar_Restaurante_Los_Dragones.Controllers
@@ -9,6 +10,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
         {
             return View();
         }
+        [Authorize(Roles = "Administrador,Empleado")]
         public ActionResult Restaurante()
         {
             return View();

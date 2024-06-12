@@ -1,0 +1,58 @@
+﻿
+
+@model Dal.Dragones.Usuario
+
+
+@{
+    ViewData["Title"] = "Registrarse";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+
+    .form-container {
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+    }
+</style>
+
+<div class="container-fluid mt-5">
+    <div class="row justify-content-center">
+        <div class="col-sm-4">
+            <div class="form-container">
+                <h2 class="text-center mb-4">Registrarse</h2>
+                <form asp-controller="Login" asp-action="Register" method="post">
+                    <div class="mb-3">
+                        <label asp-for="Nombre" class="form-label">Nombre</label>
+                        <input type="text" class="form-control" asp-for="Nombre">
+                        <span asp-validation-for="Nombre" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Correo" class="form-label">Correo Electrónico</label>
+                        <input type="email" class="form-control" asp-for="Correo">
+                        <span asp-validation-for="Correo" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Clave" class="form-label">Contraseña</label>
+                        <input type="password" class="form-control" asp-for="Clave">
+                        <span asp-validation-for="Clave" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="ConfirmarClave" class="form-label">Confirmar Contraseña</label>
+                        <input type="password" class="form-control" name="ConfirmarClave">
+                        <span asp-validation-for="ConfirmarClave" class="text-danger"></span>
+                    </div>
+                    <input type="hidden" name="Roles" value="Cliente">
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">Registrarse</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

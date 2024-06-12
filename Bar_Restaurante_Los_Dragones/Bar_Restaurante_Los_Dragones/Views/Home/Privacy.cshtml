@@ -1,6 +1,33 @@
 ﻿@{
-    ViewData["Title"] = "Privacy Policy";
+    ViewData["Title"] = "Acceso Restringido";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<h1>@ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+<style>
+    .privacy-container {
+        text-align: center;
+        margin-top: 50px;
+    }
+
+    .privacy-text {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .privacy-image {
+        max-width: 300px;
+        margin-top: 50px;
+    }
+</style>
+
+
+
+<div class="privacy-container">
+    <h1>@ViewData["Title"]</h1>
+    <br />
+    <div class="privacy-text">
+        <p>No tienes autorización para acceder a esta página debido a la privacidad del sitio.</p>
+        <p>Si crees que esto es un error, por favor contacta al administrador del sitio.</p>
+    </div>
+    <img src="~/img/Denegado.png" alt="Imagen de acceso restringido" class="privacy-image">
+</div>
