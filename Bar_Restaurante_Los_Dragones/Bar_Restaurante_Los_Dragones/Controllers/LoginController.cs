@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Bar_Restaurante_Los_Dragones.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Bar_Restaurante_Los_Dragones.Controllers
 {
@@ -24,26 +26,23 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
         [HttpPost]
         public async Task<IActionResult> Index(string correo, string clave)
         {
-            var usuario = _context.Usuarios.FirstOrDefault(u => u.Correo == correo && u.Clave == clave);
+            var usuario = _context.Usuarios.Include(u => u.Rol).FirstOrDefault(u => u.Correo == correo && u.Clave == clave);
 
             if (usuario != null)
             {
                 var claims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.Name, usuario.Nombre),
-                    new Claim(ClaimTypes.Email, usuario.Correo),
-                    new Claim("Correo", usuario.Correo),
-                };
-                foreach (string rol in usuario.Roles)
-                {
-                    claims.Add(new Claim(ClaimTypes.Role, rol));
-                }
+        {
+            new Claim(ClaimTypes.Name, usuario.Nombre),
+            new Claim(ClaimTypes.Email, usuario.Correo),
+            new Claim("Correo", usuario.Correo),
+            new Claim(ClaimTypes.Role, usuario.Rol.Nombre)
+        };
+
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
 
-
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("home", "Home");
             }
             else
             {
@@ -52,20 +51,29 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
             }
         }
 
+        [HttpGet]
         public IActionResult Register()
         {
             // Aquí puedes inicializar el usuario con el rol por defecto
-            var usuario = new Usuario
+            var defaultRol = _context.Roles.FirstOrDefault(r => r.Nombre == "Empleado");
+            if (defaultRol == null)
             {
-                Roles = new string[] { "Cliente" } // Rol por defecto
-            };
-            return View(usuario);
+                // Si el rol no existe, podrías crear uno por defecto
+                defaultRol = new Rol { Nombre = "Empleado" };
+                _context.Roles.Add(defaultRol);
+                _context.SaveChanges();
+            }
+
+            ViewBag.DefaultRolID = defaultRol.ID;
+            return View();
         }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(Usuario usuario)
         {
+            ModelState.Remove("Rol");
             if (ModelState.IsValid)
             {
                 // Verificar si el correo electrónico ya está registrado

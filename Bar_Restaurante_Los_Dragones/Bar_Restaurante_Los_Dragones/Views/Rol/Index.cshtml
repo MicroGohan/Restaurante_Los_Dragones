@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Dal.Dragones.Usuario>
+﻿@model IEnumerable<Dal.Dragones.Rol>
 
 @{
     ViewData["Title"] = "Index";
@@ -16,15 +16,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.Nombre)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Correo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Clave)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Rol)
-            </th>
             <th></th>
         </tr>
     </thead>
@@ -33,15 +24,6 @@
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Nombre)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Correo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Clave)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Rol.Nombre)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |

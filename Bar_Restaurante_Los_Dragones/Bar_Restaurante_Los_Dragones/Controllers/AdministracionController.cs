@@ -10,7 +10,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
         {
             return View();
         }
-        [Authorize(Roles = "Administrador,Empleado")]
+        [Authorize(Roles = "Admin,Admin02")]
         public ActionResult Restaurante()
         {
             return View();

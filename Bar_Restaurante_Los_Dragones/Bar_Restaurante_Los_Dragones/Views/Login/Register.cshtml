@@ -8,18 +8,16 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<style>
-    body {
-        background-color: #f8f9fa;
-    }
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="~/css/style02.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/localization/messages_es.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
 
-    .form-container {
-        background-color: #ffffff;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        padding: 20px;
-    }
-</style>
+</head>
 
 <div class="container-fluid mt-5">
     <div class="row justify-content-center">
@@ -47,7 +45,7 @@
                         <input type="password" class="form-control" name="ConfirmarClave">
                         <span asp-validation-for="ConfirmarClave" class="text-danger"></span>
                     </div>
-                    <input type="hidden" name="Roles" value="Cliente">
+                    <input type="hidden" asp-for="RolID" value="@ViewBag.DefaultRolID">
                     <div class="d-grid gap-2">
                         <button type="submit" class="btn btn-primary">Registrarse</button>
                     </div>

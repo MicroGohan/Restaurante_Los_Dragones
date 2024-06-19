@@ -8,6 +8,7 @@ namespace Bar_Restaurante_Los_Dragones.Models
 
         public ProyectoContext(DbContextOptions<ProyectoContext> options) : base(options) { }
         public DbSet<Usuario> Usuarios { get; set; }
+        public DbSet<Rol> Roles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -18,14 +19,14 @@ namespace Bar_Restaurante_Los_Dragones.Models
                 entity.Property(e => e.Nombre).IsRequired().HasMaxLength(100);
                 entity.Property(e => e.Correo).IsRequired().HasMaxLength(100);
                 entity.Property(e => e.Clave).IsRequired().HasMaxLength(100);
-
-                // Mapear el array de roles a una cadena separada por comas en la base de datos
-                entity.Property(e => e.Roles).HasConversion(
-                    v => string.Join(',', v),
-                    v => v.Split(',', StringSplitOptions.RemoveEmptyEntries));
             });
 
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Rol>()
+                .HasMany(r => r.Usuarios)
+                .WithOne(u => u.Rol)
+                .HasForeignKey(u => u.RolID);
         }
     }
 }

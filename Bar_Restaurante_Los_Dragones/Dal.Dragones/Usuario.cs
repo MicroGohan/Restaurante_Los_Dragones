@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Dal.Dragones
 {
@@ -19,19 +16,18 @@ namespace Dal.Dragones
         [MaxLength(100)]
         public string Nombre { get; set; }
 
-        [DisplayName("Correo Electronico")]
-        [Required(ErrorMessage = "El campo Correo Electronico es obligatorio")]
+        [DisplayName("Correo Electrónico")]
+        [Required(ErrorMessage = "El campo Correo Electrónico es obligatorio")]
+        [EmailAddress(ErrorMessage = "El correo electrónico no es una dirección válida")]
         [MaxLength(100)]
-        [EmailAddress]
         public string Correo { get; set; }
 
         [DisplayName("Contraseña")]
         [Required(ErrorMessage = "El campo Contraseña es obligatorio")]
         [MaxLength(100)]
-        [DataType(DataType.Password)]
         public string Clave { get; set; }
 
-        [DisplayName("Digite la confirmacion de la contraseña")]
+        [DisplayName("Digite la confirmación de la contraseña")]
         [Required(ErrorMessage = "El campo Contraseña Confirmar es obligatorio")]
         [NotMapped] // Esta propiedad no se mapeará a la base de datos
         [Compare("Clave", ErrorMessage = "Las contraseñas no coinciden.")]
@@ -39,6 +35,9 @@ namespace Dal.Dragones
 
         [Required(ErrorMessage = "El campo Rol es obligatorio.")]
         [Display(Name = "Rol")]
-        public string[] Roles { get; set; }
+        public int RolID { get; set; }
+
+        [ForeignKey("RolID")]
+        public Rol Rol { get; set; }
     }
 }

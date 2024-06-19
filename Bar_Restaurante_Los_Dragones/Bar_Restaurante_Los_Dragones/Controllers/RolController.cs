@@ -10,23 +10,22 @@ using Dal.Dragones;
 
 namespace Bar_Restaurante_Los_Dragones.Controllers
 {
-    public class UsuarioController : Controller
+    public class RolController : Controller
     {
         private readonly ProyectoContext _context;
 
-        public UsuarioController(ProyectoContext context)
+        public RolController(ProyectoContext context)
         {
             _context = context;
         }
 
-        // GET: Usuario
+        // GET: Rol
         public async Task<IActionResult> Index()
         {
-            var proyectoContext = _context.Usuarios.Include(u => u.Rol);
-            return View(await proyectoContext.ToListAsync());
+            return View(await _context.Roles.ToListAsync());
         }
 
-        // GET: Usuario/Details/5
+        // GET: Rol/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,43 +33,40 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
                 return NotFound();
             }
 
-            var usuario = await _context.Usuarios
-                .Include(u => u.Rol)
+            var rol = await _context.Roles
                 .FirstOrDefaultAsync(m => m.ID == id);
-            if (usuario == null)
+            if (rol == null)
             {
                 return NotFound();
             }
 
-            return View(usuario);
+            return View(rol);
         }
 
-        // GET: Usuario/Create
+        // GET: Rol/Create
         public IActionResult Create()
         {
-            ViewData["RolID"] = new SelectList(_context.Roles, "ID", "Nombre");
             return View();
         }
 
-        // POST: Usuario/Create
+        // POST: Rol/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Nombre,Correo,Clave,RolID")] Usuario usuario)
+        public async Task<IActionResult> Create([Bind("ID,Nombre")] Rol rol)
         {
-            ModelState.Remove("ConfirmarClave");
+            ModelState.Remove("Usuarios");
             if (ModelState.IsValid)
             {
-                _context.Add(usuario);
+                _context.Add(rol);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RolID"] = new SelectList(_context.Roles, "ID", "Nombre", usuario.RolID);
-            return View(usuario);
+            return View(rol);
         }
 
-        // GET: Usuario/Edit/5
+        // GET: Rol/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -78,37 +74,36 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
                 return NotFound();
             }
 
-            var usuario = await _context.Usuarios.FindAsync(id);
-            if (usuario == null)
+            var rol = await _context.Roles.FindAsync(id);
+            if (rol == null)
             {
                 return NotFound();
             }
-            ViewData["RolID"] = new SelectList(_context.Roles, "ID", "Nombre", usuario.RolID);
-            return View(usuario);
+            return View(rol);
         }
 
-        // POST: Usuario/Edit/5
+        // POST: Rol/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Nombre,Correo,Clave,RolID")] Usuario usuario)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,Nombre")] Rol rol)
         {
-            if (id != usuario.ID)
+            if (id != rol.ID)
             {
                 return NotFound();
             }
-            ModelState.Remove("ConfirmarClave");
+            ModelState.Remove("Usuarios");
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(usuario);
+                    _context.Update(rol);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!UsuarioExists(usuario.ID))
+                    if (!RolExists(rol.ID))
                     {
                         return NotFound();
                     }
@@ -119,11 +114,10 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RolID"] = new SelectList(_context.Roles, "ID", "Nombre", usuario.RolID);
-            return View(usuario);
+            return View(rol);
         }
 
-        // GET: Usuario/Delete/5
+        // GET: Rol/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -131,35 +125,34 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
                 return NotFound();
             }
 
-            var usuario = await _context.Usuarios
-                .Include(u => u.Rol)
+            var rol = await _context.Roles
                 .FirstOrDefaultAsync(m => m.ID == id);
-            if (usuario == null)
+            if (rol == null)
             {
                 return NotFound();
             }
 
-            return View(usuario);
+            return View(rol);
         }
 
-        // POST: Usuario/Delete/5
+        // POST: Rol/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var usuario = await _context.Usuarios.FindAsync(id);
-            if (usuario != null)
+            var rol = await _context.Roles.FindAsync(id);
+            if (rol != null)
             {
-                _context.Usuarios.Remove(usuario);
+                _context.Roles.Remove(rol);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool UsuarioExists(int id)
+        private bool RolExists(int id)
         {
-            return _context.Usuarios.Any(e => e.ID == id);
+            return _context.Roles.Any(e => e.ID == id);
         }
     }
 }

@@ -670,3 +670,16 @@ input.material-control:focus ~ .highlight {
 /* col-lg */
 @media (min-width: 1200px) {
 }
+
+.button-common.exit-system-button {
+    background: none;
+    border: none;
+    color: rgba(255,255,255,.4);
+    font-size: 27px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.button-common.exit-system-button:hover {
+    color: var(--option-infoBar);
+}
