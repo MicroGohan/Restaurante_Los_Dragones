@@ -25,6 +25,7 @@ namespace Dal.Dragones
         [DisplayName("Contraseña")]
         [Required(ErrorMessage = "El campo Contraseña es obligatorio")]
         [MaxLength(100)]
+        [PasswordComplexity(ErrorMessage = "La contraseña debe contener al menos una letra mayúscula, una letra minúscula, un número y un signo especial.")]
         public string Clave { get; set; }
 
         [DisplayName("Digite la confirmación de la contraseña")]

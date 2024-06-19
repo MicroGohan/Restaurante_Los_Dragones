@@ -3,6 +3,17 @@
 
 <!DOCTYPE html>
 <html lang="es">
+<head>
+    <style>
+        .nav-item a {
+            text-decoration: none; /* Quitar subrayado */
+            color: inherit; /* Heredar el color del texto */
+            display: inline-block; /* Hacerlo un bloque en línea para aplicar padding correctamente */
+            cursor: pointer; /* Cambiar el cursor a puntero */
+            font-size: 27px;
+        }
+    </style>
+</head>
 <body>
     <div class="content-page-container full-reset custom-scroll-containers">
         <nav class="navbar-user-top full-reset">
@@ -18,17 +29,11 @@
                             <span data-placement="bottom" title="Usuario">Bienvenido, @User.FindFirst(ClaimTypes.Role)?.Value @User.Identity.Name</span>
                         </div>
                     </li>
-                    <li class="user-info">
-                        <form asp-controller="Login" asp-action="Logout" method="post">
-                            <button type="submit" class="tooltips-general button-common exit-system-button" data-placement="bottom" title="Cerrar sesión">
-                                <i class="zmdi zmdi-power"></i>
-                            </button>
-                        </form>
+                    <li class="nav-item">
+                        <a class="" asp-area="" asp-controller="Login" asp-action="Salir">
+                            <i class="zmdi zmdi-power"></i>
+                        </a>
                     </li>
-                    }
-                    else
-                    {
-                        <a asp-controller="Login" asp-action="Index">Iniciar sesión</a>
                     }
                 </li>
                 <li class="tooltips-general btn-help" data-placement="bottom" title="Ayuda">

@@ -60,6 +60,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
         public async Task<IActionResult> Create([Bind("ID,Nombre,Correo,Clave,RolID")] Usuario usuario)
         {
             ModelState.Remove("ConfirmarClave");
+            ModelState.Remove("Rol");
             if (ModelState.IsValid)
             {
                 _context.Add(usuario);
@@ -99,6 +100,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
                 return NotFound();
             }
             ModelState.Remove("ConfirmarClave");
+            ModelState.Remove("Rol");
             if (ModelState.IsValid)
             {
                 try
