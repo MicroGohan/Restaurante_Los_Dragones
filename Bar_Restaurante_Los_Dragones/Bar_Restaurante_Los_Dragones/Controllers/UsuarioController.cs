@@ -18,6 +18,11 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
         {
             _context = context;
         }
+        public ActionResult CrearAdministrador()
+        {
+            ViewData["RolID"] = new SelectList(_context.Roles, "ID", "Nombre");
+            return View();
+        }
 
         // GET: Usuario
         public async Task<IActionResult> Index()
@@ -63,6 +68,14 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
             ModelState.Remove("Rol");
             if (ModelState.IsValid)
             {
+                // Verificar si el correo electrónico ya está registrado
+                if (_context.Usuarios.Any(u => u.Correo == usuario.Correo))
+                {
+                    ModelState.AddModelError("Correo", "El correo electrónico ya está registrado.");
+                    ViewData["RolID"] = new SelectList(_context.Roles, "ID", "Nombre");
+                    return View(usuario);
+                }
+
                 _context.Add(usuario);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -119,7 +132,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("AdministradorListado", "Administracion");
             }
             ViewData["RolID"] = new SelectList(_context.Roles, "ID", "Nombre", usuario.RolID);
             return View(usuario);

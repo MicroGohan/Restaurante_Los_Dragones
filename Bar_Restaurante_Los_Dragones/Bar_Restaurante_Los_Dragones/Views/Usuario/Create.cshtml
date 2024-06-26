@@ -1,45 +1,159 @@
 ﻿@model Dal.Dragones.Usuario
 
-@{
-    ViewData["Title"] = "Create";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
 
-<h2>Create</h2>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/localization/messages_es.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
 
-<h4>Usuario</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Nombre" class="control-label"></label>
-                <input asp-for="Nombre" class="form-control" />
-                <span asp-validation-for="Nombre" class="text-danger"></span>
+</head>
+<body>
+
+    <div class="content-page-container full-reset custom-scroll-containers">
+        <nav class="navbar-user-top full-reset">
+            <ul class="list-unstyled full-reset">
+                <figure>
+                    <img src="~/assets/img/user01.png" alt="user-picture" class="img-responsive img-circle center-box">
+                </figure>
+                <li style="color:#fff; cursor:default;">
+                    <span class="all-tittles">Admin Name</span>
+                </li>
+                <li class="tooltips-general exit-system-button" data-href="index.html" data-placement="bottom" title="Salir del sistema">
+                    <i class="zmdi zmdi-power"></i>
+                </li>
+                <li class="tooltips-general search-book-button" data-href="searchbook.html" data-placement="bottom" title="Buscar libro">
+                    <i class="zmdi zmdi-search"></i>
+                </li>
+                <li class="tooltips-general btn-help" data-placement="bottom" title="Ayuda">
+                    <i class="zmdi zmdi-help-outline zmdi-hc-fw"></i>
+                </li>
+                <li class="mobile-menu-button visible-xs" style="float: left !important;">
+                    <i class="zmdi zmdi-menu"></i>
+                </li>
+                <li class="desktop-menu-button hidden-xs" style="float: left !important;">
+                    <i class="zmdi zmdi-swap"></i>
+                </li>
+            </ul>
+        </nav>
+        <div class="container">
+            <div class="page-header">
+                <h1 class="all-tittles">Sistema Restaurante Los Dragones Inicio <small>Administración Usuarios</small></h1>
             </div>
-            <div class="form-group">
-                <label asp-for="Correo" class="control-label"></label>
-                <input asp-for="Correo" class="form-control" />
-                <span asp-validation-for="Correo" class="text-danger"></span>
+        </div>
+        <div class="container-fluid">
+            <ul class="nav nav-tabs nav-justified" style="font-size: 17px;">
+                <li class="active"><a asp-controller="Administracion" asp-action="CrearAdministrador">Administradores</a></li>
+                <li><a asp-controller="Administracion" asp-action="CrearEmpleado">Empleados</a></li>
+            </ul>
+        </div>
+        <div class="container-fluid" style="margin: 50px 0;">
+            <div class="row">
+                <div class="col-xs-12 col-sm-4 col-md-3">
+                    <img src="~/assets/img/user01.png" alt="user" class="img-responsive center-box" style="max-width: 110px;">
+                </div>
+                <div class="col-xs-12 col-sm-8 col-md-8 text-justify lead">
+                    Bienvenido a la sección para registrar nuevos administradores del sistema, debes de llenar todos los campos del siguiente formulario para registrar un administrador
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Clave" class="control-label"></label>
-                <input asp-for="Clave" class="form-control" />
-                <span asp-validation-for="Clave" class="text-danger"></span>
+        </div>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xs-12 lead">
+                    <ol class="breadcrumb">
+                        <li class="active">Nuevo administrador</li>
+                        <li><a asp-controller="Administracion" asp-action="AdministradorListado">Listado de administradores</a></li>
+                    </ol>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="RolID" class="control-label"></label>
-                <select asp-for="RolID" class ="form-control" asp-items="ViewBag.RolID"></select>
+        </div>
+        <div class="container-fluid">
+            <div class="container-flat-form">
+                <div class="title-flat-form title-flat-blue">Registrar un nuevo administrador</div>
+                <form asp-controller="Usuario" asp-action="Create" method="post" class="form-padding">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <legend><i class="zmdi zmdi-account-box"></i> &nbsp; Datos básicos</legend><br>
+                        </div>
+                        <div class="col-xs-12 col-sm-6">
+                            <div class="group-material">
+                                <input asp-for="Nombre" class="material-control tooltips-general" placeholder="Nombre completo" data-toggle="tooltip" data-placement="top" title="Escribe el nombre del administrador" />
+                                <span class="highlight"></span>
+                                <span class="bar"></span>
+                                <span asp-validation-for="Nombre" class="text-danger"></span>
+                                <label asp-for="Nombre" class="control-label"></label>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6">
+                            <div class="group-material">
+                                <input asp-for="Correo" class="material-control tooltips-general" placeholder="E-mail" data-toggle="tooltip" data-placement="top" title="Escribe el Email del administrador">
+                                <span class="highlight"></span>
+                                <span class="bar"></span>
+                                <span asp-validation-for="Correo" class="text-danger"></span>
+                                <label asp-for="Correo" class="control-label"></label>
+                            </div>
+                        </div>
+                        <div class="col-xs-12">
+                            <legend><i class="zmdi zmdi-lock"></i> &nbsp; Datos de la cuenta</legend><br>
+                        </div>
+                        <div class="col-xs-12">
+                            <label asp-for="RolID" class="control-label"></label>
+                            <div class="group-material">
+                                <select asp-for="RolID" class="form-control" asp-items="ViewBag.RolID"></select>
+                                <span class="highlight"></span>
+                                <span class="bar"></span>
+                                
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6">
+                            <div class="group-material">
+                                <input asp-for="Clave" class="material-control tooltips-general" placeholder="Contraseña" data-toggle="tooltip" data-placement="top" title="Escribe una contraseña">
+                                <span class="highlight"></span>
+                                <span class="bar"></span>
+                                <span asp-validation-for="Clave" class="text-danger"></span>
+                                <label>Contraseña</label>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6">
+                            <div class="group-material">
+                                <input type="password" asp-for="ConfirmarClave" class="material-control tooltips-general" placeholder="Repite la contraseña" data-toggle="tooltip" data-placement="top" title="Repite la contraseña">
+                                <span class="highlight"></span>
+                                <span class="bar"></span>
+                                <span asp-validation-for="ConfirmarClave" class="text-danger"></span>
+                                <label asp-for="ConfirmarClave" class="form-label">Confirmar Contraseña</label>
+                            </div>
+                        </div>
+                        <div class="col-xs-12">
+                            <p class="text-center">
+                                <button type="reset" class="btn btn-info" style="margin-right: 20px;"><i class="zmdi zmdi-roller"></i> &nbsp;&nbsp; Limpiar</button>
+                                <button type="submit" value="Save" class="btn btn-primary"><i class="zmdi zmdi-floppy"></i> &nbsp;&nbsp; Guardar</button>
+                            </p>
+                        </div>
+                    </div>
+                </form>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
+        </div>
+        <div class="modal fade" tabindex="-1" role="dialog" id="ModalHelp">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title text-center all-tittles">ayuda del sistema</h4>
+                    </div>
+                    <div class="modal-body">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore dignissimos qui molestias ipsum officiis unde aliquid consequatur, accusamus delectus asperiores sunt. Quibusdam veniam ipsa accusamus error. Animi mollitia corporis iusto.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="zmdi zmdi-thumb-up"></i> &nbsp; De acuerdo</button>
+                    </div>
+                </div>
             </div>
-        </form>
+        </div>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
+</body>
+</html>
