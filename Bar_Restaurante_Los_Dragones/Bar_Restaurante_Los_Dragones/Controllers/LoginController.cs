@@ -6,6 +6,7 @@ using System.Security.Claims;
 using Bar_Restaurante_Los_Dragones.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Bar_Restaurante_Los_Dragones.Controllers
 {
@@ -18,12 +19,14 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
             _context = context;
         }
 
+        [AllowAnonymous]
         public IActionResult Index()
         {
             return View();
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> Index(string correo, string clave)
         {
             var usuario = _context.Usuarios.Include(u => u.Rol).FirstOrDefault(u => u.Correo == correo && u.Clave == clave);
@@ -52,6 +55,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Register()
         {
             // Aquí puedes inicializar el usuario con el rol por defecto
@@ -70,6 +74,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
 
 
         [HttpPost]
+        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(Usuario usuario)
         {
@@ -93,7 +98,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
             return View(usuario);
         }
 
-
+        [AllowAnonymous]
         public async Task<IActionResult> Salir()
         {
 

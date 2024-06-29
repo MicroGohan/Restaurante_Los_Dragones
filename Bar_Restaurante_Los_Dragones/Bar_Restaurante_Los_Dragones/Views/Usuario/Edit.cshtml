@@ -79,17 +79,17 @@
                         </div>
                         <div class="col-xs-12 col-sm-6">
                             <div class="group-material">
-                                <input asp-for="Nombre" type="text" class="material-control tooltips-general" placeholder="Nombre completo" required="" maxlength="70" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{1,70}" data-toggle="tooltip" data-placement="top" title="Escribe el nombre del administrador">
+                                <input asp-for="Nombre" type="text" class="material-control tooltips-general" placeholder="Nombre completo" data-toggle="tooltip" data-placement="top" title="Escribe el nombre del administrador">
                                 <span class="highlight"></span>
-                                <span asp-validation-for="Nombre"></span>
+                                <span asp-validation-for="Nombre" class="text-danger"></span>
                                 <label>Nombre</label>
                             </div>
                         </div>
                         <div class="col-xs-12 col-sm-6">
                             <div class="group-material">
-                                <input input asp-for="Correo" type="email" class="material-control tooltips-general" placeholder="E-mail" maxlength="50" data-toggle="tooltip" data-placement="top" title="Escribe el Email del administrador">
+                                <input input asp-for="Correo" type="email" class="material-control tooltips-general" placeholder="E-mail" data-toggle="tooltip" data-placement="top" title="Escribe el Email del administrador">
                                 <span class="highlight"></span>
-                                <span span asp-validation-for="Correo"></span>
+                                <span span asp-validation-for="Correo" class="text-danger"></span>
                                 <label>Email</label>
                             </div>
                         </div>
@@ -98,15 +98,15 @@
                         </div>
                         <div class="col-xs-12 col-sm-6">
                             <div class="group-material">
-                                <input asp-for="Clave" class="material-control tooltips-general" placeholder="Contraseña" required="" maxlength="200" data-toggle="tooltip" data-placement="top" title="Escribe una contraseña">
+                                <input asp-for="Clave" class="material-control tooltips-general" placeholder="Contraseña" data-toggle="tooltip" data-placement="top" title="Escribe una contraseña">
                                 <span class="highlight"></span>
-                                <span asp-validation-for="Clave" ></span>
+                                <span asp-validation-for="Clave" class="text-danger" style="white-space: pre-line;"></span>
                                 <label>Constraseña</label>
                             </div>
                         </div>
                         <div class="col-xs-12 col-sm-6">
                             <div class="group-material">
-                                <select asp-for="RolID" class="material-control tooltips-general" placeholder="Contraseña" required="" maxlength="200" data-toggle="tooltip" data-placement="top" title="Escribe una contraseña" asp-items="ViewBag.RolID"></select>
+                                <select asp-for="RolID" class="material-control tooltips-general" placeholder="Contraseña" data-toggle="tooltip" data-placement="top" title="Escribe una contraseña" asp-items="ViewBag.RolID"></select>
                             <span asp-validation-for="RolID" class="text-danger"></span>
                             </div>
                         </div>

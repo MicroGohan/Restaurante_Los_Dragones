@@ -1,5 +1,6 @@
 using Bar_Restaurante_Los_Dragones.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
@@ -13,13 +14,21 @@ op.UseSqlServer(builder.Configuration.GetConnectionString("LosDragones")));
 
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-    .AddCookie(option =>
+    .AddCookie(options =>
     {
-        option.LoginPath = "/Login/Index";
-        option.ExpireTimeSpan = TimeSpan.FromMinutes(20);
-        option.AccessDeniedPath = "/Home/Privacy";
-        option.LogoutPath = "/Login/Salir";
+        options.LoginPath = "/Login/Index";
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+        options.AccessDeniedPath = "/Home/Privacy";
+        options.LogoutPath = "/Login/Salir";
     });
+
+builder.Services.AddAuthorization(options =>
+{
+    options.FallbackPolicy = new AuthorizationPolicyBuilder()
+        .RequireAuthenticatedUser()
+        .Build();
+});
+
 
 var app = builder.Build();
 

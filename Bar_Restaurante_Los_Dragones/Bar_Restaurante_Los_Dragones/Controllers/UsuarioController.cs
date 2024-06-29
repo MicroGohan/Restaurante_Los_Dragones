@@ -18,11 +18,6 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
         {
             _context = context;
         }
-        public ActionResult CrearAdministrador()
-        {
-            ViewData["RolID"] = new SelectList(_context.Roles, "ID", "Nombre");
-            return View();
-        }
 
         // GET: Usuario
         public async Task<IActionResult> Index()
@@ -78,7 +73,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
 
                 _context.Add(usuario);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("AdministradorListado", "Administracion");
             }
             ViewData["RolID"] = new SelectList(_context.Roles, "ID", "Nombre", usuario.RolID);
             return View(usuario);
@@ -132,7 +127,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction("AdministradorListado", "Administracion");
+                return RedirectToAction(nameof(Index));
             }
             ViewData["RolID"] = new SelectList(_context.Roles, "ID", "Nombre", usuario.RolID);
             return View(usuario);

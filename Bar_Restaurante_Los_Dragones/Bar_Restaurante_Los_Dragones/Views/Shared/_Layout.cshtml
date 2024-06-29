@@ -38,22 +38,25 @@
             <div class="full-reset nav-lateral-list-menu">
                 <ul class="list-unstyled">
                     <li><a asp-controller="Home" asp-action="home"><i class="zmdi zmdi-home zmdi-hc-fw"></i>&nbsp;&nbsp; Inicio</a></li>
-                    <li>
-                        <div class="dropdown-menu-button"><i class="zmdi zmdi-case zmdi-hc-fw"></i>&nbsp;&nbsp; Administración <i class="zmdi zmdi-chevron-down pull-right zmdi-hc-fw icon-sub-menu"></i></div>
-                        <ul class="list-unstyled">
-                            <li><a asp-controller="Administracion" asp-action="Restaurante"><i class="zmdi zmdi-balance zmdi-hc-fw"></i>&nbsp;&nbsp; Datos Restaurante</a></li>
-                            <li><a asp-controller="Administracion" asp-action="Proveedor"><i class="zmdi zmdi-truck zmdi-hc-fw"></i>&nbsp;&nbsp; Nuevo proveedor</a></li>
-                            <li><a asp-controller="Administracion" asp-action="AgregarComida"><i class="zmdi zmdi-bookmark-outline zmdi-hc-fw"></i>&nbsp;&nbsp; Nueva Comida</a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <div class="dropdown-menu-button"><i class="zmdi zmdi-account-add zmdi-hc-fw"></i>&nbsp;&nbsp; Registro de usuarios <i class="zmdi zmdi-chevron-down pull-right zmdi-hc-fw icon-sub-menu"></i></div>
-                        <ul class="list-unstyled">
-                            <li><a asp-controller="Usuario" asp-action="Create"><i class="zmdi zmdi-face zmdi-hc-fw"></i>&nbsp;&nbsp; Nuevo administrador</a></li>
-                            <li><a asp-controller="Usuario" asp-action="CrearUsuario"><i class="zmdi zmdi-bookmark-outline zmdi-hc-fw"></i>&nbsp;&nbsp; Nuevo empleado</a></li>
-
-                        </ul>
-                    </li>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li>
+                            <div class="dropdown-menu-button"><i class="zmdi zmdi-case zmdi-hc-fw"></i>&nbsp;&nbsp; Administración <i class="zmdi zmdi-chevron-down pull-right zmdi-hc-fw icon-sub-menu"></i></div>
+                            <ul class="list-unstyled">
+                                <li><a asp-controller="Administracion" asp-action="Restaurante"><i class="zmdi zmdi-balance zmdi-hc-fw"></i>&nbsp;&nbsp; Datos Restaurante</a></li>
+                                <li><a asp-controller="Administracion" asp-action="Proveedor"><i class="zmdi zmdi-truck zmdi-hc-fw"></i>&nbsp;&nbsp; Nuevo proveedor</a></li>
+                                <li><a asp-controller="Administracion" asp-action="AgregarComida"><i class="zmdi zmdi-bookmark-outline zmdi-hc-fw"></i>&nbsp;&nbsp; Nueva Comida</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <div class="dropdown-menu-button"><i class="zmdi zmdi-account-add zmdi-hc-fw"></i>&nbsp;&nbsp; Registro de usuarios <i class="zmdi zmdi-chevron-down pull-right zmdi-hc-fw icon-sub-menu"></i></div>
+                            <ul class="list-unstyled">
+                                <li><a asp-controller="Usuario" asp-action="Create"><i class="zmdi zmdi-face zmdi-hc-fw"></i>&nbsp;&nbsp; Nuevo administrador</a></li>
+                                <li><a asp-controller="Usuario" asp-action="CrearUsuario"><i class="zmdi zmdi-bookmark-outline zmdi-hc-fw"></i>&nbsp;&nbsp; Nuevo empleado</a></li>
+                            </ul>
+                        </li>
+                    }
+                    
                     <li>
                         <div class="dropdown-menu-button"><i class="zmdi zmdi-assignment-o zmdi-hc-fw"></i>&nbsp;&nbsp; Ordenes <i class="zmdi zmdi-chevron-down pull-right zmdi-hc-fw icon-sub-menu"></i></div>
                         <ul class="list-unstyled">
