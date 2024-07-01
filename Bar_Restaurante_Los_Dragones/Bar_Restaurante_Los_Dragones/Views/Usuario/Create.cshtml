@@ -6,11 +6,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/localization/messages_es.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
-
 </head>
 <body>
 
@@ -112,16 +110,16 @@
                         </div>
                         <div class="col-xs-12 col-sm-6">
                             <div class="group-material">
-                                <input asp-for="Clave" class="material-control tooltips-general" placeholder="Contraseña" data-toggle="tooltip" data-placement="top" title="Escribe una contraseña">
+                                <input asp-for="Clave" id="Clave" class="material-control tooltips-general" placeholder="Contraseña" data-toggle="tooltip" data-placement="top" title="Escribe una contraseña">
                                 <span class="highlight"></span>
                                 <span class="bar"></span>
-                                <span asp-validation-for="Clave" class="text-danger" style="white-space: pre-line;"></span>
+                                <span asp-validation-for="Clave" id="passwordErrors" class="text-danger" style="white-space: pre-line;"></span>
                                 <label>Contraseña</label>
                             </div>
                         </div>
                         <div class="col-xs-12 col-sm-6">
                             <div class="group-material">
-                                <input type="password" asp-for="ConfirmarClave" class="material-control tooltips-general" placeholder="Repite la contraseña" data-toggle="tooltip" data-placement="top" title="Repite la contraseña">
+                                <input asp-for="ConfirmarClave" class="material-control tooltips-general" placeholder="Repite la contraseña" data-toggle="tooltip" data-placement="top" title="Repite la contraseña">
                                 <span class="highlight"></span>
                                 <span class="bar"></span>
                                 <span asp-validation-for="ConfirmarClave" class="text-danger"></span>
@@ -157,3 +155,62 @@
     </div>
 </body>
 </html>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const passwordInput = document.getElementById('Clave');
+        const passwordErrors = document.getElementById('passwordErrors');
+
+        passwordInput.addEventListener('keyup', debounce(validatePassword, 300));
+        passwordInput.addEventListener('blur', validatePassword); // Agregamos el evento blur
+
+        function validatePassword() {
+            const password = passwordInput.value;
+            const errors = [];
+
+            // Verificar que la contraseña tenga al menos 8 caracteres
+            if (password.length < 8) {
+                errors.push("La contraseña debe tener al menos 8 caracteres.");
+            }
+
+            // Verificar que la contraseña contenga al menos una mayúscula, una minúscula, un número y un signo
+            if (!/[A-Z]/.test(password)) {
+                errors.push("La contraseña debe contener al menos una letra mayúscula.");
+            }
+
+            if (!/[a-z]/.test(password)) {
+                errors.push("La contraseña debe contener al menos una letra minúscula.");
+            }
+
+            if (!/[0-9]/.test(password)) {
+                errors.push("La contraseña debe contener al menos un número.");
+            }
+
+            if (!/[\W_]/.test(password)) {
+                errors.push("La contraseña debe contener al menos un signo especial.");
+            }
+
+            // Mostrar errores o mensaje de éxito
+            if (errors.length > 0) {
+                passwordErrors.innerHTML = errors.join('<br>');
+                passwordErrors.classList.add('text-danger');
+                passwordErrors.classList.remove('text-success');
+            } else {
+                passwordErrors.innerHTML = "La contraseña cumple con todos los requisitos.";
+                passwordErrors.classList.add('text-success');
+                passwordErrors.classList.remove('text-danger');
+            }
+        }
+
+        function debounce(func, wait) {
+            let timeout;
+            return function (...args) {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => func.apply(this, args), wait);
+            };
+        }
+    });
+
+
+</script>
