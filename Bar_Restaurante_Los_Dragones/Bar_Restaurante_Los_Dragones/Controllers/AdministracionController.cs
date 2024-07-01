@@ -27,19 +27,6 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
         {
             return View();
         }
-        
-        public ActionResult AdministradorListado()
-        {
-            return View();
-        }
-        public ActionResult CrearEmpleado()
-        {
-            return View();
-        }
-        public ActionResult EmpleadoListado()
-        {
-            return View();
-        }
         public ActionResult Reporte()
         {
             return View();
