@@ -2,6 +2,15 @@
 
 <!DOCTYPE html>
 <html lang="es">
+ <head>
+    <style>
+        /* Estilo personalizado para centrar la tabla */
+        .container-table {
+            max-width: 90%; /* Ajusta el ancho máximo de la tabla */
+            margin: auto; /* Centra la tabla en el contenedor */
+        }
+    </style>
+ </head>
 
 <body>
     <div class="content-page-container full-reset custom-scroll-containers">
@@ -55,49 +64,45 @@
                 </div>
             </div>
         </div>
-        <table class="table" id="tabla">
-            <thead>
-                <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Nombre)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Correo)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Clave)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Rol)
-                    </th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
+        <div class="container-table">
+            <table class="table table-striped table-bordered" id="tabla">
+                <thead class="thead-dark">
                     <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Nombre)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Correo)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Clave)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Rol.Nombre)
-                        </td>
-                        <td>
-                            <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                            <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                            <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
-                        </td>
+                        <th>@Html.DisplayNameFor(model => model.Nombre)</th>
+                        <th>@Html.DisplayNameFor(model => model.Correo)</th>
+                        <th>@Html.DisplayNameFor(model => model.Clave)</th>
+                        <th>@Html.DisplayNameFor(model => model.Rol)</th>
+                        <th>Editar</th>
+                        <th>Eliminar</th>
+                        <th>Detalles</th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => item.Nombre)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Correo)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Clave)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Rol.Nombre)</td>
+                            <td class="text-center">
+                                <!-- Centra el botón Editar -->
+                                <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-info tooltips-general" data-toggle="tooltip" data-placement="top" title="Editar"><i class="zmdi zmdi-edit"></i></a>
+                            </td>
+                            <td class="text-center">
+                                <!-- Centra el botón Eliminar -->
+                                <a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-danger tooltips-general" data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="zmdi zmdi-delete"></i></a>
+                            </td>
+                            <td class="text-center">
+                                <!-- Centra el botón Detalles -->
+                                <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-primary tooltips-general" data-toggle="tooltip" data-placement="top" title="Detalles"><i class="zmdi zmdi-info"></i></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
         <div class="modal fade" tabindex="-1" role="dialog" id="ModalHelp">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
