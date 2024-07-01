@@ -1,54 +1,148 @@
 ﻿@model IEnumerable<Dal.Dragones.Usuario>
 
-@{
-    ViewData["Title"] = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
+<!DOCTYPE html>
+<html lang="es">
 
-<h2>Index</h2>
+<body>
+    <div class="content-page-container full-reset custom-scroll-containers">
+        <nav class="navbar-user-top full-reset">
+            <ul class="list-unstyled full-reset">
+                <figure>
+                    <img src="~/assets/img/user01.png" alt="user-picture" class="img-responsive img-circle center-box">
+                </figure>
+                <li style="color:#fff; cursor:default;">
+                    <span class="all-tittles">Admin Name</span>
+                </li>
+                <li class="tooltips-general exit-system-button" data-href="index.html" data-placement="bottom" title="Salir del sistema">
+                    <i class="zmdi zmdi-power"></i>
+                </li>
+                <li class="tooltips-general search-book-button" data-href="searchbook.html" data-placement="bottom" title="Buscar libro">
+                    <i class="zmdi zmdi-search"></i>
+                </li>
+                <li class="tooltips-general btn-help" data-placement="bottom" title="Ayuda">
+                    <i class="zmdi zmdi-help-outline zmdi-hc-fw"></i>
+                </li>
+                <li class="mobile-menu-button visible-xs" style="float: left !important;">
+                    <i class="zmdi zmdi-menu"></i>
+                </li>
+                <li class="desktop-menu-button hidden-xs" style="float: left !important;">
+                    <i class="zmdi zmdi-swap"></i>
+                </li>
+            </ul>
+        </nav>
+        <div class="container">
+            <div class="page-header">
+                <h1 class="all-tittles">Sistema Restaurante Los Dragones <small>Administración Usuarios</small></h1>
+            </div>
+        </div>
+        <div class="container-fluid" style="margin: 50px 0;">
+            <div class="row">
+                <div class="col-xs-12 col-sm-4 col-md-3">
+                    <img src="~/assets/img/user01.png" alt="user" class="img-responsive center-box" style="max-width: 110px;">
+                </div>
+                <div class="col-xs-12 col-sm-8 col-md-8 text-justify lead">
+                    Bienvenido a la sección donde se encuentra el listado de los administradores, puedes desactivar la cuenta de cualquier administrador o eliminar los datos si no hay préstamos asociados a la cuenta
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xs-12 lead">
+                    <ol class="breadcrumb">
+                        <li><a asp-controller="Usuario" asp-action="Create">Nuevo Administrador</a></li>
+                        <li class="active">listado de administradores</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <table class="table" id="tabla">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Nombre)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Correo)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Clave)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Rol)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Nombre)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Correo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Clave)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Rol.Nombre)
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
+                            <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
+                            <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div class="modal fade" tabindex="-1" role="dialog" id="ModalHelp">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title text-center all-tittles">ayuda del sistema</h4>
+                    </div>
+                    <div class="modal-body">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore dignissimos qui molestias ipsum officiis unde aliquid consequatur, accusamus delectus asperiores sunt. Quibusdam veniam ipsa accusamus error. Animi mollitia corporis iusto.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="zmdi zmdi-thumb-up"></i> &nbsp; De acuerdo</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Nombre)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Correo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Clave)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Rol)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nombre)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Correo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Clave)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Rol.Nombre)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<script>
+    $(document).ready(function () {
+        $('#tabla').DataTable({
+            language: {
+                processing: "Procesando...",
+                search: "Buscar:",
+                lengthMenu: "Mostrar _MENU_ elementos",
+                info: "Mostrando del _START_ al _END_ de un total de _TOTAL_ elementos",
+                infoEmpty: "Mostrando 0 elementos",
+                infoFiltered: "(filtrado de un total de _MAX_ elementos)",
+                infoPostFix: "",
+                loadingRecords: "Cargando...",
+                zeroRecords: "No se encontraron registros coincidentes",
+                emptyTable: "No hay datos disponibles en la tabla",
+                paginate: {
+                    first: "Primero",
+                    previous: "Anterior",
+                    next: "Siguiente",
+                    last: "Último"
+                },
+                aria: {
+                    sortAscending: ": activar para ordenar la columna de manera ascendente",
+                    sortDescending: ": activar para ordenar la columna de manera descendente"
+                }
+            }
+        });
+    });
+</script>
