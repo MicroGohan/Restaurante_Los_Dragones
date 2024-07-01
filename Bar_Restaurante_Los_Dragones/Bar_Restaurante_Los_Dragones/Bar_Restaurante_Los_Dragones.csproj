@@ -20,4 +20,6 @@
     <ProjectReference Include="..\Dal.Dragones\Dal.Dragones.csproj" />
   </ItemGroup>
 
+  <ProjectExtensions><VisualStudio><UserProperties /></VisualStudio></ProjectExtensions>
+
 </Project>
