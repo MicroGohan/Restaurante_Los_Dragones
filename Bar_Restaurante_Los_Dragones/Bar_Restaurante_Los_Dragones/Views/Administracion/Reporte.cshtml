@@ -1,29 +1,47 @@
-﻿<div class="content-page-container full-reset custom-scroll-containers">
-    <nav class="navbar-user-top full-reset">
-        <ul class="list-unstyled full-reset">
-            <figure>
-                <img src="~/assets/img/user01.png" alt="user-picture" class="img-responsive img-circle center-box">
-            </figure>
-            <li style="color:#fff; cursor:default;">
-                <span class="all-tittles">Admin Name</span>
-            </li>
-            <li class="tooltips-general exit-system-button" data-href="index.html" data-placement="bottom" title="Salir del sistema">
-                <i class="zmdi zmdi-power"></i>
-            </li>
-            <li class="tooltips-general search-book-button" data-href="searchbook.html" data-placement="bottom" title="Buscar libro">
-                <i class="zmdi zmdi-search"></i>
-            </li>
-            <li class="tooltips-general btn-help" data-placement="bottom" title="Ayuda">
-                <i class="zmdi zmdi-help-outline zmdi-hc-fw"></i>
-            </li>
-            <li class="mobile-menu-button visible-xs" style="float: left !important;">
-                <i class="zmdi zmdi-menu"></i>
-            </li>
-            <li class="desktop-menu-button hidden-xs" style="float: left !important;">
-                <i class="zmdi zmdi-swap"></i>
-            </li>
-        </ul>
-    </nav>
+﻿@using System.Security.Claims
+<head>
+    <style>
+        .nav-item a {
+            text-decoration: none; /* Quitar subrayado */
+            color: inherit; /* Heredar el color del texto */
+            display: inline-block; /* Hacerlo un bloque en línea para aplicar padding correctamente */
+            cursor: pointer; /* Cambiar el cursor a puntero */
+            font-size: 27px;
+        }
+    </style>
+</head>
+    <div class="content-page-container full-reset custom-scroll-containers">
+        <nav class="navbar-user-top full-reset">
+            <ul class="list-unstyled full-reset">
+                <figure>
+                    <img src="~/assets/img/user01.png" alt="user-picture" class="img-responsive img-circle center-box">
+                </figure>
+                <li class="user-info" style="color:#fff; cursor:default;">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                    <li class="user-info">
+                        <div class="user-details">
+                            <span data-placement="bottom" title="Usuario">Bienvenido, @User.FindFirst(ClaimTypes.Role)?.Value @User.Identity.Name</span>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="" asp-area="" asp-controller="Login" asp-action="Salir">
+                            <i class="zmdi zmdi-power"></i>
+                        </a>
+                    </li>
+                    }
+                </li>
+                <li class="tooltips-general btn-help" data-placement="bottom" title="Ayuda">
+                    <i class="zmdi zmdi-help-outline zmdi-hc-fw"></i>
+                </li>
+                <li class="mobile-menu-button visible-xs" style="float: left !important;">
+                    <i class="zmdi zmdi-menu"></i>
+                </li>
+                <li class="desktop-menu-button hidden-xs" style="float: left !important;">
+                    <i class="zmdi zmdi-swap"></i>
+                </li>
+            </ul>
+        </nav>
     <div class="container">
         <div class="page-header">
             <h1 class="all-tittles">Sistema bibliotecario <small>Reportes y estadísticas</small></h1>

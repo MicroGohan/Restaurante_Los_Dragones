@@ -38,7 +38,7 @@
             <div class="full-reset nav-lateral-list-menu">
                 <ul class="list-unstyled">
                     <li><a asp-controller="Home" asp-action="home"><i class="zmdi zmdi-home zmdi-hc-fw"></i>&nbsp;&nbsp; Inicio</a></li>
-                    @if (User.IsInRole("Admin"))
+                    @if (User.IsInRole("Administrador"))
                     {
                         <li>
                             <div class="dropdown-menu-button"><i class="zmdi zmdi-case zmdi-hc-fw"></i>&nbsp;&nbsp; Administración <i class="zmdi zmdi-chevron-down pull-right zmdi-hc-fw icon-sub-menu"></i></div>

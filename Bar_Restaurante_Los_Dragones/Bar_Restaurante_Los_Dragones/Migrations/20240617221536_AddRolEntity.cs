@@ -46,6 +46,16 @@ namespace Bar_Restaurante_Los_Dragones.Migrations
                 principalTable: "Roles",
                 principalColumn: "ID",
                 onDelete: ReferentialAction.Cascade);
+
+            // Insertar roles por defecto
+            migrationBuilder.InsertData(
+                table: "Roles",
+                columns: new[] { "Nombre" },
+                values: new object[,]
+                {
+                    { "Administrador" },
+                    { "Empleado" }
+                });
         }
 
         /// <inheritdoc />
