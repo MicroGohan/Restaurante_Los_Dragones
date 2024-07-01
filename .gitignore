@@ -397,3 +397,4 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 Bar_Restaurante_Los_Dragones/Bar_Restaurante_Los_Dragones/appsettings.json
+/Bar_Restaurante_Los_Dragones/Bar_Restaurante_Los_Dragones/appsettings.json
