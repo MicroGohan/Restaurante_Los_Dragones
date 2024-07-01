@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<Dal.Dragones.Usuario>
+
 @using System.Security.Claims
 <!DOCTYPE html>
 <html lang="es">
@@ -102,9 +103,13 @@
                                 <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-info tooltips-general" data-toggle="tooltip" data-placement="top" title="Editar"><i class="zmdi zmdi-edit"></i></a>
                             </td>
                             <td class="text-center">
-                                <!-- Centra el botón Eliminar -->
-                                <a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-danger tooltips-general" data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="zmdi zmdi-delete"></i></a>
+                                <form id="form-delete-@item.ID" asp-action="Delete" asp-route-id="@item.ID" method="post">
+                                    <button type="button" onclick="confirmDelete(@item.ID)" class="btn btn-danger tooltips-general" data-toggle="tooltip" data-placement="top" title="Eliminar">
+                                           <i class="zmdi zmdi-delete"></i>
+                                    </button>
+                                </form>
                             </td>
+
                             <td class="text-center">
                                 <!-- Centra el botón Detalles -->
                                 <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-primary tooltips-general" data-toggle="tooltip" data-placement="top" title="Detalles"><i class="zmdi zmdi-info"></i></a>
@@ -134,6 +139,16 @@
     </div>
 </body>
 </html>
+
+
+<script>
+    function confirmDelete(userId) {
+        if (confirm('¿Está seguro de que desea eliminar este usuario?')) {
+            // Envía el formulario para eliminar
+            document.getElementById('form-delete-' + userId).submit();
+        }
+    }
+</script>
 
 <script>
     $(document).ready(function () {
