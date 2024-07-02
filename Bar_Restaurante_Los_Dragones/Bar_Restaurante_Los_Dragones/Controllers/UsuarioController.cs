@@ -73,7 +73,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
 
                 _context.Add(usuario);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("AdministradorListado", "Administracion");
+                return RedirectToAction("Index", "Usuario");
             }
             ViewData["RolID"] = new SelectList(_context.Roles, "ID", "Nombre", usuario.RolID);
             return View(usuario);
