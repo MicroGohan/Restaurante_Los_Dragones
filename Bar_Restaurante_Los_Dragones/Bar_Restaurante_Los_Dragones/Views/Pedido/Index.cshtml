@@ -1,0 +1,32 @@
+﻿@model IEnumerable<Dal.Dragones.Pedido>
+
+<h2>Pedidos</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Mesa</th>
+            <th>Fecha</th>
+            <th>Total</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var pedido in Model)
+        {
+            <tr>
+                <td>@pedido.Mesa.NumMesa</td>
+                <td>@pedido.Fecha</td>
+                <td>@pedido.Total</td>
+                <td>@pedido.Estado</td>
+                <td>
+                    <a asp-action="DetallesPedido" asp-route-id="@pedido.Id">Detalles</a> |
+                    <form asp-action="EliminarPedido" asp-route-id="@pedido.Id" method="post" onsubmit="return confirm('¿Estás seguro de eliminar este pedido?');">
+                        <button type="submit" class="btn btn-link">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<a asp-action="CrearPedido">Crear Pedido</a>

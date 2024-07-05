@@ -1,0 +1,139 @@
+﻿@model Dal.Dragones.Pedido
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .mesa-boton {
+            display: inline-block;
+            margin: 5px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+        }
+
+        .mesa-disponible {
+            background-color: #90ee90; /* Verde claro */
+        }
+
+        .mesa-ocupada {
+            background-color: #f08080; /* Rojo claro */
+            cursor: not-allowed;
+        }
+
+        .mesa-seleccionada {
+            border: 2px solid #0000ff; /* Azul */
+        }
+    </style>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+</head>
+
+<body>
+    <h2>Crear Pedido</h2>
+
+    <form asp-action="CrearPedido" method="post">
+        <div>
+            <label>Mesa</label>
+            <div id="mesasContainer">
+                @foreach (var mesa in ViewBag.Mesas)
+                {
+                    var estadoClase = mesa.Estado == "OCUPADA" ? "mesa-ocupada" : "mesa-disponible";
+                    <button type="button" class="mesa-boton @estadoClase" data-id="@mesa.Id" data-estado="@mesa.Estado">
+                        @mesa.NumMesa - @mesa.Estado
+                    </button>
+                }
+            </div>
+            <input type="hidden" id="IdMesa" name="IdMesa" />
+        </div>
+
+        <div>
+            <label>Observación</label>
+            <input type="text" name="Observacion" />
+        </div>
+
+        <div>
+            <label>Seleccionar Plato</label>
+            <select id="selectPlato">
+                <option value="">Seleccione un plato...</option>
+                @foreach (var plato in ViewBag.Platos)
+                {
+                    <option value="@plato.Id" data-nombre="@plato.Nombre">@plato.Nombre</option>
+                }
+            </select>
+            <button type="button" id="agregarPlato">Agregar</button>
+        </div>
+
+        <div>
+            <label>Platos Seleccionados y Cantidades</label>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Plato</th>
+                        <th>Cantidad</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="platosSeleccionados">
+                    <!-- Aquí se añadirán los platos seleccionados -->
+                </tbody>
+            </table>
+        </div>
+
+        <button type="submit">Crear</button>
+    </form>
+
+    <a href="#">Volver a la lista</a>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            console.log('Documento listo');
+
+            $('.mesa-boton').on('click', function () {
+                console.log('Botón de mesa clickeado');
+
+                var mesaId = $(this).data('id');
+                var estado = $(this).data('estado');
+                console.log('Mesa ID:', mesaId, 'Estado:', estado);
+
+                if (estado === 'DISPONIBLE' || estado === 'Disponible') {  // Asegúrate de comparar correctamente
+                    $('#IdMesa').val(mesaId);
+                    $('.mesa-boton').removeClass('mesa-seleccionada');
+                    $(this).addClass('mesa-seleccionada');
+                    console.log('Mesa seleccionada:', mesaId);
+                }
+            });
+
+            $('#agregarPlato').on('click', function () {
+                var selectedPlato = $('#selectPlato option:selected');
+                var platoId = selectedPlato.val();
+                var platoNombre = selectedPlato.data('nombre');
+
+                if (platoId) {
+                    var nuevaFila = `
+                                        <tr data-id="${platoId}">
+                                            <td>${platoNombre}</td>
+                                            <td><input type="number" name="PlatosSeleccionados[${platoId}]" value="1" min="1" max="10" /></td>
+                                            <td><button type="button" class="btn-eliminar" onclick="eliminarPlato(this)">Eliminar</button></td>
+                                        </tr>
+                                    `;
+                    $('#platosSeleccionados').append(nuevaFila);
+                    $('#selectPlato').val('');
+                }
+            });
+        });
+
+        function eliminarPlato(button) {
+            $(button).closest('tr').remove();
+        }
+    </script>
+</body>
+</html>

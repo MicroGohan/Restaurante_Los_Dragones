@@ -1,0 +1,66 @@
+﻿@model Dal.Dragones.Pedido
+
+<h2>Detalles del Pedido</h2>
+
+<p>Mesa: @Model.Mesa.NumMesa</p>
+<p>Fecha: @Model.Fecha</p>
+<p>Total: @Model.Total</p>
+<p>Estado: @Model.Estado</p>
+
+<h3>Platos</h3>
+<table>
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Precio</th>
+            <th>Cantidad</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var detalle in Model.Detalles)
+        {
+            <tr>
+                <td>@detalle.Nombre</td>
+                <td>@detalle.Precio</td>
+                <td>@detalle.Cantidad</td>
+                <td>
+                    <form asp-action="CambiarCantidadPlatillo" method="post">
+                        <input type="hidden" name="idPedido" value="@Model.Id" />
+                        <input type="hidden" name="idDetalle" value="@detalle.Id" />
+                        <input type="number" name="nuevaCantidad" value="@detalle.Cantidad" />
+                        <button type="submit">Cambiar Cantidad</button>
+                    </form>
+                    <form asp-action="EliminarPlatillo" method="post">
+                        <input type="hidden" name="idPedido" value="@Model.Id" />
+                        <input type="hidden" name="idDetalle" value="@detalle.Id" />
+                        <button type="submit">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<hr />
+
+<h3>Añadir Más Platos</h3>
+<form asp-action="AñadirPlato" method="post">
+    <input type="hidden" name="idPedido" value="@Model.Id" />
+    <div>
+        <label>Plato</label>
+        <select name="idPlato">
+            @foreach (var plato in ViewBag.Platos as List<Dal.Dragones.Plato>)
+            {
+                <option value="@plato.Id">@plato.Nombre</option>
+            }
+        </select>
+    </div>
+    <div>
+        <label>Cantidad</label>
+        <input type="number" name="cantidad" value="1" />
+    </div>
+    <button type="submit">Añadir</button>
+</form>
+
+<a asp-action="Index">Volver a la lista</a>
