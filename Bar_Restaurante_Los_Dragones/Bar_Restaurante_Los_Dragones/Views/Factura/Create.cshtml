@@ -55,13 +55,10 @@
             </div>
             <div class="form-group">
                 <label asp-for="MetodoPago" class="control-label"></label>
-                <select asp-for="MetodoPago" class="form-control"></select>
+                <select asp-for="MetodoPago" class="form-control" asp-items="ViewBag.MetodoPagoList"></select>
                 <span asp-validation-for="MetodoPago" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="PedidoId" class="control-label"></label>
-                <select asp-for="PedidoId" class ="form-control" asp-items="ViewBag.PedidoId"></select>
-            </div>
+                <input type="hidden" asp-for="PedidoId" /> 
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-default" />
             </div>

@@ -14,10 +14,10 @@ namespace Dal.Dragones
         public DateTime Fecha { get; set; }
         public string? NombreCliente { get; set; }
         public string Responsable { get; set; }
-        public int Subtotal { get; set; }
+        public decimal Subtotal { get; set; }
         public int? Descuento { get; set; }
         public int Iva { get; set; }
-        public int TotalPagar { get; set; }
+        public decimal TotalPagar { get; set; }
         public string? Observaciones { get; set; }
 
         [Required(ErrorMessage = "El campo Metodo de Pago es obligatorio")]

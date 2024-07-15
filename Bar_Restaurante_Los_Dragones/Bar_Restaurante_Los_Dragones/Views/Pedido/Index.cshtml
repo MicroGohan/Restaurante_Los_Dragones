@@ -24,6 +24,7 @@
                     <form asp-action="EliminarPedido" asp-route-id="@pedido.Id" method="post" onsubmit="return confirm('¿Estás seguro de eliminar este pedido?');">
                         <button type="submit" class="btn btn-link">Eliminar</button>
                     </form>
+                    <a asp-controller="Factura" asp-action="Create" asp-route-id="@pedido.Id">Facturar</a> |
                 </td>
             </tr>
         }

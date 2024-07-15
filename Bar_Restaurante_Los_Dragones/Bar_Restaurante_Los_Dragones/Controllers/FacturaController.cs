@@ -45,12 +45,6 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
             return View(factura);
         }
 
-        // GET: Factura/Create
-        public IActionResult Create()
-        {
-            ViewData["PedidoId"] = new SelectList(_context.Pedidos, "Id", "Estado");
-            return View();
-        }
 
         // POST: Factura/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -59,13 +53,40 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("id,Fecha,NombreCliente,Responsable,Subtotal,Descuento,Iva,TotalPagar,Observaciones,MetodoPago,PedidoId")] Factura factura)
         {
+            factura.id = 0;
+            ModelState.Remove("Pedidos");
             if (ModelState.IsValid)
             {
                 _context.Add(factura);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PedidoId"] = new SelectList(_context.Pedidos, "Id", "Estado", factura.PedidoId);
+            ViewBag.MetodoPagoList = new SelectList(Enum.GetValues(typeof(MetodoPago)).Cast<MetodoPago>());
+            return View(factura);
+        }
+
+        public async Task<IActionResult> Create(int? id)
+        {
+
+            if (id == null)
+            {
+                return NotFound();
+            }
+            ViewBag.MetodoPagoList = new SelectList(Enum.GetValues(typeof(MetodoPago)).Cast<MetodoPago>());
+            var pedido = await _context.Pedidos.FindAsync(id);
+
+            if (pedido == null)
+            {
+                return NotFound();
+            }
+            var factura = new Dal.Dragones.Factura
+            {
+                PedidoId = pedido.Id,
+                Fecha = DateTime.Now,
+                Subtotal = pedido.Total,
+                Iva = 13, 
+            };
+
             return View(factura);
         }
 
@@ -82,7 +103,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
             {
                 return NotFound();
             }
-            ViewData["PedidoId"] = new SelectList(_context.Pedidos, "Id", "Estado", factura.PedidoId);
+            ViewBag.MetodoPagoList = new SelectList(Enum.GetValues(typeof(MetodoPago)).Cast<MetodoPago>());
             return View(factura);
         }
 
@@ -97,7 +118,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
             {
                 return NotFound();
             }
-
+            ModelState.Remove("Pedidos");
             if (ModelState.IsValid)
             {
                 try
@@ -118,7 +139,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PedidoId"] = new SelectList(_context.Pedidos, "Id", "Estado", factura.PedidoId);
+            ViewBag.MetodoPagoList = new SelectList(Enum.GetValues(typeof(MetodoPago)).Cast<MetodoPago>());
             return View(factura);
         }
 
