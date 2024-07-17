@@ -33,6 +33,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
             {
                 return NotFound();
             }
+            
 
             var factura = await _context.Facturas
                 .Include(f => f.Pedidos)
@@ -41,6 +42,12 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
             {
                 return NotFound();
             }
+            var pedido = await _context.Pedidos
+                .Include(p => p.Mesa)
+                .Include(p => p.Detalles)
+                .FirstOrDefaultAsync(p => p.Id == factura.PedidoId);
+            
+            factura.Pedidos = pedido;
 
             return View(factura);
         }
@@ -73,7 +80,10 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
                 return NotFound();
             }
             ViewBag.MetodoPagoList = new SelectList(Enum.GetValues(typeof(MetodoPago)).Cast<MetodoPago>());
-            var pedido = await _context.Pedidos.FindAsync(id);
+            var pedido = await _context.Pedidos
+                .Include(p => p.Mesa)
+                .Include(p => p.Detalles)
+                .FirstOrDefaultAsync(p => p.Id == id);
 
             if (pedido == null)
             {
@@ -81,11 +91,14 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
             }
             var factura = new Dal.Dragones.Factura
             {
+
                 PedidoId = pedido.Id,
                 Fecha = DateTime.Now,
                 Subtotal = pedido.Total,
                 Iva = 13, 
+                Pedidos = pedido
             };
+
 
             return View(factura);
         }
