@@ -1,0 +1,143 @@
+﻿@model Tuple<DateTime?, DateTime?>
+@using Dal.Dragones
+@using System.Security.Claims
+@using System.Globalization;
+@{
+    ViewData["Title"] = "Total Facturado por Mes";
+    var facturas = ViewBag.Facturas as List<Factura>;
+    var currentYear = DateTime.Now.Year;
+    var currentMonth = DateTime.Now.Month;
+    var selectedYear = ViewBag.Año != null ? ViewBag.Año : currentYear;
+    var selectedMonth = ViewBag.Mes != null ? ViewBag.Mes : currentMonth;
+}
+<head>
+    <style>
+        .nav-item a {
+            text-decoration: none; /* Quitar subrayado */
+            color: inherit; /* Heredar el color del texto */
+            display: inline-block; /* Hacerlo un bloque en línea para aplicar padding correctamente */
+            cursor: pointer; /* Cambiar el cursor a puntero */
+            font-size: 27px;
+        }
+    </style>
+</head>
+<div class="content-page-container full-reset custom-scroll-containers">
+    <nav class="navbar-user-top full-reset">
+        <ul class="list-unstyled full-reset">
+            <figure>
+                <img src="~/assets/img/user01.png" alt="user-picture" class="img-responsive img-circle center-box">
+            </figure>
+            <li class="user-info" style="color:#fff; cursor:default;">
+                @if (User.Identity.IsAuthenticated)
+                {
+                <li class="user-info">
+                    <div class="user-details">
+                        <span data-placement="bottom" title="Usuario">Bienvenido, @User.FindFirst(ClaimTypes.Role)?.Value @User.Identity.Name</span>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="" asp-area="" asp-controller="Login" asp-action="Salir">
+                        <i class="zmdi zmdi-power"></i>
+                    </a>
+                </li>
+                }
+            </li>
+            <li class="tooltips-general btn-help" data-placement="bottom" title="Ayuda">
+                <i class="zmdi zmdi-help-outline zmdi-hc-fw"></i>
+            </li>
+            <li class="mobile-menu-button visible-xs" style="float: left !important;">
+                <i class="zmdi zmdi-menu"></i>
+            </li>
+            <li class="desktop-menu-button hidden-xs" style="float: left !important;">
+                <i class="zmdi zmdi-swap"></i>
+            </li>
+        </ul>
+    </nav>
+<h1>Total Facturado por Mes</h1>
+<form asp-action="TotalFacturadoPorMes" method="post">
+    <label for="mes">Mes:</label>
+    <select id="mes" name="mes">
+        @for (int i = 1; i <= 12; i++)
+        {
+            <option value="@i">@i</option>
+        }
+    </select>
+    <label for="año">Año:</label>
+    <input type="number" id="año" name="año" min="2000" max="2100" required />
+    <button type="submit">Obtener Total</button>
+</form>
+
+@if (ViewBag.TotalFacturado != null)
+{
+        <h3>Total Facturado:@(await ViewBag.TotalFacturado)</h3>
+
+        <form asp-action="DownloadPDFPorMes" method="post">
+            <input type="hidden" name="mes" value="@selectedMonth" />
+            <input type="hidden" name="año" value="@selectedYear" />
+            <button type="submit">Descargar PDF</button>
+        </form>
+}
+
+@if (facturas != null && facturas.Any())
+{
+    <h3>Facturas del Mes</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Nombre Cliente</th>
+                <th>Subtotal</th>
+                <th>Descuento</th>
+                <th>IVA</th>
+                <th>Total a Pagar</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var factura in facturas)
+            {
+                <tr>
+                    <td>@factura.Fecha.ToString("dd/MM/yyyy")</td>
+                    <td>@factura.NombreCliente</td>
+                    <td>@factura.Subtotal</td>
+                    <td>@factura.Descuento</td>
+                    <td>@factura.Iva</td>
+                    <td>@factura.TotalPagar</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var mesSelect = document.getElementById('mes');
+            var añoInput = document.getElementById('año');
+            var currentDate = new Date();
+
+            function updateMonthOptions() {
+                var selectedYear = parseInt(añoInput.value);
+                var currentYear = currentDate.getFullYear();
+                var currentMonth = currentDate.getMonth() + 1;
+
+                if (isNaN(selectedYear)) {
+                    mesSelect.disabled = true;
+                    return;
+                } else {
+                    mesSelect.disabled = false;
+                }
+
+                for (var i = 0; i < mesSelect.options.length; i++) {
+                    var monthOption = mesSelect.options[i];
+                    var monthValue = parseInt(monthOption.value);
+
+                    if (selectedYear > currentYear || (selectedYear === currentYear && monthValue > currentMonth)) {
+                        monthOption.disabled = true;
+                    } else {
+                        monthOption.disabled = false;
+                    }
+                }
+            }
+
+            añoInput.addEventListener('change', updateMonthOptions);
+            updateMonthOptions();
+        });
+    </script>
