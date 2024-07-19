@@ -1,19 +1,47 @@
 ﻿@model Dal.Dragones.Pedido
 
+@{
+    ViewBag.Title = "Crear Pedido";
+}
+@using System.Security.Claims
 
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Estilos -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
     <style>
+        .container-table {
+            max-width: 90%;
+            margin: auto;
+        }
+
+        .nav-item a {
+            text-decoration: none;
+            color: inherit;
+            display: inline-block;
+            cursor: pointer;
+            font-size: 27px;
+        }
+
         .mesa-boton {
             display: inline-block;
             margin: 5px;
-            padding: 10px;
+            padding: 10px 20px;
             border: 1px solid #ccc;
             cursor: pointer;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: transform 0.3s, background-color 0.3s;
         }
+
+            .mesa-boton:hover {
+                transform: scale(1.05);
+            }
 
         .mesa-disponible {
             background-color: #90ee90; /* Verde claro */
@@ -27,68 +55,201 @@
         .mesa-seleccionada {
             border: 2px solid #0000ff; /* Azul */
         }
+
+        .btn-link {
+            color: #007bff;
+            text-decoration: none;
+            background-color: transparent;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+        }
+
+            .btn-link:hover {
+                text-decoration: underline;
+            }
     </style>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
 </head>
-
 <body>
-    <h2>Crear Pedido</h2>
+    <div class="content-page-container full-reset custom-scroll-containers">
+        <!-- Navbar -->
+        <nav class="navbar-user-top full-reset">
+            <ul class="list-unstyled full-reset">
+                <figure>
+                    <img src="~/assets/img/user01.png" alt="user-picture" class="img-responsive img-circle center-box">
+                </figure>
+                <li class="user-info" style="color:#fff; cursor:default;">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                    <li class="user-info">
+                        <div class="user-details">
+                            <span data-placement="bottom" title="Usuario">Bienvenido, @User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value @User.Identity.Name</span>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="" asp-area="" asp-controller="Login" asp-action="Salir">
+                            <i class="zmdi zmdi-power"></i>
+                        </a>
+                    </li>
+                    }
+                </li>
+                <li class="tooltips-general btn-help" data-placement="bottom" title="Ayuda">
+                    <i class="zmdi zmdi-help-outline zmdi-hc-fw"></i>
+                </li>
+                <li class="mobile-menu-button visible-xs" style="float: left !important;">
+                    <i class="zmdi zmdi-menu"></i>
+                </li>
+                <li class="desktop-menu-button hidden-xs" style="float: left !important;">
+                    <i class="zmdi zmdi-swap"></i>
+                </li>
+            </ul>
+        </nav>
 
-    <form asp-action="CrearPedido" method="post">
-        <div>
-            <label>Mesa</label>
-            <div id="mesasContainer">
-                @foreach (var mesa in ViewBag.Mesas)
-                {
-                    var estadoClase = mesa.Estado == "OCUPADA" ? "mesa-ocupada" : "mesa-disponible";
-                    <button type="button" class="mesa-boton @estadoClase" data-id="@mesa.Id" data-estado="@mesa.Estado">
-                        @mesa.NumMesa - @mesa.Estado
-                    </button>
-                }
+        <!-- Contenido principal -->
+        <div class="container">
+            <div class="page-header">
+                <h1 class="all-tittles">Sistema Restaurante Los Dragones <small>Crear Pedido</small></h1>
             </div>
-            <input type="hidden" id="IdMesa" name="IdMesa" />
         </div>
 
-        <div>
-            <label>Observación</label>
-            <input type="text" name="Observacion" />
+        <div class="container-fluid" style="margin: 50px 0;">
+            <div class="row">
+                <div class="col-xs-12 col-sm-4 col-md-3">
+                    <img src="~/assets/img/user01.png" alt="user" class="img-responsive center-box" style="max-width: 110px;">
+                </div>
+                <div class="col-xs-12 col-sm-8 col-md-8 text-justify lead">
+                    En esta sección puedes crear un nuevo pedido para el restaurante.
+                </div>
+            </div>
         </div>
 
-        <div>
-            <label>Seleccionar Plato</label>
-            <select id="selectPlato">
-                <option value="">Seleccione un plato...</option>
-                @foreach (var plato in ViewBag.Platos)
-                {
-                    <option value="@plato.Id" data-nombre="@plato.Nombre">@plato.Nombre</option>
-                }
-            </select>
-            <button type="button" id="agregarPlato">Agregar</button>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xs-12 lead">
+                    <ol class="breadcrumb">
+                        <li><a asp-controller="Pedido" asp-action="Index">Listado de Pedidos</a></li>
+                        <li class="active">Crear Pedido</li>
+                    </ol>
+                </div>
+            </div>
         </div>
 
-        <div>
-            <label>Platos Seleccionados y Cantidades</label>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Plato</th>
-                        <th>Cantidad</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody id="platosSeleccionados">
-                    <!-- Aquí se añadirán los platos seleccionados -->
-                </tbody>
-            </table>
+        <!-- Formulario de creación de pedido -->
+        <div class="container-table">
+            <h2>Crear Pedido</h2>
+
+            <form asp-action="CrearPedido" method="post">
+                <div>
+                    <label>Mesa</label>
+                    <div id="mesasContainer">
+                        @foreach (var mesa in ViewBag.Mesas)
+                        {
+                            var estadoClase = mesa.Estado == "OCUPADA" ? "mesa-ocupada" : "mesa-disponible";
+                            <button type="button" class="mesa-boton @estadoClase" data-id="@mesa.Id" data-estado="@mesa.Estado">
+                                @mesa.NumMesa - @mesa.Estado
+                                @if (mesa.Estado == "OCUPADA" && mesa.Pedidos != null && mesa.Pedidos.Count > 0)
+                                {
+                                    var pedidoActivo = GetPedidoActivo(mesa.Pedidos);
+
+                                    @if (pedidoActivo != null && pedidoActivo.Fecha != null)
+                                    {
+                                        <span class="pedido-tiempo">
+                                            Hace @GetTiempoTranscurrido(pedidoActivo.Fecha)
+                                        </span>
+                                    }
+                                }
+                            </button>
+                        }
+
+                        @functions {
+                            public string GetTiempoTranscurrido(DateTime fechaPedido)
+                            {
+                                var tiempoTranscurrido = DateTime.Now - fechaPedido;
+
+                                if (tiempoTranscurrido.TotalMinutes < 60)
+                                {
+                                    return $"{tiempoTranscurrido.TotalMinutes.ToString("0")} minutos";
+                                }
+                                else
+                                {
+                                    var horas = (int)tiempoTranscurrido.TotalHours;
+                                    var minutosRestantes = tiempoTranscurrido.Minutes;
+
+                                    if (minutosRestantes == 0)
+                                    {
+                                        return $"{horas} horas";
+                                    }
+                                    else
+                                    {
+                                        return $"{horas} horas y {minutosRestantes} minutos";
+                                    }
+                                }
+                            }
+
+                            public Dal.Dragones.Pedido GetPedidoActivo(ICollection<Dal.Dragones.Pedido> pedidos)
+                            {
+                                var estadosOcupados = new List<string> { "PENDIENTE", "LISTO PARA PREPARAR", "ORDEN LISTA" };
+
+                                foreach (var pedido in pedidos)
+                                {
+                                    if (estadosOcupados.Contains(pedido.Estado))
+                                    {
+                                        return pedido;
+                                    }
+                                }
+                                return null;
+                            }
+                        }
+
+                    </div>
+                    <input type="hidden" id="IdMesa" name="IdMesa" />
+                </div>
+
+                <div>
+                    <label>Observación</label>
+                    <input type="text" name="Observacion" class="form-control" />
+                </div>
+
+                <div>
+                    <label>Seleccionar Plato</label>
+                    <select id="selectPlato" class="form-control">
+                        <option value="">Seleccione un plato...</option>
+                        @foreach (var plato in ViewBag.Platos)
+                        {
+                            <option value="@plato.Id" data-nombre="@plato.Nombre" data-precio="@plato.Precio">@plato.Nombre</option>
+                        }
+                    </select>
+                    <button type="button" id="agregarPlato" class="btn btn-primary mt-2">Agregar</button>
+                </div>
+
+                <div>
+                    <label>Platos Seleccionados y Cantidades</label>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Plato</th>
+                                <th>Cantidad</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="platosSeleccionados">
+                            <!-- Aquí se añadirán los platos seleccionados -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div>
+                    <label>Total:</label>
+                    <span id="totalPedido">0.00</span>
+                    <input type="hidden" id="Total" name="Total" value="0" />
+                </div>
+
+                <button type="submit" class="btn btn-success">Crear</button>
+            </form>
         </div>
+    </div>
 
-        <button type="submit">Crear</button>
-    </form>
-
-    <a href="#">Volver a la lista</a>
-
+    <!-- Scripts -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
@@ -104,7 +265,7 @@
                 var estado = $(this).data('estado');
                 console.log('Mesa ID:', mesaId, 'Estado:', estado);
 
-                if (estado === 'DISPONIBLE' || estado === 'Disponible') {  // Asegúrate de comparar correctamente
+                if (estado === 'DISPONIBLE' || estado === 'Disponible') {
                     $('#IdMesa').val(mesaId);
                     $('.mesa-boton').removeClass('mesa-seleccionada');
                     $(this).addClass('mesa-seleccionada');
@@ -116,23 +277,41 @@
                 var selectedPlato = $('#selectPlato option:selected');
                 var platoId = selectedPlato.val();
                 var platoNombre = selectedPlato.data('nombre');
+                var platoPrecio = parseFloat(selectedPlato.data('precio'));
 
                 if (platoId) {
                     var nuevaFila = `
-                                        <tr data-id="${platoId}">
-                                            <td>${platoNombre}</td>
-                                            <td><input type="number" name="PlatosSeleccionados[${platoId}]" value="1" min="1" max="10" /></td>
-                                            <td><button type="button" class="btn-eliminar" onclick="eliminarPlato(this)">Eliminar</button></td>
-                                        </tr>
-                                    `;
+                                <tr data-id="${platoId}" data-precio="${platoPrecio}">
+                                    <td>${platoNombre}</td>
+                                    <td><input type="number" name="PlatosSeleccionados[${platoId}]" value="1" min="1" max="10" class="cantidadPlato form-control" /></td>
+                                    <td><button type="button" class="btn btn-danger btn-eliminar" onclick="eliminarPlato(this)">Eliminar</button></td>
+                                </tr>
+                            `;
                     $('#platosSeleccionados').append(nuevaFila);
                     $('#selectPlato').val('');
+                    actualizarTotal();
                 }
+            });
+
+            $(document).on('change', '.cantidadPlato', function () {
+                actualizarTotal();
             });
         });
 
         function eliminarPlato(button) {
             $(button).closest('tr').remove();
+            actualizarTotal();
+        }
+
+        function actualizarTotal() {
+            var total = 0;
+            $('#platosSeleccionados tr').each(function () {
+                var precio = parseFloat($(this).data('precio'));
+                var cantidad = parseInt($(this).find('.cantidadPlato').val());
+                total += precio * cantidad;
+            });
+            $('#totalPedido').text(total.toFixed(2));
+            $('#Total').val(total);
         }
     </script>
 </body>

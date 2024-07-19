@@ -67,9 +67,11 @@ namespace Bar_Restaurante_Los_Dragones.Models
             );
 
             modelBuilder.Entity<Plato>().HasData(
-                new Plato { Id = 1, Nombre = "AJI DE GALLINA", Precio = 10.00m, Disponible = true },
-                new Plato { Id = 2, Nombre = "CEBICHE", Precio = 25.00m, Disponible = true },
-                new Plato { Id = 3, Nombre = "ARROZ CON POLLO", Precio = 8.00m, Disponible = true }
+                new Plato { Id = 1, Nombre = "Sopa", Precio = 10.00m, Disponible = true, Categoria = "Comida" },
+                new Plato { Id = 2, Nombre = "Ceviche", Precio = 25.00m, Disponible = true, Categoria = "Comida" },
+                new Plato { Id = 3, Nombre = "Arroz con pollo", Precio = 8.00m, Disponible = true, Categoria = "Comida" },
+                new Plato { Id = 4, Nombre = "Pizza", Precio = 12.99m, Disponible = true, Categoria = "Comida" },
+                new Plato { Id = 5, Nombre = "Coca Cola", Precio = 1.99m, Disponible = true, Categoria = "Bebida" }
             );
         }
     }

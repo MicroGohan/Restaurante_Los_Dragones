@@ -1,9 +1,8 @@
-﻿@model IEnumerable<Dal.Dragones.Pedido>
+﻿@model Dal.Dragones.Pedido
 
 @{
-    ViewBag.Title = "Lista de Pedidos";
+    ViewBag.Title = "Detalles del Pedido";
 }
-@using System.Security.Claims
 
 <!DOCTYPE html>
 <html lang="es">
@@ -24,11 +23,6 @@
             display: inline-block;
             cursor: pointer;
             font-size: 27px;
-        }
-
-        table thead th {
-            background-color: #343a40;
-            color: white;
         }
 
         .btn-link {
@@ -87,14 +81,13 @@
             </div>
         </div>
 
-
         <div class="container-fluid" style="margin: 50px 0;">
             <div class="row">
                 <div class="col-xs-12 col-sm-4 col-md-3">
                     <img src="~/assets/img/user01.png" alt="user" class="img-responsive center-box" style="max-width: 110px;">
                 </div>
                 <div class="col-xs-12 col-sm-8 col-md-8 text-justify lead">
-                    En esta sección puedes ver los detalles específicos de cada pedido realizado en el sistema.
+                    En esta sección puedes ver los detalles específicos del pedido realizado en el sistema.
                 </div>
             </div>
         </div>
@@ -103,73 +96,92 @@
             <div class="row">
                 <div class="col-xs-12 lead">
                     <ol class="breadcrumb">
-                        <li class="active">Listado de Pedidos</li>
-                        <li><a asp-controller="Pedido" asp-action="CrearPedido">Crear Pedido</a></li>
-                        
+                        <li><a asp-controller="Pedido" asp-action="Cocina">Listado de Cocina</a></li>
+                        <li class="active">Detalles del Pedido</li>
                     </ol>
                 </div>
             </div>
         </div>
 
-        <!-- Lista de pedidos -->
+        <!-- Detalles del Pedido -->
         <div class="container-table">
-            <h2>Pedidos</h2>
+            <h2>Detalles del Pedido</h2>
+            <p>Mesa: @Model.Mesa.NumMesa</p>
+            <p>Fecha: @Model.Fecha</p>
+            <p>Total: @Model.Total</p>
+            <p>Estado: @Model.Estado</p>
 
-            <table class="table table-bordered table-hover" id="tablaPedidos">
-                <thead class="thead-dark">
-                    <tr>
-                        <th>Mesa</th>
-                        <th>Fecha</th>
-                        <th>Total</th>
-                        <th>Estado</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var pedido in Model)
-                    {
+            <h3>Platos</h3>
+            <form asp-action="CambiarDisponibilidad" method="post">
+                <input type="hidden" name="idPedido" value="@Model.Id" /> <!-- Campo oculto para idPedido -->
+                <table class="table table-bordered table-hover" id="detalles-table">
+                    <thead class="thead-dark">
                         <tr>
-                            <td>@pedido.Mesa.NumMesa</td>
-                            <td>@pedido.Fecha</td>
-                            <td>@pedido.Total</td>
-                            <td>@pedido.Estado</td>
-                            <td>
-                                <a asp-action="DetallesPedido" asp-route-id="@pedido.Id" class="btn btn-link">Detalles</a> |
-                                <form asp-action="EliminarPedido" asp-route-id="@pedido.Id" method="post" onsubmit="return confirm('¿Estás seguro de eliminar este pedido?');" style="display:inline;">
-                                    <button type="submit" class="btn btn-link">Eliminar</button>
-                                </form>
-                                @if (pedido.Estado == "PENDIENTE")
-                                {
-                                    <form asp-action="MandarACocina" asp-route-id="@pedido.Id" method="post" style="display:inline;">
-                                        <button type="submit" class="btn btn-link">Mandar a Cocina</button>
-                                    </form>
-                                }
-                                @if (pedido.Estado == "ORDEN LISTA")
-                                {
-                                    <form asp-action="EntregarAMesa" asp-route-id="@pedido.Id" method="post" style="display:inline;">
-                                        <button type="submit" class="btn btn-link">Entregar a Mesa</button>
-                                    </form>
-                                }
-                            </td>
+                            <th>
+                                <input type="checkbox" id="seleccionarTodos" />
+                            </th>
+                            <th>Nombre</th>
+                            <th>Precio</th>
+                            <th>Cantidad</th>
+                            <th>Listo</th>
                         </tr>
-                    }
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach (var detalle in Model.Detalles)
+                        {
+                            <tr>
+                                <td>
+                                    <input type="checkbox" class="detalle-checkbox" name="detallesSeleccionados" value="@detalle.Id"
+                                    @(detalle.Categoria == "Comida" ? "" : "disabled") />
+                                </td>
+                                <td>@detalle.Nombre</td>
+                                <td>@detalle.Precio</td>
+                                <td>@detalle.Cantidad</td>
+                                <td>
+                                    @if (detalle.ListaComida)
+                                    {
+                                        <span class="text-success">&#x2714;</span> <!-- Check mark -->
+                                    }
+                                    else
+                                    {
+                                        <span class="text-warning">&#x26A0;</span> <!-- Warning icon -->
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <button type="submit" class="btn btn-success">Marcar Seleccionados como Listo</button>
+            </form>
+
+            <form asp-action="FinalizarPedido" method="post">
+                <input type="hidden" name="idPedido" value="@Model.Id" />
+                <button type="submit" class="btn btn-success">Finalizar Orden</button>
+            </form>
+
+            <a asp-action="Cocina">Volver a Cocina</a>
         </div>
 
     </div>
 
-    <!-- Scripts -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
-
+    <!-- Configuración adicional de DataTables, si es necesario -->
     <script>
         $(document).ready(function () {
-            $('#tablaPedidos').DataTable({
+            // Configuración básica de DataTables
+            $('#detalles-table').DataTable({
                 "language": {
                     "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"
                 }
+            });
+
+            // Manejar el clic en el checkbox de "Seleccionar Todos"
+            $('#seleccionarTodos').click(function () {
+                $('.detalle-checkbox').each(function () {
+                    var isChecked = $(this).is(':enabled');
+                    if (isChecked) {
+                        $(this).prop('checked', $('#seleccionarTodos').is(':checked'));
+                    }
+                });
             });
         });
     </script>
