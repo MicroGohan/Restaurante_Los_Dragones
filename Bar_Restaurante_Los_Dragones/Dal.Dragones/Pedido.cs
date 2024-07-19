@@ -21,6 +21,7 @@ namespace Dal.Dragones
         public string Estado { get; set; }
 
         public virtual Mesa Mesa { get; set; }
+        public virtual ICollection<Factura> Facturas { get; set; }
         public virtual ICollection<DetallePedido> Detalles { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 using Bar_Restaurante_Los_Dragones.Models;
+using Bar_Restaurante_Los_Dragones.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +13,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ProyectoContext>(op =>
 op.UseSqlServer(builder.Configuration.GetConnectionString("LosDragones")));
 
+builder.Services.AddScoped<IReporteService, ReporteService>();
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>

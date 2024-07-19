@@ -10,23 +10,28 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
         {
             return View();
         }
+
         [Authorize(Roles = "Administrador,Admin02")]
         public ActionResult Restaurante()
         {
             return View();
         }
+
         public ActionResult Proveedor()
         {
             return View();
         }
+
         public ActionResult ProveedorListado()
         {
             return View();
         }
+
         public ActionResult AgregarComida()
         {
             return View();
         }
+
         public ActionResult Reporte()
         {
             return View();

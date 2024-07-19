@@ -1,0 +1,82 @@
+﻿@model Dal.Dragones.Factura
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Factura</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Fecha)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Fecha)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.NombreCliente)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.NombreCliente)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Responsable)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Responsable)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Subtotal)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Subtotal)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Descuento)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Descuento)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Iva)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Iva)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.TotalPagar)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.TotalPagar)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Observaciones)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Observaciones)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.MetodoPago)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.MetodoPago)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Pedidos)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Pedidos.Estado)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="id" />
+        <input type="submit" value="Delete" class="btn btn-default" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>

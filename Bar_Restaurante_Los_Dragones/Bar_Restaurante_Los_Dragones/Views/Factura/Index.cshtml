@@ -1,0 +1,201 @@
+﻿@model IEnumerable<Dal.Dragones.Factura>
+
+@using System.Security.Claims
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <style>
+        .nav-item a {
+            text-decoration: none; /* Quitar subrayado */
+            color: inherit; /* Heredar el color del texto */
+            display: inline-block; /* Hacerlo un bloque en línea para aplicar padding correctamente */
+            cursor: pointer; /* Cambiar el cursor a puntero */
+            font-size: 27px;
+        }
+        /* Estilo personalizado para centrar la tabla */
+        .container-table {
+            max-width: 90%; /* Ajusta el ancho máximo de la tabla */
+            margin: auto; /* Centra la tabla en el contenedor */
+        }
+    </style>
+</head>
+<body>
+    <div class="content-page-container full-reset custom-scroll-containers">
+        <nav class="navbar-user-top full-reset">
+            <ul class="list-unstyled full-reset">
+                <li class="user-info" style="color:#fff; cursor:default;">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                    <li class="user-info">
+                        <div class="user-details">
+                            <span data-placement="bottom" title="Usuario">Bienvenido, @User.FindFirst(ClaimTypes.Role)?.Value @User.Identity.Name</span>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="" asp-area="" asp-controller="Login" asp-action="Salir">
+                            <i class="zmdi zmdi-power"></i>
+                        </a>
+                    </li>
+                    }
+                </li>
+                <li class="tooltips-general btn-help" data-placement="bottom" title="Ayuda">
+                    <i class="zmdi zmdi-help-outline zmdi-hc-fw"></i>
+                </li>
+                <li class="mobile-menu-button visible-xs" style="float: left !important;">
+                    <i class="zmdi zmdi-menu"></i>
+                </li>
+                <li class="desktop-menu-button hidden-xs" style="float: left !important;">
+                    <i class="zmdi zmdi-swap"></i>
+                </li>
+            </ul>
+        </nav>
+        <div class="container">
+            <div class="page-header">
+                <h1 class="all-tittles">Sistema Restaurante Los Dragones <small>Facturas</small></h1>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xs-12 lead">
+                    <ol class="breadcrumb">
+                        <li><a asp-controller="Factura" asp-action="Create">Nuevo Factura</a></li>
+                        <li class="active">listado de Factura</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <div class="container-table">
+            <table class="table table-secondary table-bordered table-hover" id="tabla">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.Fecha)</th>
+                        <th>@Html.DisplayNameFor(model => model.NombreCliente)</th>
+                        <th>@Html.DisplayNameFor(model => model.Responsable)</th>
+                        <th>@Html.DisplayNameFor(model => model.Subtotal)</th>
+                        <th>@Html.DisplayNameFor(model => model.Iva)</th>
+                        <th>@Html.DisplayNameFor(model => model.TotalPagar)</th>
+                        <th>@Html.DisplayNameFor(model => model.Observaciones)</th>
+                        <th>@Html.DisplayNameFor(model => model.MetodoPago)</th>
+                        <th>@Html.DisplayNameFor(model => model.Pedidos)</th>
+                        <th>Editar</th>
+                        <th>Eliminar</th>
+                        <th>Detalles</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td> @Html.DisplayFor(modelItem => item.Fecha)</td>
+                            <td> @Html.DisplayFor(modelItem => item.NombreCliente)</td>
+                            <td> @Html.DisplayFor(modelItem => item.Responsable)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Subtotal)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Iva)</td>
+                            <td>@Html.DisplayFor(modelItem => item.TotalPagar)</td>
+                            <td> @Html.DisplayFor(modelItem => item.Observaciones)</td>
+                            <td>@Html.DisplayFor(modelItem => item.MetodoPago) </td>
+                            <td>@Html.DisplayFor(modelItem => item.Pedidos.Estado)</td>
+                            <td class="text-center">
+                                <!-- Centra el botón Editar -->
+                                <a asp-controller="Factura" asp-action="Edit" asp-route-id="@item.id" class="btn btn-info tooltips-general" data-toggle="tooltip" data-placement="top" title="Editar"><i class="zmdi zmdi-edit"></i></a>
+                            </td>
+                            <td class="text-center">
+                                <form id="form-delete-@item.id" asp-controller="Factura" asp-action="Delete" asp-route-id="@item.id" method="post">
+                                    <button type="button" onclick="confirmDelete(@item.id)" class="btn btn-danger tooltips-general" data-toggle="tooltip" data-placement="top" title="Eliminar">
+                                        <i class="zmdi zmdi-delete"></i>
+                                    </button>
+                                </form>
+                            </td>
+                            <td class="text-center">
+                                <!-- Centra el botón Detalles -->
+                                <a asp-controller="Factura" asp-action="Details" asp-route-id="@item.id" class="btn btn-primary tooltips-general" data-toggle="tooltip" data-placement="top" title="Detalles"><i class="zmdi zmdi-info"></i></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="modal fade" tabindex="-1" role="dialog" id="ModalHelp">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title text-center all-tittles">ayuda del sistema</h4>
+                    </div>
+                    <div class="modal-body">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore dignissimos qui molestias ipsum officiis unde aliquid consequatur, accusamus delectus asperiores sunt. Quibusdam veniam ipsa accusamus error. Animi mollitia corporis iusto.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="zmdi zmdi-thumb-up"></i> &nbsp; De acuerdo</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade vertical-align-center" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmar eliminación</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    ¿Está seguro de que desea eliminar este usuario?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteButton">Eliminar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script>
+        function confirmDelete(userId) {
+            $('#confirmDeleteModal').modal('show');
+
+            // Cuando se confirme la eliminación
+            $('#confirmDeleteButton').click(function () {
+                // Envía el formulario para eliminar
+                document.getElementById('form-delete-' + userId).submit();
+            });
+        }
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $('#tabla').DataTable({
+                language: {
+                    processing: "Procesando...",
+                    search: "Buscar:",
+                    lengthMenu: "Mostrar _MENU_ elementos",
+                    info: "Mostrando del _START_ al _END_ de un total de _TOTAL_ elementos",
+                    infoEmpty: "Mostrando 0 elementos",
+                    infoFiltered: "(filtrado de un total de _MAX_ elementos)",
+                    infoPostFix: "",
+                    loadingRecords: "Cargando...",
+                    zeroRecords: "No se encontraron registros coincidentes",
+                    emptyTable: "No hay datos disponibles en la tabla",
+                    paginate: {
+                        first: "Primero",
+                        previous: "Anterior",
+                        next: "Siguiente",
+                        last: "Último"
+                    },
+                    aria: {
+                        sortAscending: ": activar para ordenar la columna de manera ascendente",
+                        sortDescending: ": activar para ordenar la columna de manera descendente"
+                    }
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

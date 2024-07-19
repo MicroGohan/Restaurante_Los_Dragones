@@ -14,6 +14,8 @@ namespace Bar_Restaurante_Los_Dragones.Models
         public DbSet<Mesa> Mesas { get; set; }
         public DbSet<DetallePedido> DetallePedidos { get; set; }
         public DbSet<Plato> Platos { get; set; }
+        public DbSet<Factura> Facturas { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -73,6 +75,13 @@ namespace Bar_Restaurante_Los_Dragones.Models
                 new Plato { Id = 4, Nombre = "Pizza", Precio = 12.99m, Disponible = true, Categoria = "Comida" },
                 new Plato { Id = 5, Nombre = "Coca Cola", Precio = 1.99m, Disponible = true, Categoria = "Bebida" }
             );
+
+            modelBuilder.Entity<Factura>()
+            .HasOne(p => p.Pedidos)
+            .WithMany(m => m.Facturas)
+            .HasForeignKey(p => p.PedidoId);
+
+
         }
     }
 }

@@ -42,6 +42,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
             ModelState.Remove("Mesa");
             ModelState.Remove("Detalles");
 
+            ModelState.Remove("Facturas");
             if (ModelState.IsValid)
             {
                 pedido.Fecha = DateTime.Now;
