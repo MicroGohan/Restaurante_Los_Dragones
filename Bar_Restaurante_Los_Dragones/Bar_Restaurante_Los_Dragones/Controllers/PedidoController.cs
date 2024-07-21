@@ -22,10 +22,15 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
 
         public async Task<IActionResult> CrearPedido()
         {
-            ViewBag.Mesas = await _context.Mesas.ToListAsync();
-            ViewBag.Platos = _context.Platos.ToList();
+            // Cargar las mesas con sus pedidos asociados
+            ViewBag.Mesas = await _context.Mesas.Include(m => m.Pedidos).ToListAsync();
+
+            // Cargar los platos disponibles
+            ViewBag.Platos = await _context.Platos.ToListAsync();
+
             return View();
         }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -36,11 +41,13 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
             ModelState.Remove("Estado");
             ModelState.Remove("Mesa");
             ModelState.Remove("Detalles");
+
             ModelState.Remove("Facturas");
             if (ModelState.IsValid)
             {
                 pedido.Fecha = DateTime.Now;
                 pedido.Estado = "PENDIENTE";
+                decimal total = 0;
 
                 if (PlatosSeleccionados != null)
                 {
@@ -52,15 +59,19 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
                         var plato = await _context.Platos.FindAsync(platoId);
                         if (plato != null && cantidad > 0)
                         {
+                            total += plato.Precio * cantidad;
                             pedido.Detalles.Add(new DetallePedido
                             {
                                 Nombre = plato.Nombre,
                                 Precio = plato.Precio,
                                 Cantidad = cantidad,
+                                Categoria = plato.Categoria
                             });
                         }
                     }
                 }
+
+                pedido.Total = total;
 
                 // Marcar la mesa como ocupada
                 var mesa = await _context.Mesas.FindAsync(pedido.IdMesa);
@@ -79,6 +90,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
             ViewBag.Platos = await _context.Platos.ToListAsync();
             return View(pedido);
         }
+
 
 
 
@@ -120,23 +132,16 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
                 return NotFound();
             }
 
-            // Verificar si el plato ya existe en el detalle del pedido por su nombre
-            var detalleExistente = pedido.Detalles.FirstOrDefault(d => d.Nombre == plato.Nombre);
-            if (detalleExistente != null)
+            pedido.Detalles.Add(new DetallePedido
             {
-                // Si existe, simplemente aumentamos la cantidad
-                detalleExistente.Cantidad += cantidad;
-            }
-            else
-            {
-                // Si no existe, lo añadimos como un nuevo detalle
-                pedido.Detalles.Add(new DetallePedido
-                {
-                    Nombre = plato.Nombre,
-                    Precio = plato.Precio,
-                    Cantidad = cantidad
-                });
-            }
+                Nombre = plato.Nombre,
+                Precio = plato.Precio,
+                Cantidad = cantidad,
+                Categoria = plato.Categoria
+            });
+
+
+            pedido.Total += plato.Precio * cantidad;
 
             await _context.SaveChangesAsync();
 
@@ -165,11 +170,107 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
                 return NotFound();
             }
 
+
+            // Calcular la diferencia de cantidad
+            var diferenciaCantidad = nuevaCantidad - detalle.Cantidad;
+
+            // Actualizar el total del pedido
+            pedido.Total += detalle.Precio * diferenciaCantidad;
+
+            // Actualizar la cantidad del detalle
             detalle.Cantidad = nuevaCantidad;
+
             await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(DetallesPedido), new { id = idPedido });
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> MandarACocina(int id)
+        {
+            var pedido = await _context.Pedidos.FindAsync(id);
+            if (pedido == null)
+            {
+                return NotFound();
+            }
+
+            pedido.Estado = "LISTO PARA PREPARAR";
+            _context.Update(pedido);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+        }
+
+
+        public async Task<IActionResult> Cocina()
+        {
+            var pedidos = await _context.Pedidos
+                .Include(p => p.Mesa)
+                .Include(p => p.Detalles)
+                .Where(p => p.Estado == "LISTO PARA PREPARAR")
+                .ToListAsync();
+            return View(pedidos);
+        }
+
+        public async Task<IActionResult> DetallesCocina(int id)
+        {
+            var pedido = await _context.Pedidos
+                .Include(p => p.Mesa)
+                .Include(p => p.Detalles)
+                .FirstOrDefaultAsync(p => p.Id == id);
+
+            if (pedido == null)
+            {
+                return NotFound();
+            }
+
+            return View(pedido);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> FinalizarPedido(int idPedido)
+        {
+            var pedido = await _context.Pedidos.FindAsync(idPedido);
+            if (pedido == null)
+            {
+                return NotFound();
+            }
+
+            pedido.Estado = "ORDEN LISTA";
+            _context.Update(pedido);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Cocina));
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EntregarAMesa(int id)
+        {
+            var pedido = await _context.Pedidos
+                .Include(p => p.Mesa)
+                .FirstOrDefaultAsync(p => p.Id == id);
+
+            if (pedido == null)
+            {
+                return NotFound();
+            }
+
+            pedido.Estado = "ENTREGADO";
+            pedido.Mesa.Estado = "DISPONIBLE";
+            _context.Update(pedido);
+            _context.Update(pedido.Mesa);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+        }
+
+
+
 
 
 
@@ -220,11 +321,88 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
                 return NotFound();
             }
 
+            detalle.Pedido.Total -= detalle.Precio * detalle.Cantidad;
+
             pedido.Detalles.Remove(detalle);
             await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(DetallesPedido), new { id = idPedido });
         }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CambiarDisponibilidad(int idPedido, List<int> detallesSeleccionados)
+        {
+            var pedido = await _context.Pedidos
+                .Include(p => p.Detalles)
+                .FirstOrDefaultAsync(p => p.Id == idPedido);
+
+            if (pedido == null)
+            {
+                return NotFound();
+            }
+
+            foreach (var detalleId in detallesSeleccionados)
+            {
+                var detalle = pedido.Detalles.FirstOrDefault(d => d.Id == detalleId);
+                if (detalle != null)
+                {
+                    detalle.ListaComida = true;
+                }
+            }
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(DetallesCocina), new { id = idPedido });
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CambiarEstadoEntregado(int idPedido, List<int> detallesSeleccionados)
+        {
+            var pedido = await _context.Pedidos
+                .Include(p => p.Detalles)
+                .FirstOrDefaultAsync(p => p.Id == idPedido);
+
+            if (pedido == null)
+            {
+                return NotFound();
+            }
+
+            foreach (var detalleId in detallesSeleccionados)
+            {
+                var detalle = pedido.Detalles.FirstOrDefault(d => d.Id == detalleId);
+                if (detalle != null)
+                {
+                    detalle.Disponible = true; // Cambiamos el estado a "Entregado"
+                }
+            }
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(DetallesPedido), new { id = idPedido });
+        }
+
+
+
+        [HttpGet]
+        public JsonResult ObtenerDetallesPedido(int idPedido)
+        {
+            var detalles = _context.DetallePedidos
+                .Where(d => d.IdPedido == idPedido)
+                .Select(d => new
+                {
+                    Id = d.Id,
+                    Categoria = d.Categoria,
+                    ListaComida = d.ListaComida
+                })
+                .ToList();
+
+            return Json(new { detalles = detalles });
+        }
+
 
 
     }

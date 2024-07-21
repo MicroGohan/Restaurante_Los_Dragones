@@ -4,6 +4,7 @@ using Bar_Restaurante_Los_Dragones.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bar_Restaurante_Los_Dragones.Migrations
 {
     [DbContext(typeof(ProyectoContext))]
-    partial class ProyectoContextModelSnapshot : ModelSnapshot
+    [Migration("20240719002631_ValoresAgregados")]
+    partial class ValoresAgregados
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -32,10 +35,6 @@ namespace Bar_Restaurante_Los_Dragones.Migrations
 
                     b.Property<int>("Cantidad")
                         .HasColumnType("int");
-
-                    b.Property<string>("Categoria")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("Disponible")
                         .HasColumnType("bit");
@@ -58,52 +57,6 @@ namespace Bar_Restaurante_Los_Dragones.Migrations
                     b.HasIndex("IdPedido");
 
                     b.ToTable("DetallePedidos");
-                });
-
-            modelBuilder.Entity("Dal.Dragones.Factura", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
-
-                    b.Property<int?>("Descuento")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("Fecha")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Iva")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MetodoPago")
-                        .HasColumnType("int");
-
-                    b.Property<string>("NombreCliente")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Observaciones")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("PedidoId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Responsable")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("Subtotal")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("TotalPagar")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("id");
-
-                    b.HasIndex("PedidoId");
-
-                    b.ToTable("Facturas");
                 });
 
             modelBuilder.Entity("Dal.Dragones.Mesa", b =>
@@ -312,17 +265,6 @@ namespace Bar_Restaurante_Los_Dragones.Migrations
                     b.Navigation("Pedido");
                 });
 
-            modelBuilder.Entity("Dal.Dragones.Factura", b =>
-                {
-                    b.HasOne("Dal.Dragones.Pedido", "Pedidos")
-                        .WithMany("Facturas")
-                        .HasForeignKey("PedidoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Pedidos");
-                });
-
             modelBuilder.Entity("Dal.Dragones.Pedido", b =>
                 {
                     b.HasOne("Dal.Dragones.Mesa", "Mesa")
@@ -353,8 +295,6 @@ namespace Bar_Restaurante_Los_Dragones.Migrations
             modelBuilder.Entity("Dal.Dragones.Pedido", b =>
                 {
                     b.Navigation("Detalles");
-
-                    b.Navigation("Facturas");
                 });
 
             modelBuilder.Entity("Dal.Dragones.Rol", b =>

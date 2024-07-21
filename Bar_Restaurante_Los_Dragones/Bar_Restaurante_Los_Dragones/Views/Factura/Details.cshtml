@@ -29,6 +29,28 @@
         <dd>
             @Html.DisplayFor(model => model.Responsable)
         </dd>
+        <div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Precio</th>
+                        <th>Cantidad</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var detalle in Model.Pedidos.Detalles)
+                    {
+                        <tr>
+                            <td>@detalle.Nombre</td>
+                            <td>@detalle.Precio</td>
+                            <td>@detalle.Cantidad</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
         <dt>
             @Html.DisplayNameFor(model => model.Subtotal)
         </dt>

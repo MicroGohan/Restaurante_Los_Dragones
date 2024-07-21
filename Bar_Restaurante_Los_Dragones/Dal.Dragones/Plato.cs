@@ -19,6 +19,8 @@ namespace Dal.Dragones
         [Required(ErrorMessage = "El campo Disponible es obligatorio")]
         [Display(Name = "Disponible")]
         public bool Disponible { get; set; }
+
+        public string Categoria { get; set; }
     }
 
 }

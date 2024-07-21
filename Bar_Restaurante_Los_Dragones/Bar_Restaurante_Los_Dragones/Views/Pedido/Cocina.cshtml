@@ -1,9 +1,8 @@
 ﻿@model IEnumerable<Dal.Dragones.Pedido>
 
 @{
-    ViewBag.Title = "Lista de Pedidos";
+    ViewBag.Title = "Pedidos en Cocina";
 }
-@using System.Security.Claims
 
 <!DOCTYPE html>
 <html lang="es">
@@ -83,10 +82,9 @@
         <!-- Contenido principal -->
         <div class="container">
             <div class="page-header">
-                <h1 class="all-tittles">Sistema Restaurante Los Dragones <small>Detalles del Pedido</small></h1>
+                <h1 class="all-tittles">Sistema Restaurante Los Dragones <small>Pedidos en Cocina</small></h1>
             </div>
         </div>
-
 
         <div class="container-fluid" style="margin: 50px 0;">
             <div class="row">
@@ -94,7 +92,7 @@
                     <img src="~/assets/img/user01.png" alt="user" class="img-responsive center-box" style="max-width: 110px;">
                 </div>
                 <div class="col-xs-12 col-sm-8 col-md-8 text-justify lead">
-                    En esta sección puedes ver los detalles específicos de cada pedido realizado en el sistema.
+                    En esta sección puedes ver los Pedidos mandados a cocina por el sistema.
                 </div>
             </div>
         </div>
@@ -103,17 +101,15 @@
             <div class="row">
                 <div class="col-xs-12 lead">
                     <ol class="breadcrumb">
-                        <li class="active">Listado de Pedidos</li>
-                        <li><a asp-controller="Pedido" asp-action="CrearPedido">Crear Pedido</a></li>
-                        
+                        <li class="active">Pedidos de Cocina</li>
                     </ol>
                 </div>
             </div>
         </div>
 
-        <!-- Lista de pedidos -->
+        <!-- Tabla de Pedidos en Cocina -->
         <div class="container-table">
-            <h2>Pedidos</h2>
+            <h2>Pedidos en Cocina</h2>
 
             <table class="table table-bordered table-hover" id="tablaPedidos">
                 <thead class="thead-dark">
@@ -121,7 +117,6 @@
                         <th>Mesa</th>
                         <th>Fecha</th>
                         <th>Total</th>
-                        <th>Estado</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -132,25 +127,8 @@
                             <td>@pedido.Mesa.NumMesa</td>
                             <td>@pedido.Fecha</td>
                             <td>@pedido.Total</td>
-                            <td>@pedido.Estado</td>
                             <td>
-                                <a asp-action="DetallesPedido" asp-route-id="@pedido.Id" class="btn btn-link">Detalles</a> |
-                                <form asp-action="EliminarPedido" asp-route-id="@pedido.Id" method="post" onsubmit="return confirm('¿Estás seguro de eliminar este pedido?');" style="display:inline;">
-                                    <button type="submit" class="btn btn-link">Eliminar</button>
-                                </form>
-                                <a asp-controller="Factura" asp-action="Create" asp-route-id="@pedido.Id">Facturar</a>
-                                @if (pedido.Estado == "PENDIENTE")
-                                {
-                                    <form asp-action="MandarACocina" asp-route-id="@pedido.Id" method="post" style="display:inline;">
-                                        <button type="submit" class="btn btn-link">Mandar a Cocina</button>
-                                    </form>
-                                }
-                                @if (pedido.Estado == "ORDEN LISTA")
-                                {
-                                    <form asp-action="EntregarAMesa" asp-route-id="@pedido.Id" method="post" style="display:inline;">
-                                        <button type="submit" class="btn btn-link">Entregar a Mesa</button>
-                                    </form>
-                                }
+                                <a asp-action="DetallesCocina" asp-route-id="@pedido.Id" class="btn btn-primary">Ver Orden</a>
                             </td>
                         </tr>
                     }
@@ -165,8 +143,10 @@
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 
+    <!-- Configuración adicional de DataTables, si es necesario -->
     <script>
         $(document).ready(function () {
+            // Configuración básica de DataTables
             $('#tablaPedidos').DataTable({
                 "language": {
                     "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"

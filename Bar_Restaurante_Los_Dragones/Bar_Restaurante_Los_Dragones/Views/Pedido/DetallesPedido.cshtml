@@ -1,66 +1,302 @@
 ﻿@model Dal.Dragones.Pedido
 
-<h2>Detalles del Pedido</h2>
+@{
+    ViewBag.Title = "Detalles del Pedido";
+}
 
-<p>Mesa: @Model.Mesa.NumMesa</p>
-<p>Fecha: @Model.Fecha</p>
-<p>Total: @Model.Total</p>
-<p>Estado: @Model.Estado</p>
+@using System.Security.Claims
 
-<h3>Platos</h3>
-<table>
-    <thead>
-        <tr>
-            <th>Nombre</th>
-            <th>Precio</th>
-            <th>Cantidad</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var detalle in Model.Detalles)
-        {
-            <tr>
-                <td>@detalle.Nombre</td>
-                <td>@detalle.Precio</td>
-                <td>@detalle.Cantidad</td>
-                <td>
-                    <form asp-action="CambiarCantidadPlatillo" method="post">
-                        <input type="hidden" name="idPedido" value="@Model.Id" />
-                        <input type="hidden" name="idDetalle" value="@detalle.Id" />
-                        <input type="number" name="nuevaCantidad" value="@detalle.Cantidad" />
-                        <button type="submit">Cambiar Cantidad</button>
-                    </form>
-                    <form asp-action="EliminarPlatillo" method="post">
-                        <input type="hidden" name="idPedido" value="@Model.Id" />
-                        <input type="hidden" name="idDetalle" value="@detalle.Id" />
-                        <button type="submit">Eliminar</button>
-                    </form>
-                </td>
-            </tr>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Estilos -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+    <style>
+        .nav-item a {
+            text-decoration: none;
+            color: inherit;
+            display: inline-block;
+            cursor: pointer;
+            font-size: 27px;
         }
-    </tbody>
-</table>
 
-<hr />
+        .container-table {
+            max-width: 90%;
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="content-page-container full-reset custom-scroll-containers">
+        <!-- Navbar -->
+        <nav class="navbar-user-top full-reset">
+            <ul class="list-unstyled full-reset">
+                <figure>
+                    <img src="~/assets/img/user01.png" alt="user-picture" class="img-responsive img-circle center-box">
+                </figure>
+                <li class="user-info" style="color:#fff; cursor:default;">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                    <li class="user-info">
+                        <div class="user-details">
+                            <span data-placement="bottom" title="Usuario">Bienvenido, @User.FindFirst(ClaimTypes.Role)?.Value @User.Identity.Name</span>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="" asp-area="" asp-controller="Login" asp-action="Salir">
+                            <i class="zmdi zmdi-power"></i>
+                        </a>
+                    </li>
+                    }
+                </li>
+                <li class="tooltips-general btn-help" data-placement="bottom" title="Ayuda">
+                    <i class="zmdi zmdi-help-outline zmdi-hc-fw"></i>
+                </li>
+                <li class="mobile-menu-button visible-xs" style="float: left !important;">
+                    <i class="zmdi zmdi-menu"></i>
+                </li>
+                <li class="desktop-menu-button hidden-xs" style="float: left !important;">
+                    <i class="zmdi zmdi-swap"></i>
+                </li>
+            </ul>
+        </nav>
 
-<h3>Añadir Más Platos</h3>
-<form asp-action="AñadirPlato" method="post">
-    <input type="hidden" name="idPedido" value="@Model.Id" />
-    <div>
-        <label>Plato</label>
-        <select name="idPlato">
-            @foreach (var plato in ViewBag.Platos as List<Dal.Dragones.Plato>)
-            {
-                <option value="@plato.Id">@plato.Nombre</option>
-            }
-        </select>
+        <!-- Contenido principal -->
+        <div class="container">
+            <div class="page-header">
+                <h1 class="all-tittles">Sistema Restaurante Los Dragones <small>Detalles del Pedido</small></h1>
+            </div>
+        </div>
+
+        <div class="container-fluid" style="margin: 50px 0;">
+            <div class="row">
+                <div class="col-xs-12 col-sm-4 col-md-3">
+                    <img src="~/assets/img/user01.png" alt="user" class="img-responsive center-box" style="max-width: 110px;">
+                </div>
+                <div class="col-xs-12 col-sm-8 col-md-8 text-justify lead">
+                    En esta sección puedes ver los detalles específicos de cada pedido realizado en el sistema.
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xs-12 lead">
+                    <ol class="breadcrumb">
+                        <li><a asp-controller="Pedido" asp-action="Index">Listado de Pedidos</a></li>
+                        <li class="active">Detalles del Pedido</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <!-- Detalles del pedido -->
+        <div class="container-table">
+            <h2>Detalles del Pedido</h2>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <p>Mesa: @Model.Mesa.NumMesa</p>
+                    <p>Fecha: @Model.Fecha</p>
+                    <p>Total: @Model.Total</p>
+                    <p>Estado: @Model.Estado</p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <h3>Platos</h3>
+                    <table class="table table-bordered table-hover" id="tablaPlatos">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>
+                                    <input type="checkbox" id="seleccionarTodos" />
+                                </th>
+                                <th>Nombre</th>
+                                <th>Precio</th>
+                                <th>Cantidad</th>
+                                <th>Entregado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var detalle in Model.Detalles.Where(d => !d.Disponible))
+                            {
+                                <tr data-id="@detalle.Id" data-categoria="@detalle.Categoria" data-lista-comida="@detalle.ListaComida">
+                                    <td>
+                                        <input type="checkbox" class="detalle-checkbox" name="detallesSeleccionados" value="@detalle.Id"
+                                        @(detalle.Categoria == "Bebida" ? "" : "disabled") />
+                                    </td>
+                                    <td>@detalle.Nombre</td>
+                                    <td>@detalle.Precio</td>
+                                    <td>@detalle.Cantidad</td>
+                                    <td>
+                                        @if (detalle.Disponible)
+                                        {
+                                            <span class="text-success">&#x2714;</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-warning">&#x26A0;</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <form asp-action="CambiarCantidadPlatillo" method="post" style="display:inline;">
+                                            <input type="hidden" name="idPedido" value="@Model.Id" />
+                                            <input type="hidden" name="idDetalle" value="@detalle.Id" />
+                                            <input type="number" name="nuevaCantidad" value="@detalle.Cantidad" min="1" max="10" />
+                                            <button type="submit" class="btn btn-sm btn-primary">Cambiar Cantidad</button>
+                                        </form>
+                                        <form asp-action="EliminarPlatillo" method="post" style="display:inline;">
+                                            <input type="hidden" name="idPedido" value="@Model.Id" />
+                                            <input type="hidden" name="idDetalle" value="@detalle.Id" />
+                                            <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <form id="formMarcarEntregados" asp-action="CambiarEstadoEntregado" method="post">
+                <input type="hidden" name="idPedido" value="@Model.Id" />
+                <input type="hidden" name="detallesSeleccionados" id="detallesSeleccionados" />
+                <button type="submit" class="btn btn-success">Marcar Seleccionados como Listos</button>
+            </form>
+
+            <div class="row mt-4">
+                <div class="col-md-12">
+                    <h3>Productos Entregados</h3>
+                    <table class="table table-bordered table-hover" id="tablaProductosEntregados">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Precio</th>
+                                <th>Cantidad</th>
+                                <th>Entregado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var detalle in Model.Detalles.Where(d => d.Disponible))
+                            {
+                                <tr>
+                                    <td>@detalle.Nombre</td>
+                                    <td>@detalle.Precio</td>
+                                    <td>@detalle.Cantidad</td>
+                                    <td>
+                                        @if (detalle.Disponible)
+                                        {
+                                            <span class="text-success">&#x2714;</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-warning">&#x26A0;</span>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <hr />
+
+            <div class="row mt-4">
+                <div class="col-md-12">
+                    <h3>Añadir Más Platos</h3>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#añadirPlatoModal">
+                        Añadir Plato
+                    </button>
+                </div>
+            </div>
+
+            <div class="modal fade" id="añadirPlatoModal" tabindex="-1" role="dialog" aria-labelledby="añadirPlatoModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="añadirPlatoModalLabel">Añadir Plato</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form asp-action="AñadirPlato" method="post">
+                                <input type="hidden" name="idPedido" value="@Model.Id" />
+                                <div class="form-group">
+                                    <label for="plato">Plato</label>
+                                    <select name="idPlato" class="form-control" id="plato">
+                                        @foreach (var plato in ViewBag.Platos as List<Dal.Dragones.Plato>)
+                                        {
+                                            <option value="@plato.Id">@plato.Nombre</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="cantidad">Cantidad</label>
+                                    <input type="number" name="cantidad" class="form-control" id="cantidad" value="1" min="1" max="10" />
+                                </div>
+                                <button type="submit" class="btn btn-primary">Añadir</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-md-12">
+                    <a asp-action="Index" class="btn btn-secondary">Volver a la lista</a>
+                </div>
+            </div>
+
+        </div>
+
     </div>
-    <div>
-        <label>Cantidad</label>
-        <input type="number" name="cantidad" value="1" />
-    </div>
-    <button type="submit">Añadir</button>
-</form>
 
-<a asp-action="Index">Volver a la lista</a>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#tablaPlatos').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"
+                }
+            });
+
+            $('#tablaProductosEntregados').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"
+                }
+            });
+
+            // Manejar el clic en el checkbox de "Seleccionar Todos"
+            $('#seleccionarTodos').click(function () {
+                var isChecked = $(this).prop('checked');
+                $('.detalle-checkbox').prop('checked', isChecked);
+            });
+
+            // Manejar el envío del formulario de marcar como entregados
+            $('#formMarcarEntregados').submit(function (e) {
+                // Prevenir el comportamiento predeterminado del formulario
+                e.preventDefault();
+
+                // Recolectar los detalles seleccionados
+                var detallesSeleccionados = $('.detalle-checkbox:checked').map(function () {
+                    return $(this).val();
+                }).get();
+
+                // Asignar los detalles seleccionados al campo oculto
+                $('#detallesSeleccionados').val(detallesSeleccionados.join(','));
+
+                // Enviar el formulario
+                this.submit();
+            });
+        });
+    </script>
+
+</body>
+</html>
