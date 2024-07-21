@@ -69,7 +69,8 @@
 @if (facturas != null && facturas.Any())
 {
     <h3>Facturas del Día</h3>
-    <table>
+    <div>
+        <table class="table table-secondary table-bordered table-hover" id="tabla">
         <thead>
             <tr>
                 <th>Fecha</th>
@@ -87,11 +88,40 @@
                     <td>@factura.Fecha.ToString("dd/MM/yyyy")</td>
                     <td>@factura.NombreCliente</td>
                     <td>@factura.Subtotal</td>
-                    <td>@factura.Descuento</td>
-                    <td>@factura.Iva</td>
+                    <td>%@factura.Descuento</td>
+                    <td>%@factura.Iva</td>
                     <td>@factura.TotalPagar</td>
                 </tr>
             }
         </tbody>
     </table>
+    </div>
 }
+    <script>
+        $(document).ready(function () {
+            $('#tabla').DataTable({
+                language: {
+                    processing: "Procesando...",
+                    search: "Buscar:",
+                    lengthMenu: "Mostrar _MENU_ elementos",
+                    info: "Mostrando del _START_ al _END_ de un total de _TOTAL_ elementos",
+                    infoEmpty: "Mostrando 0 elementos",
+                    infoFiltered: "(filtrado de un total de _MAX_ elementos)",
+                    infoPostFix: "",
+                    loadingRecords: "Cargando...",
+                    zeroRecords: "No se encontraron registros coincidentes",
+                    emptyTable: "No hay datos disponibles en la tabla",
+                    paginate: {
+                        first: "Primero",
+                        previous: "Anterior",
+                        next: "Siguiente",
+                        last: "Último"
+                    },
+                    aria: {
+                        sortAscending: ": activar para ordenar la columna de manera ascendente",
+                        sortDescending: ": activar para ordenar la columna de manera descendente"
+                    }
+                }
+            });
+        });
+    </script>

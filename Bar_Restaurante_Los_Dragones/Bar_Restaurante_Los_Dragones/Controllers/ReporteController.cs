@@ -230,6 +230,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
                         document.Add(new iTextSharp.text.Paragraph($"IVA: {factura.Iva:C}"));
                         document.Add(new iTextSharp.text.Paragraph($"Total a Pagar: {factura.TotalPagar:C}"));
                         document.Add(new iTextSharp.text.Paragraph(""));
+                        document.Add(new iTextSharp.text.Paragraph("---------------------------------------------------"));
                     }
                 }
                 catch (Exception ex)
@@ -298,6 +299,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
                         document.Add(new iTextSharp.text.Paragraph($"IVA: {factura.Iva:C}"));
                         document.Add(new iTextSharp.text.Paragraph($"Total a Pagar: {factura.TotalPagar:C}"));
                         document.Add(new iTextSharp.text.Paragraph(""));
+                        document.Add(new iTextSharp.text.Paragraph("---------------------------------------------------"));
                     }
                 }
                 catch (Exception ex)
