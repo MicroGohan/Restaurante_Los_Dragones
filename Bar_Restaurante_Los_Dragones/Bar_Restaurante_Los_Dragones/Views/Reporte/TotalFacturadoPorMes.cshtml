@@ -19,6 +19,18 @@
             cursor: pointer; /* Cambiar el cursor a puntero */
             font-size: 27px;
         }
+
+        .content-page {
+            max-width: 900px; /* Ancho máximo del contenido */
+            margin: 0 auto; /* Centrar horizontalmente */
+            padding: 20px; /* Padding interno */
+            background-color: #fff; /* Fondo blanco para el contenido */
+            border-radius: 8px; /* Bordes redondeados */
+            display: flex; /* Usar flexbox para centrar contenido */
+            flex-direction: column; /* Colocar los elementos en una columna */
+            align-items: center; /* Centrar los elementos horizontalmente */
+            justify-content: center; /* Centrar los elementos verticalmente */
+        }
     </style>
 </head>
 <div class="content-page-container full-reset custom-scroll-containers">
@@ -53,18 +65,20 @@
             </li>
         </ul>
     </nav>
+    <div class="content-page">
 <h1>Total Facturado por Mes</h1>
 <form asp-action="TotalFacturadoPorMes" method="post">
     <label for="mes">Mes:</label>
     <select id="mes" name="mes">
         @for (int i = 1; i <= 12; i++)
         {
-            <option value="@i">@i</option>
+                string nombreMes = new CultureInfo("es-ES").DateTimeFormat.GetMonthName(i);
+                <option value="@i">@nombreMes</option>
         }
     </select>
     <label for="año">Año:</label>
     <input type="number" id="año" name="año" min="2000" max="2100" required />
-    <button type="submit">Obtener Total</button>
+        <button type="submit" class="btn btn-primary">Obtener Total</button>
 </form>
 
 @if (ViewBag.TotalFacturado != null)
@@ -74,20 +88,19 @@
         <form asp-action="DownloadPDFPorMes" method="post">
             <input type="hidden" name="mes" value="@selectedMonth" />
             <input type="hidden" name="año" value="@selectedYear" />
-            <button type="submit">Descargar PDF</button>
+            <button type="submit" class="btn btn-primary" >Descargar PDF</button>
         </form>
 }
 
 @if (facturas != null && facturas.Any())
 {
     <h3>Facturas del Mes</h3>
-    <table>
-        <thead>
+        <table class="table table-secondary table-bordered table-hover" id="tabla">
+            <thead class="thead-dark">
             <tr>
                 <th>Fecha</th>
                 <th>Nombre Cliente</th>
                 <th>Subtotal</th>
-                <th>Descuento</th>
                 <th>IVA</th>
                 <th>Total a Pagar</th>
             </tr>
@@ -95,18 +108,20 @@
         <tbody>
             @foreach (var factura in facturas)
             {
-                <tr>
-                    <td>@factura.Fecha.ToString("dd/MM/yyyy")</td>
-                    <td>@factura.NombreCliente</td>
-                    <td>@factura.Subtotal</td>
-                    <td>@factura.Descuento</td>
-                    <td>@factura.Iva</td>
-                    <td>@factura.TotalPagar</td>
-                </tr>
+                    <tr>
+                        <td>@factura.Fecha.ToString("dd/MM/yyyy")</td>
+                        <td>@factura.NombreCliente</td>
+                        <td>@factura.Subtotal</td>
+                        <td>%@factura.Iva</td>
+                        <td>@factura.TotalPagar</td>
+                    </tr>
             }
         </tbody>
     </table>
 }
+    <a class="btn btn-primary" style="margin-top: 10px;" href="@Url.Action("Index", "Reporte")">Volver a Reportes</a>
+    </div>
+</div>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             var mesSelect = document.getElementById('mes');

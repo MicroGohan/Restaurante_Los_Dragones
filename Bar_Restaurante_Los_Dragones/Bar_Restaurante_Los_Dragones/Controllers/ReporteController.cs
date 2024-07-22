@@ -144,13 +144,12 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
                     // Agregar las facturas al documento
                     foreach (var factura in facturas)
                     {
-                        //document.Add(new iTextSharp.text.Paragraph($"Fecha: {factura.Fecha.ToString("dd/MM/yyyy")}"));
                         document.Add(new iTextSharp.text.Paragraph($"Nombre Cliente: {factura.NombreCliente}"));
                         document.Add(new iTextSharp.text.Paragraph($"Subtotal: {factura.Subtotal}"));
-                        document.Add(new iTextSharp.text.Paragraph($"Descuento: {factura.Descuento}"));
                         document.Add(new iTextSharp.text.Paragraph($"IVA: {factura.Iva}"));
                         document.Add(new iTextSharp.text.Paragraph($"Total a Pagar: {factura.TotalPagar}"));
                         document.Add(new iTextSharp.text.Paragraph(""));
+                        document.Add(new iTextSharp.text.Paragraph("---------------------------------------------------"));
                     }
                 }
                 catch (Exception ex)
@@ -226,7 +225,6 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
                         document.Add(new iTextSharp.text.Paragraph($"Fecha: {factura.Fecha.ToString("dd/MM/yyyy")}"));
                         document.Add(new iTextSharp.text.Paragraph($"Nombre Cliente: {factura.NombreCliente}"));
                         document.Add(new iTextSharp.text.Paragraph($"Subtotal: {factura.Subtotal:C}"));
-                        document.Add(new iTextSharp.text.Paragraph($"Descuento: {factura.Descuento:C}"));
                         document.Add(new iTextSharp.text.Paragraph($"IVA: {factura.Iva:C}"));
                         document.Add(new iTextSharp.text.Paragraph($"Total a Pagar: {factura.TotalPagar:C}"));
                         document.Add(new iTextSharp.text.Paragraph(""));
@@ -295,7 +293,6 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
                         document.Add(new iTextSharp.text.Paragraph($"Fecha: {factura.Fecha.ToString("dd/MM/yyyy")}"));
                         document.Add(new iTextSharp.text.Paragraph($"Nombre Cliente: {factura.NombreCliente}"));
                         document.Add(new iTextSharp.text.Paragraph($"Subtotal: {factura.Subtotal:C}"));
-                        document.Add(new iTextSharp.text.Paragraph($"Descuento: {factura.Descuento:C}"));
                         document.Add(new iTextSharp.text.Paragraph($"IVA: {factura.Iva:C}"));
                         document.Add(new iTextSharp.text.Paragraph($"Total a Pagar: {factura.TotalPagar:C}"));
                         document.Add(new iTextSharp.text.Paragraph(""));
