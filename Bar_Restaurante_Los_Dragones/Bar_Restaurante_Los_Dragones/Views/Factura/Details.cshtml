@@ -84,32 +84,30 @@
                 <h2 class="all-tittles">Nombre del Cliente : <small>@Html.DisplayFor(model => model.NombreCliente)</small></h2>
                 <h2 class="all-tittles">@Html.DisplayNameFor(model => model.Responsable) : <small>@Html.DisplayFor(model => model.Responsable)</small></h2>
                 <h2 class="all-tittles">Productos:</h2>
-                <table class="table table-secondary table-bordered table-hover" id="tabla">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th>Nombre</th>
-                            <th>Precio</th>
-                            <th>Cantidad</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        @foreach (var detalle in Model.Pedidos.Detalles.Where(d => !d.Disponible))
-                        {
-                            <tr data-id="@detalle.Id" data-categoria="@detalle.Categoria" data-lista-comida="@detalle.ListaComida">
-                                <td>@detalle.Nombre</td>
-                                <td>@detalle.Precio</td>
-                                <td>@detalle.Cantidad</td>
-                                <form asp-action="CambiarCantidadPlatillo" method="post" style="display:inline;">
-                                    <input type="hidden" name="idPedido" value="@Model.Pedidos.Id" />
-                                    <input type="hidden" name="idDetalle" value="@detalle.Id" />
-                                </form>
+               
+                <div class="container mt-5">
+                    <table class="table table-secondary table-bordered table-hover">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Precio</th>
+                                <th>Cantidad</th>
                             </tr>
-                        }
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @foreach (var detalle in Model.Pedidos.Detalles.Where(d => !d.Disponible))
+                            {
+                                <tr data-id="@detalle.Id" data-categoria="@detalle.Categoria" data-lista-comida="@detalle.ListaComida">
+                                    <td>@detalle.Nombre</td>
+                                    <td>@detalle.Precio</td>
+                                    <td>@detalle.Cantidad</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
                 <h2 class="all-tittles">@Html.DisplayNameFor(model => model.Subtotal) : <small>@Html.DisplayFor(model => model.Subtotal)</small></h2>
-                <h2 class="all-tittles">@Html.DisplayNameFor(model => model.Descuento) : <small>@Html.DisplayFor(model => model.Descuento)%</small></h2>
                 <h2 class="all-tittles">@Html.DisplayNameFor(model => model.Iva) : <small>@Html.DisplayFor(model => model.Iva)%</small></h2>
                 <h2 class="all-tittles">@Html.DisplayNameFor(model => model.TotalPagar) : <small>@Html.DisplayFor(model => model.TotalPagar)</small></h2>
                 <h2 class="all-tittles">@Html.DisplayNameFor(model => model.Observaciones) : <small>@Html.DisplayFor(model => model.Observaciones)</small></h2>

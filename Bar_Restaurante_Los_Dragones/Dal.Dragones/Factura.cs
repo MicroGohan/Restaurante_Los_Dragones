@@ -15,7 +15,6 @@ namespace Dal.Dragones
         public string? NombreCliente { get; set; }
         public string Responsable { get; set; }
         public decimal Subtotal { get; set; }
-        public int? Descuento { get; set; }
         public int Iva { get; set; }
         public decimal TotalPagar { get; set; }
         public string? Observaciones { get; set; }
