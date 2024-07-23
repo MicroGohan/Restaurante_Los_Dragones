@@ -91,8 +91,11 @@
                     <div class="col-xs-12 col-sm-6">
                         <div class="form-group">
                             <label asp-for="ImagenData" class="control-label">Imagen</label>
-                            <input type="file" name="imagenArchivo" class="form-control" />
+                            <input type="file" id="imagenArchivo" name="imagenArchivo" class="form-control" />
                             <span asp-validation-for="ImagenData" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <img id="imagenVistaPrevia" src="#" alt="Vista Previa de la Imagen" style="max-width: 200px; display: none;" />
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-6">
@@ -131,3 +134,15 @@
 </div>
 
 </div>
+
+<script>
+    document.getElementById('imagenArchivo').addEventListener('change', function (event) {
+        var reader = new FileReader();
+        reader.onload = function () {
+            var output = document.getElementById('imagenVistaPrevia');
+            output.src = reader.result;
+            output.style.display = 'block'; // Mostrar la imagen
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    });
+</script>
