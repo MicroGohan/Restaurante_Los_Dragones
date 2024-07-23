@@ -56,6 +56,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Nombre,Precio,ImagenData,Disponible,Categoria")] Plato plato, IFormFile imagenArchivo)
         {
+            ModelState.Remove("ImagenData");
             if (ModelState.IsValid)
             {
                 if (imagenArchivo != null && imagenArchivo.Length > 0)
@@ -101,7 +102,6 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
             {
                 return NotFound();
             }
-
             if (ModelState.IsValid)
             {
                 try
@@ -117,11 +117,10 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
                     }
                     else
                     {
-                        // Si no se cargó una nueva imagen, obtener los datos de imagen actuales del auto de la base de datos
-                        var existingAuto = await _context.Platos.AsNoTracking().FirstOrDefaultAsync(z => z.Id == plato.Id);
-                        if (existingAuto != null)
+                        var existingPlato = await _context.Platos.AsNoTracking().FirstOrDefaultAsync(z => z.Id == plato.Id);
+                        if (existingPlato != null)
                         {
-                            plato.ImagenData = existingAuto.ImagenData;
+                            plato.ImagenData = existingPlato.ImagenData;
                         }
                     }
 
