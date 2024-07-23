@@ -9,6 +9,8 @@ using Bar_Restaurante_Los_Dragones.Models;
 using Dal.Dragones;
 using System.Configuration;
 using System.Security.Claims;
+using iTextSharp.text.pdf;
+using iTextSharp.text;
 
 namespace Bar_Restaurante_Los_Dragones.Controllers
 {
@@ -202,5 +204,61 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
         {
             return _context.Facturas.Any(e => e.id == id);
         }
+
+        //descarga pdf
+        public async Task<IActionResult> DownloadPDF(int id)
+        {
+            var factura = await _context.Facturas
+                .Include(f => f.Pedidos)
+                .FirstOrDefaultAsync(m => m.id == id);
+
+            if (factura == null)
+            {
+                return NotFound();
+            }
+
+            var pdfBytes = GenerarPdfFactura(factura, $"Factura {factura.id}");
+            return File(pdfBytes, "application/pdf", $"Factura_{factura.id}.pdf");
+        }
+
+        private byte[] GenerarPdfFactura(Factura factura, string titulo)
+        {
+            using (var memoryStream = new MemoryStream())
+            {
+                var document = new Document(iTextSharp.text.PageSize.A4);
+                PdfWriter writer = null;
+
+                try
+                {
+                    writer = PdfWriter.GetInstance(document, memoryStream);
+                    document.Open();
+
+                    document.Add(new iTextSharp.text.Paragraph(titulo));
+                    document.Add(new iTextSharp.text.Paragraph(""));
+
+                    // Aquí puedes agregar la información específica de la factura
+                    document.Add(new iTextSharp.text.Paragraph($"Nombre Cliente: {factura.NombreCliente}"));
+                    document.Add(new iTextSharp.text.Paragraph($"Fecha: {factura.Fecha.ToString("dd/MM/yyyy")}"));
+                    document.Add(new iTextSharp.text.Paragraph($"Subtotal: {factura.Subtotal}"));
+                    document.Add(new iTextSharp.text.Paragraph($"IVA: {factura.Iva}"));
+                    document.Add(new iTextSharp.text.Paragraph($"Total a Pagar: {factura.TotalPagar}"));
+                    document.Add(new iTextSharp.text.Paragraph(""));
+                    // Continúa agregando los detalles que consideres necesarios
+
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error al generar el PDF: {ex.Message}");
+                }
+                finally
+                {
+                    document.Close();
+                    writer?.Close();
+                }
+
+                return memoryStream.ToArray();
+            }
+        }
+
     }
 }
