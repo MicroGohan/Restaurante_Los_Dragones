@@ -1,91 +1,190 @@
 ﻿@model Dal.Dragones.Factura
-
+@using System.Security.Claims
 @{
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<body>
+    <div class="content-page-container full-reset custom-scroll-containers">
+        <nav class="navbar-user-top full-reset">
+            <ul class="list-unstyled full-reset">
+                <figure>
+                    <img src="~/assets/img/user01.png" alt="user-picture" class="img-responsive img-circle center-box">
+                </figure>
+                <li class="user-info" style="color:#fff; cursor:default;">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                    <li class="user-info">
+                        <div class="user-details">
+                            <span data-placement="bottom" title="Usuario">Bienvenido, @User.FindFirst(ClaimTypes.Role)?.Value @User.Identity.Name</span>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="" asp-area="" asp-controller="Login" asp-action="Salir">
+                            <i class="zmdi zmdi-power"></i>
+                        </a>
+                    </li>
+                    }
+                </li>
+                <li class="tooltips-general btn-help" data-placement="bottom" title="Ayuda">
+                    <i class="zmdi zmdi-help-outline zmdi-hc-fw"></i>
+                </li>
+                <li class="mobile-menu-button visible-xs" style="float: left !important;">
+                    <i class="zmdi zmdi-menu"></i>
+                </li>
+                <li class="desktop-menu-button hidden-xs" style="float: left !important;">
+                    <i class="zmdi zmdi-swap"></i>
+                </li>
+            </ul>
+        </nav>
+        <div class="container">
+            <div class="page-header">
+                <h1 class="all-tittles">Sistema Restaurante Los Dragones <small>Editar Factura</small></h1>
+            </div>
+        </div>
+        <div class="container-fluid" style="margin: 50px 0;">
+            <div class="row">
+                <div class="col-xs-12 col-sm-4 col-md-3">
+                    <img src="~/assets/img/user01.png" alt="user" class="img-responsive center-box" style="max-width: 110px;">
+                </div>
+                <div class="col-xs-12 col-sm-8 col-md-8 text-justify lead">
+                    Bienvenido a la sección donde se encuentra la edicion de la factura. En este espacio se pueden cambiar varios valores en caso de error o cambio repentino a la hora de crear la factura
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xs-12 lead">
+                    <ol class="breadcrumb">
+                        <li><a asp-controller="Factura" asp-action="Index">Factura</a></li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="container-flat-form">
+                <div class="title-flat-form title-flat-blue">Editar Factura</div>
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="id" />
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <legend><i class="zmdi zmdi-account-box"></i> &nbsp; Datos de Factura</legend><br>
+                        </div>
 
-<h2>Create</h2>
+                        <div class="col-xs-12 col-sm-6">
+                            <div class="group-material">
+                                <input input asp-for="NombreCliente" type="text" class="material-control tooltips-general" placeholder="Cliente" data-toggle="tooltip" data-placement="top" title="Ingrese el nombre del cliente">
+                                <span class="highlight"></span>
+                                <span span asp-validation-for="NombreCliente" class="text-danger"></span>
+                                <label>Cliente</label>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6">
+                            <div class="group-material">
+                                <input asp-for="Responsable" class="material-control tooltips-general" placeholder="Responsable" data-toggle="tooltip" data-placement="top" title="Responsable">
+                                <span class="highlight"></span>
+                                <span asp-validation-for="Responsable" class="text-danger" style="white-space: pre-line;"></span>
+                                <label>Responsable</label>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6">
+                            <div class="group-material">
+                                <input asp-for="Fecha" type="date" class="material-control tooltips-general" placeholder="Fecha de Factura" data-toggle="tooltip" data-placement="top" title="Fecha de la factura">
+                                <span class="highlight"></span>
+                                <span asp-validation-for="Fecha" class="text-danger"></span>
+                                <label>Fecha</label>
+                            </div>
+                        </div>
+                        <div class="col-xs-12">
+                            <legend><i class="zmdi zmdi-lock"></i> &nbsp; Detalles de Factura</legend><br>
+                        </div>
+                        <div class="col-xs-12 col-sm-6">
+                            <div class="group-material">
+                                <input input asp-for="Subtotal" type="text" class="material-control tooltips-general" placeholder="Subtotal" data-toggle="tooltip" data-placement="top" title="Subtotal">
+                                <span class="highlight"></span>
+                                <span span asp-validation-for="Subtotal" class="text-danger"></span>
+                                <label>Subtotal</label>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6">
+                            <div class="group-material">
+                                <input input asp-for="Iva" type="text" class="material-control tooltips-general" placeholder="Iva" data-toggle="tooltip" data-placement="top" title="Iva">
+                                <span class="highlight"></span>
+                                <span span asp-validation-for="Subtotal" class="text-danger"></span>
+                                <label>Iva</label>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6">
+                            <div class="group-material">
+                                <input input asp-for="TotalPagar" type="text" class="material-control tooltips-general" placeholder="Total a pagar" data-toggle="tooltip" data-placement="top" title="Total a pagar">
+                                <span class="highlight"></span>
+                                <span span asp-validation-for="TotalPagar" class="text-danger"></span>
+                                <label>Total a pagar</label>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6">
+                            <div class="group-material">
+                                <input input asp-for="Observaciones" type="text" class="material-control tooltips-general" placeholder="Observaciones" data-toggle="tooltip" data-placement="top" title="Observaciones">
+                                <span class="highlight"></span>
+                                <span span asp-validation-for="Observaciones" class="text-danger"></span>
+                                <label>Observaciones</label>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6">
+                            <label>Metodo de pago</label>
+                            <div class="group-material">
+                                <select asp-for="MetodoPago" class="material-control tooltips-general" placeholder="Metodo de pago" data-toggle="tooltip" data-placement="top" title="Metodo de pago" asp-items="ViewBag.MetodoPagoList"></select>
+                                <span asp-validation-for="MetodoPago" class="text-danger"></span>  
+                            </div>
+                            <label>Productos</label>
+                            <div class="container mt-5">
+                                <table class="table table-secondary table-bordered table-hover">
+                                    <thead class="thead-dark">
+                                        <tr>
+                                            <th>Nombre</th>
+                                            <th>Precio</th>
+                                            <th>Cantidad</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var detalle in Model.Pedidos.Detalles.Where(d => !d.Disponible))
+                                        {
+                                            <tr data-id="@detalle.Id" data-categoria="@detalle.Categoria" data-lista-comida="@detalle.ListaComida">
+                                                <td>@detalle.Nombre</td>
+                                                <td>@detalle.Precio</td>
+                                                <td>@detalle.Cantidad</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
 
-<h4>Factura</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Fecha" class="control-label"></label>
-                <input asp-for="Fecha" class="form-control" />
-                <span asp-validation-for="Fecha" class="text-danger"></span>
+                        <input type="hidden" asp-for="PedidoId" />
+                        <div class="col-xs-12">
+                            <button type="submit" value="Create" class="btn btn-primary"><i class="zmdi zmdi-floppy"></i> &nbsp;&nbsp; Guardar</button>
+                        </div>
+                    </div>
+                </form>
             </div>
-            <div class="form-group">
-                <label asp-for="NombreCliente" class="control-label"></label>
-                <input asp-for="NombreCliente" class="form-control" />
-                <span asp-validation-for="NombreCliente" class="text-danger"></span>
+        </div>
+        <div class="modal fade" tabindex="-1" role="dialog" id="ModalHelp">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title text-center all-tittles">ayuda del sistema</h4>
+                    </div>
+                    <div class="modal-body">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore dignissimos qui molestias ipsum officiis unde aliquid consequatur, accusamus delectus asperiores sunt. Quibusdam veniam ipsa accusamus error. Animi mollitia corporis iusto.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="zmdi zmdi-thumb-up"></i> &nbsp; De acuerdo</button>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Responsable" class="control-label"></label>
-                <input asp-for="Responsable" class="form-control" />
-                <span asp-validation-for="Responsable" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Subtotal" class="control-label"></label>
-                <input asp-for="Subtotal" class="form-control" />
-                <span asp-validation-for="Subtotal" class="text-danger"></span>
-            </div>
-
-            <div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Nombre</th>
-                            <th>Precio</th>
-                            <th>Cantidad</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var detalle in Model.Pedidos.Detalles)
-                        {
-                            <tr>
-                                <td>@detalle.Nombre</td>
-                                <td>@detalle.Precio</td>
-                                <td>@detalle.Cantidad</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="Iva" class="control-label"></label>
-                <input asp-for="Iva" class="form-control" />
-                <span asp-validation-for="Iva" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="TotalPagar" class="control-label"></label>
-                <input asp-for="TotalPagar" class="form-control" />
-                <span asp-validation-for="TotalPagar" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Observaciones" class="control-label"></label>
-                <input asp-for="Observaciones" class="form-control" />
-                <span asp-validation-for="Observaciones" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="MetodoPago" class="control-label"></label>
-                <select asp-for="MetodoPago" class="form-control" asp-items="ViewBag.MetodoPagoList"></select>
-                <span asp-validation-for="MetodoPago" class="text-danger"></span>
-            </div>
-            <input type="hidden" asp-for="Pedidos" />
-            <input type="hidden" asp-for="PedidoId" />
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
-        </form>
+        </div>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+</body>
+</html>
