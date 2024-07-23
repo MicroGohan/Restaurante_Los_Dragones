@@ -1,49 +1,128 @@
-﻿@model Dal.Dragones.Plato
+﻿@using System.Security.Claims
+@model Dal.Dragones.Plato
 
 @{
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<h2>Create</h2>
-
-<h4>Plato</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Nombre" class="control-label"></label>
-                <input asp-for="Nombre" class="form-control" />
-                <span asp-validation-for="Nombre" class="text-danger"></span>
+<head>
+    <style>
+        .nav-item a {
+            text-decoration: none; /* Quitar subrayado */
+            color: inherit; /* Heredar el color del texto */
+            display: inline-block; /* Hacerlo un bloque en línea para aplicar padding correctamente */
+            cursor: pointer; /* Cambiar el cursor a puntero */
+            font-size: 27px;
+        }
+    </style>
+</head>
+<div class="content-page-container full-reset custom-scroll-containers">
+    <nav class="navbar-user-top full-reset">
+        <ul class="list-unstyled full-reset">
+            <figure>
+                <img src="~/assets/img/user01.png" alt="user-picture" class="img-responsive img-circle center-box">
+            </figure>
+            <li class="user-info" style="color:#fff; cursor:default;">
+                @if (User.Identity.IsAuthenticated)
+                {
+                <li class="user-info">
+                    <div class="user-details">
+                        <span data-placement="bottom" title="Usuario">Bienvenido, @User.FindFirst(ClaimTypes.Role)?.Value @User.Identity.Name</span>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="" asp-area="" asp-controller="Login" asp-action="Salir">
+                        <i class="zmdi zmdi-power"></i>
+                    </a>
+                </li>
+                }
+            </li>
+            <li class="tooltips-general btn-help" data-placement="bottom" title="Ayuda">
+                <i class="zmdi zmdi-help-outline zmdi-hc-fw"></i>
+            </li>
+            <li class="mobile-menu-button visible-xs" style="float: left !important;">
+                <i class="zmdi zmdi-menu"></i>
+            </li>
+            <li class="desktop-menu-button hidden-xs" style="float: left !important;">
+                <i class="zmdi zmdi-swap"></i>
+            </li>
+        </ul>
+    </nav>
+    <div class="container">
+        <div class="page-header">
+            <h1 class="all-tittles">Sistema Restaurante Los Dragones <small>Administración de Platos</small></h1>
+        </div>
+    </div>
+    <div class="container-fluid" style="margin: 50px 0;">
+        <div class="row">
+            <div class="col-xs-12 lead">
+                <ol class="breadcrumb">
+                    <li class="active">Nuevo Plato</li>
+                    <li><a asp-controller="Plato" asp-action="Edit">Editar Plato</a></li>
+                </ol>
             </div>
-            <div class="form-group">
-                <label asp-for="Precio" class="control-label"></label>
-                <input asp-for="Precio" class="form-control" />
-                <span asp-validation-for="Precio" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ImagenData" class="control-label"></label>
-                <input asp-for="ImagenData" class="form-control" />
-                <span asp-validation-for="ImagenData" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <div class="checkbox">
-                    <label>
-                        <input asp-for="Disponible" /> @Html.DisplayNameFor(model => model.Disponible)
-                    </label>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="container-flat-form">
+            <div class="title-flat-form title-flat-blue">Crear Nuevo Plato</div>
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <legend><i class="zmdi zmdi-cutlery"></i> &nbsp; Datos básicos del plato</legend><br>
+                    </div>
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="group-material">
+                            <input asp-for="Nombre" type="text" class="material-control tooltips-general" placeholder="Nombre del plato" data-toggle="tooltip" data-placement="top" title="Escribe el nombre del plato">
+                            <span class="highlight"></span>
+                            <span asp-validation-for="Nombre" class="text-danger"></span>
+                            <label>Nombre</label>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="group-material">
+                            <input asp-for="Precio" type="text" class="material-control tooltips-general" placeholder="Precio" data-toggle="tooltip" data-placement="top" title="Escribe el precio del plato">
+                            <span class="highlight"></span>
+                            <span asp-validation-for="Precio" class="text-danger"></span>
+                            <label>Precio</label>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-group">
+                            <label asp-for="ImagenData" class="control-label"></label>
+                            <input asp-for="ImagenData" class="form-control" />
+                            <span asp-validation-for="ImagenData" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-group">
+                            <div class="checkbox">
+                                <label>
+                                    <input asp-for="Disponible" /> @Html.DisplayNameFor(model => model.Disponible)
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-group">
+                            <label asp-for="Categoria" class="control-label"></label>
+                            <select asp-for="Categoria" class="form-control">
+                                <option value="">Seleccione una categoría</option>
+                                <option value="Comida">Comida</option>
+                                <option value="Bebida">Bebida</option>
+                                <option value="Otros">Otros</option>
+                            </select>
+                            <span asp-validation-for="Categoria" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6">
+                        <button type="reset" class="btn btn-info" style="margin-right: 20px;"><i class="zmdi zmdi-roller"></i> &nbsp;&nbsp; Limpiar</button>
+                        <button type="submit" value="Save" class="btn btn-primary"><i class="zmdi zmdi-floppy"></i> &nbsp;&nbsp; Guardar</button>
+                        <a asp-action="Index">Volver a la lista</a>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <label asp-for="Categoria" class="control-label"></label>
-                <input asp-for="Categoria" class="form-control" />
-                <span asp-validation-for="Categoria" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
-        </form>
+            </form>
     </div>
 </div>
 
@@ -51,3 +130,4 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
+</div>

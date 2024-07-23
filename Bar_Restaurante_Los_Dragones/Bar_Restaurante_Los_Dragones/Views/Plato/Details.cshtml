@@ -1,49 +1,97 @@
-﻿@model Dal.Dragones.Plato
+﻿@using System.Security.Claims
+@model Dal.Dragones.Plato
 
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Details</h2>
 
-<div>
-    <h4>Plato</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Nombre)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Nombre)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Precio)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Precio)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.ImagenData)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.ImagenData)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Disponible)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Disponible)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Categoria)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Categoria)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+<head>
+    <style>
+        .nav-item a {
+            text-decoration: none; /* Quitar subrayado */
+            color: inherit; /* Heredar el color del texto */
+            display: inline-block; /* Hacerlo un bloque en línea para aplicar padding correctamente */
+            cursor: pointer; /* Cambiar el cursor a puntero */
+            font-size: 27px;
+        }
+    </style>
+</head>
+<div class="content-page-container full-reset custom-scroll-containers">
+    <nav class="navbar-user-top full-reset">
+        <ul class="list-unstyled full-reset">
+            <figure>
+                <img src="~/assets/img/user01.png" alt="user-picture" class="img-responsive img-circle center-box">
+            </figure>
+            <li class="user-info" style="color:#fff; cursor:default;">
+                @if (User.Identity.IsAuthenticated)
+                {
+                <li class="user-info">
+                    <div class="user-details">
+                        <span data-placement="bottom" title="Usuario">Bienvenido, @User.FindFirst(ClaimTypes.Role)?.Value @User.Identity.Name</span>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="" asp-area="" asp-controller="Login" asp-action="Salir">
+                        <i class="zmdi zmdi-power"></i>
+                    </a>
+                </li>
+                }
+            </li>
+            <li class="tooltips-general btn-help" data-placement="bottom" title="Ayuda">
+                <i class="zmdi zmdi-help-outline zmdi-hc-fw"></i>
+            </li>
+            <li class="mobile-menu-button visible-xs" style="float: left !important;">
+                <i class="zmdi zmdi-menu"></i>
+            </li>
+            <li class="desktop-menu-button hidden-xs" style="float: left !important;">
+                <i class="zmdi zmdi-swap"></i>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1 class="all-tittles">Sistema Restaurante Los Dragones <small>Detalles del Plato</small></h1>
+        </div>
+    </div>
+    <div class="container-fluid" style="margin: 50px 0;">
+        <div class="row">
+            <div class="col-xs-12 col-sm-4 col-md-3">
+                <img src="~/assets/img/user01.png" alt="user" class="img-responsive center-box" style="max-width: 110px;">
+            </div>
+            <div class="col-xs-12 col-sm-8 col-md-8 text-justify lead">
+                Bienvenido a la sección de detalles del Plato. En esta seccion podras visualizar los datos del Plato seleccionado.
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-12 lead">
+                <ol class="breadcrumb">
+                    <li class="active">Detalle del Plato</li>
+                    <li><a asp-controller="Plato" asp-action="Index">Platos</a></li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <div class="container-flat-form">
+        <div class="title-flat-form title-flat-blue">Detalles del Plato</div>
+        <div class="container-fluid">
+            <h2 class="all-tittles">@Html.DisplayNameFor(model => model.Nombre) : <small>@Html.DisplayFor(model => model.Nombre)</small></h2>
+            <h2 class="all-tittles">@Html.DisplayNameFor(model => model.Precio) : <small>@Html.DisplayFor(model => model.Precio)</small></h2>
+            <h2 class="all-tittles">@Html.DisplayNameFor(model => model.Categoria) : <small>@Html.DisplayFor(model => model.Categoria)</small></h2>
+            <h2 class="all-tittles">Disponible : <small>@Html.DisplayFor(model => model.Disponible)</small></h2>
+            <!-- Si tienes una manera de mostrar la imagen, puedes incluirlo aquí -->
+            @if (Model.ImagenData != null)
+            {
+                <h2 class="all-tittles">Imagen:</h2>
+                <img src="data:image/jpeg;base64,@Convert.ToBase64String(Model.ImagenData)" alt="Imagen del Plato" style="max-width: 100%; height: auto;" />
+            }
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Editar</a>
+            <a asp-action="Index" class="btn btn-primary">Volver a la lista</a>
+        </div>
+    </div>
 </div>
