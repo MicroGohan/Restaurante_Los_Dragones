@@ -242,9 +242,25 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
                     document.Add(new iTextSharp.text.Paragraph($"Subtotal: {factura.Subtotal}"));
                     document.Add(new iTextSharp.text.Paragraph($"IVA: {factura.Iva}"));
                     document.Add(new iTextSharp.text.Paragraph($"Total a Pagar: {factura.TotalPagar}"));
+                    document.Add(new iTextSharp.text.Paragraph($"Observaciones: {factura.Observaciones}"));
+                    document.Add(new iTextSharp.text.Paragraph($"Método de Pago: {factura.MetodoPago}"));
                     document.Add(new iTextSharp.text.Paragraph(""));
-                    // Continúa agregando los detalles que consideres necesarios
+                    // Agregar detalles de la comida comprada
+                    document.Add(new iTextSharp.text.Paragraph("Detalles de la Compra:"));
+                    document.Add(new iTextSharp.text.Paragraph(" "));
+                    PdfPTable table = new PdfPTable(3); // 3 columnas: Nombre, Precio, Cantidad
+                    table.AddCell("Nombre");
+                    table.AddCell("Precio");
+                    table.AddCell("Cantidad");
 
+                    foreach (var detalle in factura.Pedidos.Detalles)
+                    {
+                        table.AddCell(detalle.Nombre);
+                        table.AddCell(detalle.Precio.ToString());
+                        table.AddCell(detalle.Cantidad.ToString());
+                    }
+
+                    document.Add(table);
                 }
                 catch (Exception ex)
                 {
