@@ -144,7 +144,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    ¿Está seguro de que desea eliminar este usuario?
+                    ¿Está seguro de que desea eliminar esta factura?
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
@@ -157,13 +157,13 @@
 
 
     <script>
-        function confirmDelete(userId) {
+        function confirmDelete(facturaId) {
             $('#confirmDeleteModal').modal('show');
 
             // Cuando se confirme la eliminación
             $('#confirmDeleteButton').click(function () {
                 // Envía el formulario para eliminar
-                document.getElementById('form-delete-' + userId).submit();
+                document.getElementById('form-delete-' + facturaId).submit();
             });
         }
     </script>
