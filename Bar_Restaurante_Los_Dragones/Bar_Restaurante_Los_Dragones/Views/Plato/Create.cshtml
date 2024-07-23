@@ -66,7 +66,7 @@
     <div class="container-fluid">
         <div class="container-flat-form">
             <div class="title-flat-form title-flat-blue">Crear Nuevo Plato</div>
-            <form asp-action="Create">
+            <form asp-action="Create" enctype="multipart/form-data">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="row">
                     <div class="col-xs-12">
@@ -90,8 +90,8 @@
                     </div>
                     <div class="col-xs-12 col-sm-6">
                         <div class="form-group">
-                            <label asp-for="ImagenData" class="control-label"></label>
-                            <input asp-for="ImagenData" class="form-control" />
+                            <label asp-for="ImagenData" class="control-label">Imagen</label>
+                            <input type="file" name="imagenArchivo" class="form-control" />
                             <span asp-validation-for="ImagenData" class="text-danger"></span>
                         </div>
                     </div>

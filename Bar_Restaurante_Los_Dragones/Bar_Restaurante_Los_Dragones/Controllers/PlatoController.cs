@@ -54,10 +54,19 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nombre,Precio,ImagenData,Disponible,Categoria")] Plato plato)
+        public async Task<IActionResult> Create([Bind("Id,Nombre,Precio,ImagenData,Disponible,Categoria")] Plato plato, IFormFile imagenArchivo)
         {
             if (ModelState.IsValid)
             {
+                if (imagenArchivo != null && imagenArchivo.Length > 0)
+                {
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        await imagenArchivo.CopyToAsync(memoryStream);
+                        plato.ImagenData = memoryStream.ToArray();
+                    }
+                }
+
                 _context.Add(plato);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -86,7 +95,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Precio,ImagenData,Disponible,Categoria")] Plato plato)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Precio,ImagenData,Disponible,Categoria")] Plato plato, IFormFile ImagenData)
         {
             if (id != plato.Id)
             {
@@ -97,6 +106,25 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
             {
                 try
                 {
+                    if (ImagenData != null && ImagenData.Length > 0)
+                    {
+                        // Si se cargó una nueva imagen, asignar los datos de la nueva imagen al auto
+                        using (var memoryStream = new MemoryStream())
+                        {
+                            await ImagenData.CopyToAsync(memoryStream);
+                            plato.ImagenData = memoryStream.ToArray();
+                        }
+                    }
+                    else
+                    {
+                        // Si no se cargó una nueva imagen, obtener los datos de imagen actuales del auto de la base de datos
+                        var existingAuto = await _context.Platos.AsNoTracking().FirstOrDefaultAsync(z => z.Id == plato.Id);
+                        if (existingAuto != null)
+                        {
+                            plato.ImagenData = existingAuto.ImagenData;
+                        }
+                    }
+
                     _context.Update(plato);
                     await _context.SaveChangesAsync();
                 }

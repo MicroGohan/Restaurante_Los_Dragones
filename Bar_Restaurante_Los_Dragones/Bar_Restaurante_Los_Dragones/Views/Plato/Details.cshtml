@@ -84,11 +84,15 @@
             <h2 class="all-tittles">@Html.DisplayNameFor(model => model.Precio) : <small>@Html.DisplayFor(model => model.Precio)</small></h2>
             <h2 class="all-tittles">@Html.DisplayNameFor(model => model.Categoria) : <small>@Html.DisplayFor(model => model.Categoria)</small></h2>
             <h2 class="all-tittles">Disponible : <small>@Html.DisplayFor(model => model.Disponible)</small></h2>
-            <!-- Si tienes una manera de mostrar la imagen, puedes incluirlo aquí -->
-            @if (Model.ImagenData != null)
+            @if (Model.ImagenData != null && Model.ImagenData.Length > 0)
             {
-                <h2 class="all-tittles">Imagen:</h2>
-                <img src="data:image/jpeg;base64,@Convert.ToBase64String(Model.ImagenData)" alt="Imagen del Plato" style="max-width: 100%; height: auto;" />
+                var imageBase64 = Convert.ToBase64String(Model.ImagenData);
+                var imageUrl = $"data:image;base64,{imageBase64}";
+                <img src="@imageUrl" alt="Auto Image" class="img-thumbnail" style="max-width: 200px; max-height: 200px;" />
+            }
+            else
+            {
+                <span>No Image Available</span>
             }
             <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Editar</a>
             <a asp-action="Index" class="btn btn-primary">Volver a la lista</a>
