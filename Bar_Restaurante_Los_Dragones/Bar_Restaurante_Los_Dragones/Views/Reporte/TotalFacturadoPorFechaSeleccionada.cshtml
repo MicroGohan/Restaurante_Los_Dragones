@@ -16,6 +16,18 @@
             cursor: pointer; /* Cambiar el cursor a puntero */
             font-size: 27px;
         }
+
+        .content-page {
+            max-width: 900px; /* Ancho máximo del contenido */
+            margin: 0 auto; /* Centrar horizontalmente */
+            padding: 20px; /* Padding interno */
+            background-color: #fff; /* Fondo blanco para el contenido */
+            border-radius: 8px; /* Bordes redondeados */
+            display: flex; /* Usar flexbox para centrar contenido */
+            flex-direction: column; /* Colocar los elementos en una columna */
+            align-items: center; /* Centrar los elementos horizontalmente */
+            justify-content: center; /* Centrar los elementos verticalmente */
+        }
     </style>
 </head>
 <div class="content-page-container full-reset custom-scroll-containers">
@@ -50,6 +62,7 @@
             </li>
         </ul>
     </nav>
+    <div class="content-page">
 <h2>@ViewData["Title"]</h2>
 
     <form asp-action="TotalFacturadoPorFechaSeleccionada" method="post">
@@ -82,20 +95,19 @@
         <form asp-action="DownloadPDFPorFechaSeleccionada" method="post">
             <input type="hidden" id="fechaInicioHidden" name="fechaInicio" value="@fechaInicio" required />
             <input type="hidden" id="fechaFinHidden" name="fechaFin" value="@fechaFin" required />
-            <button type="submit" class="btn btn-success">Descargar PDF</button>
+            <button type="submit" class="btn btn-primary">Descargar PDF</button>
         </form>
     }
 
 @if (facturas != null && facturas.Any())
 {
     <h3>Facturas del Período</h3>
-    <table>
-        <thead>
+        <table class="table table-secondary table-bordered table-hover" id="tabla">
+            <thead class="thead-dark">
             <tr>
                 <th>Fecha</th>
                 <th>Nombre Cliente</th>
                 <th>Subtotal</th>
-                <th>Descuento</th>
                 <th>IVA</th>
                 <th>Total a Pagar</th>
             </tr>
@@ -103,18 +115,20 @@
         <tbody>
             @foreach (var factura in facturas)
             {
-                <tr>
-                    <td>@factura.Fecha.ToString("dd/MM/yyyy")</td>
-                    <td>@factura.NombreCliente</td>
-                    <td>@factura.Subtotal</td>
-                    <td>@factura.Descuento</td>
-                    <td>@factura.Iva</td>
-                    <td>@factura.TotalPagar</td>
-                </tr>
+                    <tr>
+                        <td>@factura.Fecha.ToString("dd/MM/yyyy")</td>
+                        <td>@factura.NombreCliente</td>
+                        <td>@factura.Subtotal</td>
+                        <td>%@factura.Iva</td>
+                        <td>@factura.TotalPagar</td>
+                    </tr>
             }
         </tbody>
     </table>
 }
+    <a class="btn btn-primary" style="margin-top: 10px;" href="@Url.Action("Index", "Reporte")">Volver a Reportes</a>
+</div>
+</div>
     <script>
         function updateHiddenFechaInicio() {
             var fechaInicioDisplay = document.getElementById('fechaInicio').value;
@@ -124,4 +138,32 @@
             var fechaFinDisplay = document.getElementById('fechaFin').value;
             document.getElementById('fechaFinHidden').value = fechaFinDisplay;
         }
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('#tabla').DataTable({
+                language: {
+                    processing: "Procesando...",
+                    search: "Buscar:",
+                    lengthMenu: "Mostrar _MENU_ elementos",
+                    info: "Mostrando del _START_ al _END_ de un total de _TOTAL_ elementos",
+                    infoEmpty: "Mostrando 0 elementos",
+                    infoFiltered: "(filtrado de un total de _MAX_ elementos)",
+                    infoPostFix: "",
+                    loadingRecords: "Cargando...",
+                    zeroRecords: "No se encontraron registros coincidentes",
+                    emptyTable: "No hay datos disponibles en la tabla",
+                    paginate: {
+                        first: "Primero",
+                        previous: "Anterior",
+                        next: "Siguiente",
+                        last: "Último"
+                    },
+                    aria: {
+                        sortAscending: ": activar para ordenar la columna de manera ascendente",
+                        sortDescending: ": activar para ordenar la columna de manera descendente"
+                    }
+                }
+            });
+        });
     </script>

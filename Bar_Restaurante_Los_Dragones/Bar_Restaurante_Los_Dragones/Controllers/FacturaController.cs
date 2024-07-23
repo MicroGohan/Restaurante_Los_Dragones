@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Bar_Restaurante_Los_Dragones.Models;
 using Dal.Dragones;
+using System.Configuration;
+using System.Security.Claims;
 
 namespace Bar_Restaurante_Los_Dragones.Controllers
 {
@@ -66,7 +68,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
             {
                 _context.Add(factura);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", new { id = factura.id});
             }
             ViewBag.MetodoPagoList = new SelectList(Enum.GetValues(typeof(MetodoPago)).Cast<MetodoPago>());
             return View(factura);
@@ -90,15 +92,20 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
             {
                 return NotFound();
             }
+
             var factura = new Dal.Dragones.Factura
             {
-
                 PedidoId = pedido.Id,
                 Fecha = DateTime.Now,
                 Subtotal = pedido.Total,
-                Iva = 13, 
+                Iva = (int)13m, 
                 Pedidos = pedido
-            };
+        };
+
+            factura.TotalPagar = factura.Subtotal+((factura.Iva/100m)*factura.Subtotal);
+
+            factura.Responsable = User.Identity.Name;
+
 
 
             return View(factura);
