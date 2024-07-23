@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "Pedidos en Cocina";
+    var facturarUrl = Url.Action("Create", "Factura");
 }
 
 <!DOCTYPE html>
@@ -10,7 +11,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-
         .container-cards {
             display: flex;
             flex-wrap: wrap;
@@ -74,43 +74,38 @@
         }
 
             .btn-actions .btn {
-                padding: 7px 12px; /* Aumenta el tamaño del botón */
-                font-size: 17px; /* Ajusta el tamaño del texto dentro del botón */
+                padding: 8px 15px; /* Aumenta el tamaño del botón */
+                font-size: 19px; /* Ajusta el tamaño del texto dentro del botón */
+                border-radius: 10px; /* Redondea un poco los bordes del botón */
             }
 
-        .modal-content {
-            text-align: center;
+        .toast-custom {
+            top: 50%; /* Centra verticalmente */
+            right: 0; /* Alineado a la derecha */
+            transform: translateY(-50%); /* Ajusta la posición para centrar */
         }
 
-        .warning-icon {
-            font-size: 50px;
-            color: #ffcc00; /* Color amarillo para el icono de advertencia */
-        }
+            .toast-custom .toast-message {
+                font-size: 18px; /* Tamaño de la fuente */
+                font-weight: bold; /* Opcional: para que el texto sea negrita */
+            }
 
-        #modalDetallesPendientes .modal-dialog {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh; /* Altura mínima para centrar verticalmente */
-            margin: 0;
-            width: 100%; /* Añadido para asegurar que ocupa todo el ancho */
-        }
+            .toast-custom .toast-title {
+                font-size: 20px; /* Tamaño de la fuente del título de la notificación */
+                font-weight: bold; /* Opcional: para que el título sea negrita */
+            }
 
-        #modalDetallesPendientes .modal-dialog-centered {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%; /* Añadido para asegurar que ocupa todo el ancho */
-        }
 
-        /* Estilo para el overlay oscuro del modal */
-        .modal-backdrop.show {
-            opacity: 0.5;
-        }
 
 
 
     </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+
 </head>
 <body>
     <div class="content-page-container full-reset custom-scroll-containers">
@@ -183,13 +178,14 @@
                     <div class="card-body">
                         <h5 class="card-title">Mesa: @pedido.Mesa.NumMesa</h5>
                         <p class="card-text">Fecha: @pedido.Fecha.ToString("M/d/yyyy h:mm:ss tt")</p>
+                        <p class="card-text">Estado: @pedido.Estado</p> <!-- Estado del pedido -->
                         <p class="card-text">Total: @pedido.Total</p>
                         <p class="card-text">Detalles:</p>
                         @foreach (var detalle in pedido.Detalles)
                         {
                             <p>
                                 @detalle.Nombre - Cantidad: @detalle.Cantidad
-                                @if (detalle.ListaComida)
+                                @if (detalle.Disponible)
                                 {
                                     <span class="text-success">&#x2714;</span> <!-- Check mark -->
                                 }
@@ -197,7 +193,7 @@
                                 {
                                     <span class="text-danger">&#x26A0;</span> <!-- Warning icon -->
                                 }
-                                @if (detalle.Categoria == "Comida" && detalle.ListaComida == false)
+                                @if (detalle.Categoria == "Bebida" && detalle.Disponible == false || (detalle.Categoria == "Comida" && detalle.ListaComida && detalle.Disponible == false))
                                 {
                                     <button class="btn btn-success"
                                             onclick="marcarComoEntregado('@pedido.Id', '@detalle.Id')">
@@ -206,48 +202,41 @@
                                 }
                             </p>
                         }
-                        <a asp-action="DetallesCocina" asp-route-id="@pedido.Id" class="btn btn-primary">Ver Orden</a>
+                        <a asp-action="DetallesPedido" asp-route-id="@pedido.Id" class="btn btn-primary">Detalles</a>
+
                         <div class="btn-actions">
-                            <button class="btn btn-info" onclick="verificarDetallesPendientes('@pedido.Id')">Finalizar Pedido</button>
+                            @if (pedido.Estado == "PENDIENTE")
+                            {
+                                <button class="btn btn-info" onclick="mandarACocina('@pedido.Id')">Mandar a cocina</button>
+                            }
+                            @if (pedido.Estado == "ORDEN LISTA")
+                            {
+                                <form asp-controller="Factura" asp-action="Create" asp-route-id="@pedido.Id" method="get" style="display:inline;">
+                                    <button type="submit" class="btn btn-info">Facturar</button>
+                                </form>
+                            }
                         </div>
-                        
                     </div>
                 </div>
             }
-            
         </div>
-
-        <div class="modal fade" id="modalDetallesPendientes" tabindex="-1" role="dialog" aria-labelledby="modalDetallesPendientesLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="modalDetallesPendientesLabel">Detalles Pendientes</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <span class="warning-icon">&#x26A0;</span>
-                        <p>No se puede finalizar el pedido porque faltan los siguientes productos que aún no están preparados:</p>
-                        <p id="listaDetallesPendientes"></p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Volver</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
     </div>
 
-    
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
     <script>
+        const facturarUrl = "@facturarUrl";
+
+        let notificacionMostrada = new Set();
+
+        const sound = new Audio('/assets/Sonido02.mp3');
+
         $(document).ready(function () {
             function actualizarPedidos() {
                 $.ajax({
-                    url: '@Url.Action("ObtenerPedidosCocina")',
+                    url: '@Url.Action("ObtenerPedidosMesero")',
                     method: 'GET',
                     success: function (data) {
                         console.log(data); // Para inspeccionar los datos recibidos
@@ -274,41 +263,81 @@
                                 // Crear el contenido HTML para los detalles del pedido
                                 let detallesHtml = '';
                                 pedido.detalles.forEach(function (detalle) {
-                                    let estadoIcono = detalle.listaComida
+                                    let estadoIcono = detalle.disponible
                                         ? '<span class="text-success">&#x2714;</span>' // Check mark
                                         : '<span class="text-danger">&#x26A0;</span>'; // Warning icon
 
+                                    // Botón "Entregado" solo para bebidas o comidas si `ListaComida` es `true`
                                     let botonEntregado = '';
-                                    if (detalle.categoria == "Comida" && detalle.listaComida == false) {
+
+                                    if (detalle.categoria == 'Bebida' && detalle.disponible == false ||
+                                        (detalle.categoria == 'Comida' && detalle.listaComida && detalle.disponible == false)) {
                                         botonEntregado = `
-                                            <button class="btn btn-success"
-                                                    onclick="marcarComoEntregado('${pedido.id}', '${detalle.id}')">
-                                                Entregado
-                                            </button>`;
+                                    <button class="btn btn-success" onclick="marcarComoEntregado('${pedido.id}', '${detalle.id}')">
+                                        Entregado
+                                    </button>`;
+
+                                        // Crear una clave única para el detalle (ej. combinación de ID de pedido y detalle)
+                                        let claveDetalle = `${pedido.id}-${detalle.id}`;
+
+                                        // Mostrar notificación solo si es nuevo
+                                        if (!notificacionMostrada.has(claveDetalle)) {
+                                            toastr.success(`
+                                                <p>
+                                                    ${detalle.nombre} - Cantidad: ${detalle.cantidad}<br>
+                                                    Mesa número: ${pedido.mesa.numMesa}<br>
+                                                    Está lista para ser entregada.
+                                                </p>
+                                            `);
+                                            sound.play().catch(error => {
+                                                console.error('Error al reproducir el sonido:', error);
+                                            });
+                                            notificacionMostrada.add(claveDetalle); // Marca el detalle como notificado
+                                        }
                                     }
 
                                     detallesHtml += `
-                                        <p>
-                                            ${detalle.nombre} - Cantidad: ${detalle.cantidad}
-                                            ${estadoIcono}
-                                            ${botonEntregado}
-                                        </p>`;
+                                                        <p>
+                                                            ${detalle.nombre} - Cantidad: ${detalle.cantidad}
+                                                            ${estadoIcono}
+                                                            ${botonEntregado}
+                                                        </p>`;
                                 });
+
+                                // Botones de acciones adicionales
+                                let accionesHtml02 ='';
+
+                                let accionesHtml = `
+                                                            <a href="/Pedido/DetallesPedido/${pedido.id}" class="btn btn-primary">Detalles</a>`;
+                                if (pedido.estado === 'PENDIENTE') {
+                                    accionesHtml02 = `
+                                                <button class="btn btn-info" onclick="mandarACocina('${pedido.id}')">Mandar a cocina</button>`;
+                                }
+                                if (pedido.estado === 'ORDEN LISTA') {
+                                    accionesHtml02 += `
+                                                    <form action="${facturarUrl}" method="get" style="display:inline;">
+                                                        <input type="hidden" name="id" value="${pedido.id}">
+                                                        <button type="submit" class="btn btn-info">Facturar</button>
+                                                   </form>`;
+                                }
+
 
                                 $('#pedidos-container').append(
                                     `<div class="card">
-                                        <div class="card-body">
-                                            <h5 class="card-title">Mesa: ${pedido.mesa.numMesa}</h5>
-                                            <p class="card-text">Fecha: ${fechaFormateada}</p>
-                                            <p class="card-text">Total: ${pedido.total}</p>
-                                            <p class="card-text">Detalles:</p>
-                                            ${detallesHtml}
-                                            <a href="/Pedido/DetallesCocina/${pedido.id}" class="btn btn-primary">Ver Orden</a>
-                                            <div class="btn-actions">
-                                                        <button class="btn btn-info" onclick="verificarDetallesPendientes('${pedido.id}')">Finalizar Pedido</button>
-                                            </div>
-                                        </div>
-                                    </div>`
+                                                <div class="card-body">
+                                                    <h5 class="card-title">Mesa: ${pedido.mesa.numMesa}</h5>
+                                                    <p class="card-text">Fecha: ${fechaFormateada}</p>
+                                                    <p class="card-text">Estado: ${pedido.estado}</p>
+                                                    <p class="card-text">Total: ${pedido.total}</p>
+                                                    <p class="card-text">Detalles:</p>
+                                                    ${detallesHtml}
+                                                    ${accionesHtml}
+                                                    <div class="btn-actions">
+                                                            ${accionesHtml02}
+                                                    </div>
+                                                    
+                                                </div>
+                                            </div>`
                                 );
                             } else {
                                 console.error('Pedido sin Mesa o NumMesa:', pedido);
@@ -325,7 +354,7 @@
 
             window.marcarComoEntregado = function (pedidoId, detalleId) {
                 $.ajax({
-                    url: '/Pedido/CambiarEstadoEntregadoCocina', // Reemplaza con la URL correcta si es diferente
+                    url: '/Pedido/CambiarEstadoEntregadoMesero', // Reemplaza con la URL correcta si es diferente
                     method: 'POST',
                     data: {
                         idPedido: pedidoId,
@@ -342,62 +371,49 @@
                 });
             };
 
-            window.verificarDetallesPendientes = function (pedidoId) {
+            window.mandarACocina = function (pedidoId) {
+                console.log('mandarACocina llamada con idPedido:', pedidoId); // Verifica si se llama correctamente
                 $.ajax({
-                    url: '@Url.Action("ObtenerDetallesPedido")',
-                    method: 'GET',
-                    data: { idPedido: pedidoId },
-                    success: function (response) {
-                        if (response.success) {
-                            if (response.detallesPendientes.length > 0) {
-                                // Mostrar los detalles pendientes en el modal
-                                $('#listaDetallesPendientes').empty();
-                                response.detallesPendientes.forEach(function (detalle) {
-                                    $('#listaDetallesPendientes').append('<li>' + detalle.nombre + ' - Cantidad: ' + detalle.cantidad + '</li>');
-                                });
-                                $('#modalDetallesPendientes').modal('show');
-                            } else {
-                                // Si no hay detalles pendientes, finalizar el pedido
-                                finalizarPedido(pedidoId);
-                            }
-                        } else {
-                            console.error('Error al obtener detalles del pedido:', response.message);
-                        }
-                    },
-                    error: function (jqXHR, textStatus, errorThrown) {
-                        console.error('Error al obtener detalles del pedido:', textStatus, errorThrown);
-                    }
-                });
-            };
-
-            window.finalizarPedido = function (pedidoId) {
-                $.ajax({
-                    url: '/Pedido/FinalizarPedido02',
+                    url: '/Pedido/MandarACocinaMesero',
                     method: 'POST',
                     data: {
-                        idPedido: pedidoId
+                        id: pedidoId
                     },
                     success: function (response) {
+                        console.log('Respuesta de MandarACocina:', response); // Verifica la respuesta del servidor
                         if (response.success) {
-                            console.log('Pedido finalizado:', pedidoId);
-                            // Actualizar la vista después de finalizar el pedido
+                            console.log('Pedido mandado a cocina:', pedidoId);
                             actualizarPedidos();
                         } else {
-                            console.error('Error al finalizar el pedido:', response.message);
+                            console.error('Error al Mandar el pedido:', response.message);
                         }
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
-                        console.error('Error al finalizar el pedido:', textStatus, errorThrown);
+                        console.error('Error al Mandar el pedido:', textStatus, errorThrown);
                     }
                 });
             };
 
-            window.closeErrorModal = function () {
-                $('#errorModal').hide();
+            toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": true,
+                "positionClass": "toast-custom",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
             };
 
-        });
 
+        });
     </script>
 </body>
 </html>

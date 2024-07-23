@@ -72,6 +72,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
             return View(factura);
         }
 
+        [HttpGet]
         public async Task<IActionResult> Create(int? id)
         {
 

@@ -20,6 +20,16 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
             return View(pedidos);
         }
 
+        public async Task<IActionResult> Mesero()
+        {
+            var pedidos = await _context.Pedidos
+                .Include(p => p.Mesa)
+                .Include(p => p.Detalles)
+                .Where(p => p.Estado != "ENTREGADO")
+                .ToListAsync();
+            return View(pedidos);
+        }
+
         public async Task<IActionResult> CrearPedido()
         {
             // Cargar las mesas con sus pedidos asociados
@@ -202,6 +212,22 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [HttpPost]
+        public async Task<IActionResult> MandarACocinaMesero(int id)
+        {
+            var pedido = await _context.Pedidos.FindAsync(id);
+            if (pedido == null)
+            {
+                return NotFound();
+            }
+
+            pedido.Estado = "LISTO PARA PREPARAR";
+            _context.Update(pedido);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { success = true, message = "Pedido en cocina exitosamente" });
+        }
+
 
         public async Task<IActionResult> Cocina()
         {
@@ -246,6 +272,23 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
             return RedirectToAction(nameof(Cocina));
         }
 
+        [HttpPost]
+        public async Task<IActionResult> FinalizarPedido02(int idPedido)
+        {
+            var pedido = await _context.Pedidos.FindAsync(idPedido);
+            if (pedido == null)
+            {
+                return NotFound();
+            }
+
+            pedido.Estado = "ORDEN LISTA";
+            _context.Update(pedido);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { success = true, message = "Pedido finalizado exitosamente" });
+        }
+
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -267,6 +310,29 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
             await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EntregarAMesaMesero(int id)
+        {
+            var pedido = await _context.Pedidos
+                .Include(p => p.Mesa)
+                .FirstOrDefaultAsync(p => p.Id == id);
+
+            if (pedido == null)
+            {
+                return NotFound();
+            }
+
+            pedido.Estado = "ENTREGADO";
+            pedido.Mesa.Estado = "DISPONIBLE";
+            _context.Update(pedido);
+            _context.Update(pedido.Mesa);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { success = true, message = "Pedido Completado exitosamente" });
         }
 
 
@@ -385,23 +451,139 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
             return RedirectToAction(nameof(DetallesPedido), new { id = idPedido });
         }
 
+        [HttpPost]
+        public async Task<IActionResult> CambiarEstadoEntregadoCocina(int idPedido, List<int> detallesSeleccionados)
+        {
+            var pedido = await _context.Pedidos
+                .Include(p => p.Detalles)
+                .FirstOrDefaultAsync(p => p.Id == idPedido);
 
+            if (pedido == null)
+            {
+                return NotFound();
+            }
+
+            foreach (var detalleId in detallesSeleccionados)
+            {
+                var detalle = pedido.Detalles.FirstOrDefault(d => d.Id == detalleId);
+                if (detalle != null)
+                {
+                    detalle.ListaComida = true; // Cambiamos el estado a "Entregado"
+                }
+            }
+
+            await _context.SaveChangesAsync();
+
+            return Json(new { success = true });
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> CambiarEstadoEntregadoMesero(int idPedido, List<int> detallesSeleccionados)
+        {
+            var pedido = await _context.Pedidos
+                .Include(p => p.Detalles)
+                .FirstOrDefaultAsync(p => p.Id == idPedido);
+
+            if (pedido == null)
+            {
+                return NotFound();
+            }
+
+            foreach (var detalleId in detallesSeleccionados)
+            {
+                var detalle = pedido.Detalles.FirstOrDefault(d => d.Id == detalleId);
+                if (detalle != null)
+                {
+                    detalle.Disponible = true; // Cambiamos el estado a "Entregado"
+                }
+            }
+
+            await _context.SaveChangesAsync();
+
+            return Json(new { success = true });
+        }
+
+        public IActionResult ObtenerPedidosCocina()
+        {
+            var pedidos = _context.Pedidos
+                                  .Include(p => p.Mesa)
+                                  .Include(p => p.Detalles)
+                                  .Where(p => p.Estado == "LISTO PARA PREPARAR")
+                                  .Select(p => new
+                                  {
+                                      p.Id,
+                                      Mesa = new { p.Mesa.NumMesa },
+                                      p.Fecha,
+                                      Total = p.Total.ToString("F2"),
+                                      Detalles = p.Detalles.Select(d => new
+                                      {
+                                          d.Id,
+                                          d.Nombre,
+                                          d.Cantidad,
+                                          d.ListaComida,
+                                          d.Categoria,
+                                      }).ToList()
+                                  })
+                                  .ToList();
+
+            return Json(pedidos);
+        }
+
+        public IActionResult ObtenerPedidosMesero()
+        {
+            var pedidos = _context.Pedidos
+                                  .Include(p => p.Mesa)
+                                  .Include(p => p.Detalles)
+                                  .Where(p => p.Estado != "ENTREGADO")
+                                  .Select(p => new
+                                  {
+                                      p.Id,
+                                      Mesa = new { p.Mesa.NumMesa },
+                                      p.Fecha,
+                                      Total = p.Total.ToString("F2"),
+                                      p.Estado,
+                                      Detalles = p.Detalles.Select(d => new
+                                      {
+                                          d.Id,
+                                          d.Nombre,
+                                          d.Cantidad,
+                                          d.ListaComida,
+                                          d.Categoria,
+                                          d.Disponible,
+                                      }).ToList()
+                                  })
+                                  .ToList();
+
+            return Json(pedidos);
+        }
 
         [HttpGet]
         public JsonResult ObtenerDetallesPedido(int idPedido)
         {
-            var detalles = _context.DetallePedidos
-                .Where(d => d.IdPedido == idPedido)
+            var pedido = _context.Pedidos
+                .Include(p => p.Detalles)
+                .FirstOrDefault(p => p.Id == idPedido);
+
+            if (pedido == null)
+            {
+                return Json(new { success = false, message = "Pedido no encontrado." });
+            }
+
+            var detallesPendientes = pedido.Detalles
+                .Where(d => d.Categoria == "Comida" && !d.ListaComida)
                 .Select(d => new
                 {
-                    Id = d.Id,
-                    Categoria = d.Categoria,
-                    ListaComida = d.ListaComida
-                })
-                .ToList();
+                    d.Id,
+                    d.Nombre,
+                    d.Cantidad
+                }).ToList();
 
-            return Json(new { detalles = detalles });
+            return Json(new { success = true, detallesPendientes });
         }
+
+
+
 
 
 

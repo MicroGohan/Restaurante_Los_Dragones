@@ -27,6 +27,8 @@ namespace Dal.Dragones
         public int PedidoId { get; set; }
         public virtual Pedido Pedidos { get; set; }
 
+
+
     }
     public enum MetodoPago
     {
