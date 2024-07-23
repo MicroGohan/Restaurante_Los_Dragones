@@ -115,7 +115,7 @@
                 <h2 class="all-tittles">Estado del pedido : <small>@Html.DisplayFor(model => model.Pedidos.Estado)</small></h2>
                 <a asp-action="Index">
                     <button class="btn btn-primary">
-                        Voler a facturas
+                        Volver a facturas
                     </button>
                 </a>
                 <a class="btn btn-primary" href="@Url.Action("DownloadPDF", "Factura", new { id = Model.id })">Descargar PDF</a>

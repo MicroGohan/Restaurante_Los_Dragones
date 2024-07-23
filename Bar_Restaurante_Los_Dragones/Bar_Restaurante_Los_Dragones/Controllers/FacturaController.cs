@@ -275,6 +275,11 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
                 .Include(f => f.Pedidos)
                 .FirstOrDefaultAsync(m => m.id == id);
 
+            var pedido = await _context.Pedidos
+                .Include(p => p.Mesa)
+                .Include(p => p.Detalles)
+                .FirstOrDefaultAsync(p => p.Id == factura.PedidoId);
+
             if (factura == null)
             {
                 return NotFound();

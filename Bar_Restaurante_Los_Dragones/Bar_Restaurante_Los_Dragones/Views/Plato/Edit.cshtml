@@ -90,6 +90,8 @@
                             <span asp-validation-for="Precio" class="text-danger"></span>
                             <label>Precio</label>
                         </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6">
                         <div class="form-group">
                             <label>Imagen Actual:</label>
                             @if (Model.ImagenData != null && Model.ImagenData.Length > 0)
@@ -98,24 +100,28 @@
                             }
                             else
                             {
-                                <span>No Image Available</span>
+                                <span>No hay imagen disponible</span>
                             }
                         </div>
                         <div class="form-group">
                             <label asp-for="ImagenData" class="control-label">Imagen</label>
-                            <input type="file" name="ImagenData" class="form-control" accept="image/*" />
+                            <input type="file" id="ImagenData" name="ImagenData" class="form-control" />
                             <span asp-validation-for="ImagenData" class="text-danger"></span>
                         </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6">
                         <div class="form-group">
                             <label>Imagen Nueva:</label>
                             <img id="imagenVistaPrevia" src="#" alt="Vista Previa de la Imagen" style="max-width: 200px; display: none;" />
                         </div>
-
-                    <div class="form-group">
-                        <div class="checkbox">
-                            <label>
-                                <input asp-for="Disponible" /> @Html.DisplayNameFor(model => model.Disponible)
-                            </label>
+                    </div>
+                    <div class="col-xs-12">
+                        <div class="form-group">
+                            <div class="checkbox">
+                                <label>
+                                    <input asp-for="Disponible" /> @Html.DisplayNameFor(model => model.Disponible)
+                                </label>
+                            </div>
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-6 ">
@@ -133,7 +139,7 @@
                     <div class="col-xs-12 col-sm-6">
                         <button type="reset" class="btn btn-info" style="margin-right: 20px;"><i class="zmdi zmdi-roller"></i> &nbsp;&nbsp; Limpiar</button>
                         <button type="submit" value="Save" class="btn btn-primary"><i class="zmdi zmdi-floppy"></i> &nbsp;&nbsp; Guardar</button>
-                        <a asp-action="Index">Volver a la lista</a>
+                        <a asp-action="Index">Volver a la lista<i class="zmdi zmdi-long-arrow-left"></i></a>
                     </div>
                 </div>
             </form>
