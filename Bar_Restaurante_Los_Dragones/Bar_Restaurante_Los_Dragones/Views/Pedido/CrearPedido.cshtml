@@ -280,14 +280,23 @@
                 var platoPrecio = parseFloat(selectedPlato.data('precio'));
 
                 if (platoId) {
-                    var nuevaFila = `
-                                <tr data-id="${platoId}" data-precio="${platoPrecio}">
-                                    <td>${platoNombre}</td>
-                                    <td><input type="number" name="PlatosSeleccionados[${platoId}]" value="1" min="1" max="10" class="cantidadPlato form-control" /></td>
-                                    <td><button type="button" class="btn btn-danger btn-eliminar" onclick="eliminarPlato(this)">Eliminar</button></td>
-                                </tr>
-                            `;
-                    $('#platosSeleccionados').append(nuevaFila);
+                    var filaExistente = $('#platosSeleccionados tr[data-id="' + platoId + '"]');
+                    if (filaExistente.length > 0) {
+                        // Si el plato ya existe, aumentar la cantidad
+                        var cantidadInput = filaExistente.find('.cantidadPlato');
+                        var nuevaCantidad = parseInt(cantidadInput.val()) + 1;
+                        cantidadInput.val(nuevaCantidad);
+                    } else {
+                        // Si el plato no existe, agregar una nueva fila
+                        var nuevaFila = `
+                        <tr data-id="${platoId}" data-precio="${platoPrecio}">
+                            <td>${platoNombre}</td>
+                            <td><input type="number" name="PlatosSeleccionados[${platoId}]" value="1" min="1" max="10" class="cantidadPlato form-control" /></td>
+                            <td><button type="button" class="btn btn-danger btn-eliminar" onclick="eliminarPlato(this)">Eliminar</button></td>
+                        </tr>
+                    `;
+                        $('#platosSeleccionados').append(nuevaFila);
+                    }
                     $('#selectPlato').val('');
                     actualizarTotal();
                 }

@@ -50,7 +50,31 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
                 .Include(p => p.Mesa)
                 .Include(p => p.Detalles)
                 .FirstOrDefaultAsync(p => p.Id == factura.PedidoId);
-            
+
+            var detallesAgrupados = pedido.Detalles
+                .GroupBy(d => d.Nombre)
+                .Select(g => new
+                {
+                    Nombre = g.Key,
+                    CantidadTotal = g.Sum(d => d.Cantidad),
+                    Precio = g.First().Precio,
+                    Categoria = g.First().Categoria,
+                    Disponible = g.First().Disponible,
+                    ListaComida = g.First().ListaComida
+                })
+                .ToList();
+
+            // Reemplazar los detalles originales con los detalles agrupados
+            pedido.Detalles = detallesAgrupados.Select(g => new DetallePedido
+            {
+                Nombre = g.Nombre,
+                Cantidad = g.CantidadTotal,
+                Precio = g.Precio,
+                Categoria = g.Categoria,
+                Disponible = g.Disponible,
+                ListaComida = g.ListaComida
+            }).ToList();
+
             factura.Pedidos = pedido;
 
             return View(factura);
@@ -68,6 +92,20 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
             ModelState.Remove("Pedidos");
             if (ModelState.IsValid)
             {
+                var pedido = await _context.Pedidos
+                .Include(p => p.Mesa)
+                .FirstOrDefaultAsync(p => p.Id == factura.PedidoId);
+
+                if (pedido == null)
+                {
+                    return NotFound();
+                }
+
+                pedido.Estado = "ENTREGADO";
+                pedido.Mesa.Estado = "DISPONIBLE";
+                _context.Update(pedido);
+                _context.Update(pedido.Mesa);
+
                 _context.Add(factura);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Details", new { id = factura.id});
@@ -94,6 +132,31 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
             {
                 return NotFound();
             }
+
+            // Agrupar detalles por Nombre de la comida y sumar las cantidades
+            var detallesAgrupados = pedido.Detalles
+                .GroupBy(d => d.Nombre)
+                .Select(g => new
+                {
+                    Nombre = g.Key,
+                    CantidadTotal = g.Sum(d => d.Cantidad),
+                    Precio = g.First().Precio,
+                    Categoria = g.First().Categoria,
+                    Disponible = g.First().Disponible,
+                    ListaComida = g.First().ListaComida
+                })
+                .ToList();
+
+            // Reemplazar los detalles originales con los detalles agrupados
+            pedido.Detalles = detallesAgrupados.Select(g => new DetallePedido
+            {
+                Nombre = g.Nombre,
+                Cantidad = g.CantidadTotal,
+                Precio = g.Precio,
+                Categoria = g.Categoria,
+                Disponible = g.Disponible,
+                ListaComida = g.ListaComida
+            }).ToList();
 
             var factura = new Dal.Dragones.Factura
             {

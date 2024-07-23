@@ -12,6 +12,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Estilos -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
     <style>
         .container-table {
             max-width: 90%;
@@ -122,7 +124,10 @@
                         <th>Fecha</th>
                         <th>Total</th>
                         <th>Estado</th>
-                        <th>Acciones</th>
+                        <th>Detalles</th>
+                        <th>Eliminar</th>
+                        <th>Cocina</th>
+                        <th>Facturar</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -133,34 +138,77 @@
                             <td>@pedido.Fecha</td>
                             <td>@pedido.Total</td>
                             <td>@pedido.Estado</td>
-                            <td>
-                                <a asp-action="DetallesPedido" asp-route-id="@pedido.Id" class="btn btn-link">Detalles</a> |
-                                <form asp-action="EliminarPedido" asp-route-id="@pedido.Id" method="post" onsubmit="return confirm('¿Estás seguro de eliminar este pedido?');" style="display:inline;">
-                                    <button type="submit" class="btn btn-link">Eliminar</button>
+                            <td class="text-center">
+                                <a asp-action="DetallesPedido" asp-route-id="@pedido.Id" class="btn btn-primary tooltips-general" data-toggle="tooltip" data-placement="top" title="Detalles"><i class="zmdi zmdi-info"></i></a>
+                            </td>
+                            <td class="text-center">
+                                <form id="form-delete-@pedido.Id" asp-action="EliminarPedido" asp-route-id="@pedido.Id" method="post">
+                                    <button type="button" onclick="confirmDelete(@pedido.Id)" class="btn btn-danger tooltips-general" data-toggle="tooltip" data-placement="top" title="Eliminar">
+                                        <i class="zmdi zmdi-delete"></i>
+                                    </button>
                                 </form>
-                                <a asp-controller="Factura" asp-action="Create" asp-route-id="@pedido.Id">Facturar</a>
+                            </td>
+                            <td class="text-center">
                                 @if (pedido.Estado == "PENDIENTE")
                                 {
                                     <form asp-action="MandarACocina" asp-route-id="@pedido.Id" method="post" style="display:inline;">
-                                        <button type="submit" class="btn btn-link">Mandar a Cocina</button>
-                                    </form>
-                                }
-                                @if (pedido.Estado == "ORDEN LISTA")
-                                {
-                                    <form asp-action="EntregarAMesa" asp-route-id="@pedido.Id" method="post" style="display:inline;">
-                                        <button type="submit" class="btn btn-link">Entregar a Mesa</button>
+                                        <button type="submit" class="btn btn-success tooltips-general" data-toggle="tooltip" data-placement="top" title="Mandar Cocina">
+                                            <i class="fas fa-utensils"></i>
+                                        </button>
                                     </form>
                                 }
                             </td>
+
+                            <td class="text-center">
+                                @if (pedido.Estado == "ORDEN LISTA")
+                                {
+                                    <a asp-controller="Factura" asp-action="Create" asp-route-id="@pedido.Id" class="btn btn-info tooltips-general" data-toggle="tooltip" data-placement="top" title="Facturar">
+                                        <i class="fas fa-receipt"></i>
+                                    </a>
+                                }
+                            </td>
+
                         </tr>
                     }
                 </tbody>
             </table>
         </div>
 
+        <div class="modal fade vertical-align-center" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmar eliminación</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        ¿Está seguro de que desea eliminar este usuario?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-danger" id="confirmDeleteButton">Eliminar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <!-- Scripts -->
+
+    <script>
+        function confirmDelete(pedidoId) {
+            $('#confirmDeleteModal').modal('show');
+
+            // Cuando se confirme la eliminación
+            $('#confirmDeleteButton').click(function () {
+                // Envía el formulario para eliminar
+                document.getElementById('form-delete-' + pedidoId).submit();
+            });
+        }
+    </script>
     <script>
         $(document).ready(function () {
             $('#tabla').DataTable({
