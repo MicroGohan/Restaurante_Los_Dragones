@@ -102,6 +102,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
             {
                 return NotFound();
             }
+            ModelState.Remove("ImagenData");
             if (ModelState.IsValid)
             {
                 try

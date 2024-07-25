@@ -4,16 +4,14 @@
     ViewBag.Title = "Crear Pedido";
 }
 @using System.Security.Claims
+@using Newtonsoft.Json
+
 
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Estilos -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
     <style>
         .container-table {
             max-width: 90%;
@@ -68,6 +66,32 @@
             .btn-link:hover {
                 text-decoration: underline;
             }
+
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .card-body {
+            padding: 15px;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .card-text {
+            margin-bottom: 1.25rem;
+        }
+
+        .scrollable-container {
+            max-height: 325px; /* Define una altura máxima fija */
+            overflow-y: auto; /* Solo habilita el scroll vertical */
+        }
+
+
     </style>
 </head>
 <body>
@@ -211,17 +235,21 @@
                 </div>
 
                 <div>
-                    <label>Seleccionar Plato</label>
-                    <select id="selectPlato" class="form-control">
-                        <option value="">Seleccione un plato...</option>
-                        @foreach (var plato in ViewBag.Platos)
-                        {
-                            <option value="@plato.Id" data-nombre="@plato.Nombre" data-precio="@plato.Precio">@plato.Nombre</option>
-                        }
-                    </select>
-                    <button type="button" id="agregarPlato" class="btn btn-primary mt-2">Agregar</button>
+                    <label>Buscar Plato</label>
+                    <input type="text" id="searchPlato" class="form-control" placeholder="Buscar plato..." />
                 </div>
 
+                <div>
+                    <label>Seleccionar Plato</label>
+                    <div id="platosContainer" class="scrollable-container">
+                        <!-- Contenido con scroll -->
+                    </div>
+                </div>
+
+
+
+                <br />
+                <br />
                 <div>
                     <label>Platos Seleccionados y Cantidades</label>
                     <table class="table table-bordered">
@@ -249,14 +277,91 @@
         </div>
     </div>
 
-    <!-- Scripts -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
-
     <script>
         $(document).ready(function () {
-            console.log('Documento listo');
+            var platos = @Html.Raw(JsonConvert.SerializeObject(ViewBag.Platos));
+
+            // Función para llenar el contenedor con los platos filtrados
+            function populatePlatoContainer(filteredPlatos) {
+                var container = $('#platosContainer');
+                container.empty();
+
+                filteredPlatos.forEach(function (plato) {
+                    var platoCard = `
+                                <div class="col-xs-12 col-sm-6 col-md-4">
+                                    <div class="card" data-id="${plato.Id}" data-nombre="${plato.Nombre}" data-precio="${plato.Precio}">
+                                        <div class="card-body">
+                                            <h5 class="card-title">${plato.Nombre}</h5>
+                                            <p class="card-text">Precio: ${plato.Precio.toFixed(2)}</p>
+                                            <button type="button" class="btn btn-primary agregarPlatoBtn">Agregar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                    container.append(platoCard);
+                });
+            }
+
+            // Inicializa el contenedor con todos los platos al cargar la página
+            populatePlatoContainer(platos);
+
+            // Filtra los platos cuando se escribe en el campo de búsqueda
+            $('#searchPlato').on('input', function () {
+                var searchTerm = $(this).val().toLowerCase();
+                var filteredPlatos = platos.filter(function (plato) {
+                    return plato.Nombre.toLowerCase().includes(searchTerm);
+                });
+                populatePlatoContainer(filteredPlatos);
+            });
+
+            // Manejar el botón de agregar plato
+            $(document).on('click', '.agregarPlatoBtn', function () {
+                var platoId = $(this).closest('.card').data('id');
+                var platoNombre = $(this).closest('.card').data('nombre');
+                var platoPrecio = $(this).closest('.card').data('precio');
+
+                var newRow = `
+                            <tr data-id="${platoId}">
+                                <td>${platoNombre}</td>
+                                <td>
+                                    <input type="number" name="Platos[${platoId}].Cantidad" value="1" class="form-control cantidadPlato" min="1" />
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-danger btn-sm eliminarPlatoBtn">Eliminar</button>
+                                </td>
+                            </tr>
+                        `;
+
+                $('#platosSeleccionados').append(newRow);
+                actualizarTotal();
+            });
+
+            // Manejar el botón de eliminar plato
+            $(document).on('click', '.eliminarPlatoBtn', function () {
+                $(this).closest('tr').remove();
+                actualizarTotal();
+            });
+
+            // Actualizar el total del pedido
+            $(document).on('input', '.cantidadPlato', function () {
+                actualizarTotal();
+            });
+
+            // Función para actualizar el total del pedido
+            function actualizarTotal() {
+                var total = 0;
+
+                $('#platosSeleccionados tr').each(function () {
+                    var platoId = $(this).data('id');
+                    var cantidad = $(this).find('.cantidadPlato').val();
+                    var plato = platos.find(function (p) { return p.Id == platoId; });
+                    total += plato.Precio * cantidad;
+                });
+
+                $('#totalPedido').text(total.toFixed(2));
+                $('#inputTotalPedido').val(total.toFixed(2));
+            }
+
 
             $('.mesa-boton').on('click', function () {
                 console.log('Botón de mesa clickeado');
@@ -273,55 +378,17 @@
                 }
             });
 
-            $('#agregarPlato').on('click', function () {
-                var selectedPlato = $('#selectPlato option:selected');
-                var platoId = selectedPlato.val();
-                var platoNombre = selectedPlato.data('nombre');
-                var platoPrecio = parseFloat(selectedPlato.data('precio'));
-
-                if (platoId) {
-                    var filaExistente = $('#platosSeleccionados tr[data-id="' + platoId + '"]');
-                    if (filaExistente.length > 0) {
-                        // Si el plato ya existe, aumentar la cantidad
-                        var cantidadInput = filaExistente.find('.cantidadPlato');
-                        var nuevaCantidad = parseInt(cantidadInput.val()) + 1;
-                        cantidadInput.val(nuevaCantidad);
-                    } else {
-                        // Si el plato no existe, agregar una nueva fila
-                        var nuevaFila = `
-                        <tr data-id="${platoId}" data-precio="${platoPrecio}">
-                            <td>${platoNombre}</td>
-                            <td><input type="number" name="PlatosSeleccionados[${platoId}]" value="1" min="1" max="10" class="cantidadPlato form-control" /></td>
-                            <td><button type="button" class="btn btn-danger btn-eliminar" onclick="eliminarPlato(this)">Eliminar</button></td>
-                        </tr>
-                    `;
-                        $('#platosSeleccionados').append(nuevaFila);
-                    }
-                    $('#selectPlato').val('');
-                    actualizarTotal();
-                }
-            });
-
-            $(document).on('change', '.cantidadPlato', function () {
-                actualizarTotal();
-            });
+            (function ($) {
+                $(window).on('load', function () {
+                    $(".scrollable-container").mCustomScrollbar({
+                        theme: "dark-thin",
+                        scrollbarPosition: "inside",
+                        autoHideScrollbar: true,
+                        scrollButtons: { enable: true }
+                    });
+                });
+            })(jQuery);
         });
-
-        function eliminarPlato(button) {
-            $(button).closest('tr').remove();
-            actualizarTotal();
-        }
-
-        function actualizarTotal() {
-            var total = 0;
-            $('#platosSeleccionados tr').each(function () {
-                var precio = parseFloat($(this).data('precio'));
-                var cantidad = parseInt($(this).find('.cantidadPlato').val());
-                total += precio * cantidad;
-            });
-            $('#totalPedido').text(total.toFixed(2));
-            $('#Total').val(total);
-        }
     </script>
 </body>
 </html>
