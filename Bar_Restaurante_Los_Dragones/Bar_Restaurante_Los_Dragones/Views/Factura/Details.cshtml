@@ -94,16 +94,6 @@
                                 <th>Cantidad</th>
                             </tr>
                         </thead>
-                        @* <tbody>
-                            @foreach (var detalle in Model.Pedidos.Detalles.Where(d => !d.Disponible))
-                            {
-                                <tr data-id="@detalle.Id" data-categoria="@detalle.Categoria" data-lista-comida="@detalle.ListaComida">
-                                    <td>@detalle.Nombre</td>
-                                    <td>@detalle.Precio</td>
-                                    <td>@detalle.Cantidad</td>
-                                </tr>
-                            }
-                        </tbody> *@
                         <tbody>
                             @foreach (var detalle in Model.Pedidos.Detalles)
                             {
@@ -131,12 +121,9 @@
                 <a class="btn btn-primary" href="@Url.Action("DownloadPDF", "Factura", new { id = Model.id })">Descargar PDF</a>
             </div>
         </div>
-        <div>
-            </a>
-        </div>
     </div>
     </div>
-
+    
     <script>
         $(document).ready(function () {
             $('#tabla').DataTable({
