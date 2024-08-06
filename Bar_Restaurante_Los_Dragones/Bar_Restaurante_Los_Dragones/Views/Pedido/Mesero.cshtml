@@ -211,15 +211,35 @@
                             }
                             @if (pedido.Estado == "ORDEN LISTA")
                             {
-                                <form asp-controller="Factura" asp-action="Create" asp-route-id="@pedido.Id" method="get" style="display:inline;">
-                                    <button type="submit" class="btn btn-info">Facturar</button>
-                                </form>
+                                <button class="btn btn-info" onclick="verificarDetallesPendientes('@pedido.Id')">Facturar</button>
                             }
                         </div>
                     </div>
                 </div>
             }
         </div>
+
+        <!-- Modal para mostrar detalles pendientes -->
+    <div class="modal fade" id="modalDetallesPendientes" tabindex="-1" role="dialog" aria-labelledby="modalDetallesPendientesLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalDetallesPendientesLabel">Detalles Pendientes</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <span class="warning-icon">&#x26A0;</span>
+                    <p>No se puede facturar porque faltan los siguientes productos que aún no están preparados:</p>
+                    <ul id="listaDetallesPendientes"></ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Volver</button>
+                </div>
+            </div>
+        </div>
+
     </div>
 
 
@@ -313,10 +333,7 @@
                                 }
                                 if (pedido.estado === 'ORDEN LISTA') {
                                     accionesHtml02 += `
-                                                    <form action="${facturarUrl}" method="get" style="display:inline;">
-                                                        <input type="hidden" name="id" value="${pedido.id}">
-                                                        <button type="submit" class="btn btn-info">Facturar</button>
-                                                   </form>`;
+                                                                <button class="btn btn-info" onclick="verificarDetallesPendientes('${pedido.id}')">Facturar</button>`;
                                 }
 
 
@@ -412,6 +429,42 @@
 
 
         });
+
+        function verificarDetallesPendientes(idPedido) {
+            $.ajax({
+                url: '@Url.Action("VerificarDetallesPendientes", "Pedido")',
+                type: 'GET',
+                data: { idPedido: idPedido },
+                success: function (response) {
+                        if (response.detallesPendientes && response.detallesPendientes.length > 0) {
+                        mostrarModalDetallesPendientes(response.detallesPendientes);
+                    } else {
+                        var facturarUrl = '@Url.Action("Create", "Factura")';
+                        window.location.href = facturarUrl + "?id=" + idPedido;
+                    }
+                },
+                error: function (error) {
+                    console.error('Error al verificar detalles pendientes:', error);
+                }
+            });
+        }
+
+            function mostrarModalDetallesPendientes(detallesPendientes) {
+                console.log("Tipo de detallesPendientes:", typeof detallesPendientes);
+                console.log("Contenido de detallesPendientes:", detallesPendientes);
+
+                if (Array.isArray(detallesPendientes)) {
+                    var lista = $("#listaDetallesPendientes");
+                    lista.empty();
+                    detallesPendientes.forEach(function (detalle) {
+                        lista.append("<li>" + "Nombre: " + detalle.nombre + "  Cantidad: " + detalle.cantidad + "</li>");
+                    });
+                    $("#modalDetallesPendientes").modal("show");
+                } else {
+                    console.error("detallesPendientes no es un arreglo");
+                }
+            }
+
     </script>
 </body>
 </html>

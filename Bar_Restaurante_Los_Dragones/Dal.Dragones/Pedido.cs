@@ -16,8 +16,8 @@ namespace Dal.Dragones
         public int Id { get; set; }
         public int IdMesa { get; set; }
         public DateTime Fecha { get; set; }
-        public decimal Total { get; set; }
-        public string Observacion { get; set; }
+        public int Total { get; set; }
+        public string? Observacion { get; set; }
         public string Estado { get; set; }
 
         public virtual Mesa Mesa { get; set; }

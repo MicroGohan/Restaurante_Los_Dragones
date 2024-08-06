@@ -49,17 +49,24 @@ namespace Bar_Restaurante_Los_Dragones.Models
 
             modelBuilder.Entity<DetallePedido>()
             .Property(d => d.Precio)
-            .HasColumnType("decimal(18,2)");
+            .HasColumnType("int");
 
-            // Configuración de Pedido
+
+            modelBuilder.Entity<Factura>()
+                .Property(f => f.TotalPagar)
+                .HasColumnType("int");
+
+            modelBuilder.Entity<Factura>()
+                .Property(f => f.Subtotal)
+                .HasColumnType("int");
+
             modelBuilder.Entity<Pedido>()
                 .Property(p => p.Total)
-                .HasColumnType("decimal(18,2)");
+                .HasColumnType("int");
 
-            // Configuración de Plato
             modelBuilder.Entity<Plato>()
                 .Property(p => p.Precio)
-                .HasColumnType("decimal(18,2)");
+                .HasColumnType("int");
 
             // Seed data (opcional)
             modelBuilder.Entity<Mesa>().HasData(
@@ -69,11 +76,11 @@ namespace Bar_Restaurante_Los_Dragones.Models
             );
 
             modelBuilder.Entity<Plato>().HasData(
-                new Plato { Id = 1, Nombre = "Sopa", Precio = 10.00m, Disponible = true, Categoria = "Comida" },
-                new Plato { Id = 2, Nombre = "Ceviche", Precio = 25.00m, Disponible = true, Categoria = "Comida" },
-                new Plato { Id = 3, Nombre = "Arroz con pollo", Precio = 8.00m, Disponible = true, Categoria = "Comida" },
-                new Plato { Id = 4, Nombre = "Pizza", Precio = 12.99m, Disponible = true, Categoria = "Comida" },
-                new Plato { Id = 5, Nombre = "Coca Cola", Precio = 1.99m, Disponible = true, Categoria = "Bebida" }
+                new Plato { Id = 1, Nombre = "Sopa", Precio = 2300, Disponible = true, Categoria = "Comida" },
+                new Plato { Id = 2, Nombre = "Ceviche", Precio = 5500, Disponible = true, Categoria = "Comida" },
+                new Plato { Id = 3, Nombre = "Arroz con pollo", Precio = 2500, Disponible = true, Categoria = "Comida" },
+                new Plato { Id = 4, Nombre = "Pizza", Precio = 7500, Disponible = true, Categoria = "Comida" },
+                new Plato { Id = 5, Nombre = "Coca Cola", Precio = 1200, Disponible = true, Categoria = "Bebida" }
             );
 
             modelBuilder.Entity<Factura>()

@@ -148,7 +148,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach (var detalle in Model.Pedidos.Detalles.Where(d => !d.Disponible))
+                                        @foreach (var detalle in Model.Pedidos.Detalles)
                                         {
                                             <tr data-id="@detalle.Id" data-categoria="@detalle.Categoria" data-lista-comida="@detalle.ListaComida">
                                                 <td>@detalle.Nombre</td>

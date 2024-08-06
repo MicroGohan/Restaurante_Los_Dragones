@@ -4,6 +4,7 @@ using Bar_Restaurante_Los_Dragones.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bar_Restaurante_Los_Dragones.Migrations
 {
     [DbContext(typeof(ProyectoContext))]
-    partial class ProyectoContextModelSnapshot : ModelSnapshot
+    [Migration("20240806052820_Null")]
+    partial class Null
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -50,8 +53,8 @@ namespace Bar_Restaurante_Los_Dragones.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Precio")
-                        .HasColumnType("int");
+                    b.Property<decimal>("Precio")
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
@@ -71,8 +74,8 @@ namespace Bar_Restaurante_Los_Dragones.Migrations
                     b.Property<DateTime>("Fecha")
                         .HasColumnType("datetime2");
 
-                    b.Property<decimal>("Iva")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<int>("Iva")
+                        .HasColumnType("int");
 
                     b.Property<int>("MetodoPago")
                         .HasColumnType("int");
@@ -90,11 +93,11 @@ namespace Bar_Restaurante_Los_Dragones.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Subtotal")
-                        .HasColumnType("int");
+                    b.Property<decimal>("Subtotal")
+                        .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("TotalPagar")
-                        .HasColumnType("int");
+                    b.Property<decimal>("TotalPagar")
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("id");
 
@@ -164,8 +167,8 @@ namespace Bar_Restaurante_Los_Dragones.Migrations
                     b.Property<string>("Observacion")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Total")
-                        .HasColumnType("int");
+                    b.Property<decimal>("Total")
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
@@ -196,8 +199,8 @@ namespace Bar_Restaurante_Los_Dragones.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Precio")
-                        .HasColumnType("int");
+                    b.Property<decimal>("Precio")
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
@@ -210,7 +213,7 @@ namespace Bar_Restaurante_Los_Dragones.Migrations
                             Categoria = "Comida",
                             Disponible = true,
                             Nombre = "Sopa",
-                            Precio = 2300
+                            Precio = 10.00m
                         },
                         new
                         {
@@ -218,7 +221,7 @@ namespace Bar_Restaurante_Los_Dragones.Migrations
                             Categoria = "Comida",
                             Disponible = true,
                             Nombre = "Ceviche",
-                            Precio = 5500
+                            Precio = 25.00m
                         },
                         new
                         {
@@ -226,7 +229,7 @@ namespace Bar_Restaurante_Los_Dragones.Migrations
                             Categoria = "Comida",
                             Disponible = true,
                             Nombre = "Arroz con pollo",
-                            Precio = 2500
+                            Precio = 8.00m
                         },
                         new
                         {
@@ -234,7 +237,7 @@ namespace Bar_Restaurante_Los_Dragones.Migrations
                             Categoria = "Comida",
                             Disponible = true,
                             Nombre = "Pizza",
-                            Precio = 7500
+                            Precio = 12.99m
                         },
                         new
                         {
@@ -242,7 +245,7 @@ namespace Bar_Restaurante_Los_Dragones.Migrations
                             Categoria = "Bebida",
                             Disponible = true,
                             Nombre = "Coca Cola",
-                            Precio = 1200
+                            Precio = 1.99m
                         });
                 });
 

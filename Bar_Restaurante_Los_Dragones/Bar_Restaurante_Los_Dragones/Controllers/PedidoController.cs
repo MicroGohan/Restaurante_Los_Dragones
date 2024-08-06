@@ -57,7 +57,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
             {
                 pedido.Fecha = DateTime.Now;
                 pedido.Estado = "PENDIENTE";
-                decimal total = 0;
+                int total = 0;
 
                 if (PlatosSeleccionados != null)
                 {
@@ -289,59 +289,6 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
         }
 
 
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EntregarAMesa(int id)
-        {
-            var pedido = await _context.Pedidos
-                .Include(p => p.Mesa)
-                .FirstOrDefaultAsync(p => p.Id == id);
-
-            if (pedido == null)
-            {
-                return NotFound();
-            }
-
-            pedido.Estado = "ENTREGADO";
-            pedido.Mesa.Estado = "DISPONIBLE";
-            _context.Update(pedido);
-            _context.Update(pedido.Mesa);
-            await _context.SaveChangesAsync();
-
-            return RedirectToAction(nameof(Index));
-        }
-
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EntregarAMesaMesero(int id)
-        {
-            var pedido = await _context.Pedidos
-                .Include(p => p.Mesa)
-                .FirstOrDefaultAsync(p => p.Id == id);
-
-            if (pedido == null)
-            {
-                return NotFound();
-            }
-
-            pedido.Estado = "ENTREGADO";
-            pedido.Mesa.Estado = "DISPONIBLE";
-            _context.Update(pedido);
-            _context.Update(pedido.Mesa);
-            await _context.SaveChangesAsync();
-
-            return Ok(new { success = true, message = "Pedido Completado exitosamente" });
-        }
-
-
-
-
-
-
-
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EliminarPedido(int id)
@@ -515,7 +462,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
                                       p.Id,
                                       Mesa = new { p.Mesa.NumMesa },
                                       p.Fecha,
-                                      Total = p.Total.ToString("F2"),
+                                      Total = p.Total,
                                       Detalles = p.Detalles.Select(d => new
                                       {
                                           d.Id,
@@ -541,7 +488,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
                                       p.Id,
                                       Mesa = new { p.Mesa.NumMesa },
                                       p.Fecha,
-                                      Total = p.Total.ToString("F2"),
+                                      Total = p.Total,
                                       p.Estado,
                                       Detalles = p.Detalles.Select(d => new
                                       {
@@ -581,6 +528,32 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
 
             return Json(new { success = true, detallesPendientes });
         }
+
+        [HttpGet]
+        public async Task<IActionResult> VerificarDetallesPendientes(int idPedido)
+        {
+            var pedido = await _context.Pedidos
+                .Include(p => p.Detalles)
+                .FirstOrDefaultAsync(p => p.Id == idPedido);
+
+            if (pedido == null)
+            {
+                return NotFound();
+            }
+
+            // Filtra los detalles pendientes (en este caso, detalles no disponibles)
+            var detallesPendientes = pedido.Detalles
+                .Where(d => d.Disponible == false)
+                .Select(d => new
+                {
+                    d.Nombre,
+                    d.Cantidad
+                })
+                .ToList();
+
+            return Ok(new { detallesPendientes });
+        }
+
 
 
 

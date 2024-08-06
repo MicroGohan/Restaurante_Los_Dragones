@@ -102,7 +102,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
                 }
 
                 pedido.Estado = "ENTREGADO";
-                pedido.Mesa.Estado = "DISPONIBLE";
+                pedido.Mesa.Estado = "Disponible";
                 _context.Update(pedido);
                 _context.Update(pedido.Mesa);
 
@@ -163,11 +163,11 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
                 PedidoId = pedido.Id,
                 Fecha = DateTime.Now,
                 Subtotal = pedido.Total,
-                Iva = (int)13m, 
+                Iva = 13m,
                 Pedidos = pedido
         };
 
-            factura.TotalPagar = factura.Subtotal+((factura.Iva/100m)*factura.Subtotal);
+            factura.TotalPagar = ((int)(factura.Iva / 100m * factura.Subtotal)) + factura.Subtotal;
 
             factura.Responsable = User.Identity.Name;
 
