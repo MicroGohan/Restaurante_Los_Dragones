@@ -180,6 +180,39 @@
                 }
             });
         });
+
+
+    </script>
+
+    <script>
+        document.getElementById('creditNoteForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const facturaId = @Model.id;
+            const creditNoteAmount = parseFloat(document.getElementById('creditNoteAmount').value);
+
+            $.ajax({
+                url: '@Url.Action("AplicarNotaDeCredito", "Factura")',
+                type: 'POST',
+                data: {
+                    facturaId: facturaId,
+                    monto: creditNoteAmount
+                },
+                success: function (response) {
+                    if (response.success) {
+                        // Actualizar el total de la factura en la vista
+                        $('#totalFactura').text(response.nuevoTotal);
+                        // Cerrar el modal
+                        $('#creditNoteModal').modal('hide');
+                    } else {
+                        alert('Error al aplicar la nota de crédito.');
+                    }
+                },
+                error: function () {
+                    alert('Error en la solicitud.');
+                }
+            });
+        });
     </script>
 </body>
 </html>

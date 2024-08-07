@@ -55,19 +55,6 @@
             border: 2px solid #0000ff; /* Azul */
         }
 
-        .btn-link {
-            color: #007bff;
-            text-decoration: none;
-            background-color: transparent;
-            border: none;
-            padding: 0;
-            cursor: pointer;
-        }
-
-            .btn-link:hover {
-                text-decoration: underline;
-            }
-
         .card {
             border: 1px solid #ddd;
             border-radius: 8px;
@@ -85,11 +72,6 @@
 
         .card-text {
             margin-bottom: 1.25rem;
-        }
-
-        .scrollable-container {
-            max-height: 350px; /* Define una altura máxima fija */
-            overflow-y: auto; /* Solo habilita el scroll vertical */
         }
 
         .card {
@@ -266,7 +248,7 @@
 
                 <div>
                     <label>Seleccionar Plato</label>
-                    <div id="platosContainer" class="scrollable-container">
+                    <div id="platosContainer">
                         <!-- Contenido con scroll -->
                     </div>
                 </div>
@@ -343,14 +325,6 @@
             </div>
         </div>
     <script>
-        function initializeScrollbar() {
-            setTimeout(function () {
-                $('#platosContainer').mCustomScrollbar({
-                    theme: 'minimal-dark'
-                });
-            }, 350); // Ajusta el tiempo según sea necesario
-        }
-
         $(document).ready(function () {
             var platos = @Html.Raw(JsonConvert.SerializeObject(ViewBag.Platos));
 
@@ -394,8 +368,6 @@
                 var filteredPlatos = platosDisponibles.filter(function (plato) {
                     return plato.Nombre.toLowerCase().includes(searchTerm);
                 });
-                $('#platosContainer').mCustomScrollbar('destroy');
-                initializeScrollbar();
                 populatePlatoContainer(filteredPlatos);
             });
 
@@ -475,8 +447,6 @@
                     $('#noMesaModal').modal('show');
                 }
             });
-
-            initializeScrollbar();
         });
     </script>
 
