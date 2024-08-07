@@ -268,6 +268,31 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
             return _context.Facturas.Any(e => e.id == id);
         }
 
+        [HttpPost]
+        public IActionResult AplicarNotaDeCredito(int facturaId, int monto)
+        {
+            var factura = _context.Facturas.FirstOrDefault(f => f.id == facturaId);
+            if (factura != null)
+            {
+                // Guardar la nota de crédito en la base de datos
+                var notaDeCredito = new NotaDeCredito
+                {
+                    FacturaId = facturaId,
+                    Monto = monto,
+                    Fecha = DateTime.Now
+                };
+                _context.NotasDeCredito.Add(notaDeCredito);
+
+                // Aplicar el descuento al total de la factura
+                factura.TotalPagar -= monto;
+                _context.SaveChanges();
+
+                return Json(new { success = true, nuevoTotal = factura.TotalPagar });
+            }
+
+            return Json(new { success = false });
+        }
+
         //descarga pdf
         public async Task<IActionResult> DownloadPDF(int id)
         {

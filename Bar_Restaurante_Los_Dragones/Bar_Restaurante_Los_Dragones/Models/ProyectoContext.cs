@@ -15,6 +15,7 @@ namespace Bar_Restaurante_Los_Dragones.Models
         public DbSet<DetallePedido> DetallePedidos { get; set; }
         public DbSet<Plato> Platos { get; set; }
         public DbSet<Factura> Facturas { get; set; }
+        public DbSet<NotaDeCredito> NotasDeCredito { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -22,7 +23,7 @@ namespace Bar_Restaurante_Los_Dragones.Models
 
             modelBuilder.Entity<Usuario>(entity =>
             {
-                entity.HasKey(e => e.ID); // Asumiendo que hay una propiedad ID en tu clase Usuario
+                entity.HasKey(e => e.ID);
                 entity.Property(e => e.Nombre).IsRequired().HasMaxLength(100);
                 entity.Property(e => e.Correo).IsRequired().HasMaxLength(100);
                 entity.Property(e => e.Clave).IsRequired().HasMaxLength(100);

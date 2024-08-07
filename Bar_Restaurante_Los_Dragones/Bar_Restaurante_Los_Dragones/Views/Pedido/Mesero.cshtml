@@ -95,10 +95,6 @@
                 font-weight: bold; /* Opcional: para que el título sea negrita */
             }
 
-
-
-
-
     </style>
 
 
@@ -220,26 +216,27 @@
         </div>
 
         <!-- Modal para mostrar detalles pendientes -->
-    <div class="modal fade" id="modalDetallesPendientes" tabindex="-1" role="dialog" aria-labelledby="modalDetallesPendientesLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalDetallesPendientesLabel">Detalles Pendientes</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <span class="warning-icon">&#x26A0;</span>
-                    <p>No se puede facturar porque faltan los siguientes productos que aún no están preparados:</p>
-                    <ul id="listaDetallesPendientes"></ul>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Volver</button>
+        <div class="modal fade" id="modalDetallesPendientes" tabindex="-1" role="dialog" aria-labelledby="modalDetallesPendientesLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalDetallesPendientesLabel">Detalles Pendientes</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <span class="warning-icon">&#x26A0;</span>
+                        <p>No se puede facturar porque faltan los siguientes productos que aún no están Entregados:</p>
+                        <ul id="listaDetallesPendientes"></ul>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Volver</button>
+                    </div>
                 </div>
             </div>
-        </div>
 
+        </div>
     </div>
 
 
@@ -291,9 +288,9 @@
                                     if (detalle.categoria == 'Bebida' && detalle.disponible == false ||
                                         (detalle.categoria == 'Comida' && detalle.listaComida && detalle.disponible == false)) {
                                         botonEntregado = `
-                                    <button class="btn btn-success" onclick="marcarComoEntregado('${pedido.id}', '${detalle.id}')">
-                                        Entregado
-                                    </button>`;
+                                            <button class="btn btn-success" onclick="marcarComoEntregado('${pedido.id}', '${detalle.id}')">
+                                                Entregado
+                                            </button>`;
 
                                         // Crear una clave única para el detalle (ej. combinación de ID de pedido y detalle)
                                         let claveDetalle = `${pedido.id}-${detalle.id}`;
@@ -301,12 +298,12 @@
                                         // Mostrar notificación solo si es nuevo
                                         if (!notificacionMostrada.has(claveDetalle)) {
                                             toastr.success(`
-                                                <p>
-                                                    ${detalle.nombre} - Cantidad: ${detalle.cantidad}<br>
-                                                    Mesa número: ${pedido.mesa.numMesa}<br>
-                                                    Está lista para ser entregada.
-                                                </p>
-                                            `);
+                                                        <p>
+                                                            ${detalle.nombre} - Cantidad: ${detalle.cantidad}<br>
+                                                            Mesa número: ${pedido.mesa.numMesa}<br>
+                                                            Está lista para ser entregada.
+                                                        </p>
+                                                    `);
                                             sound.play().catch(error => {
                                                 console.error('Error al reproducir el sonido:', error);
                                             });
@@ -315,44 +312,44 @@
                                     }
 
                                     detallesHtml += `
-                                                        <p>
-                                                            ${detalle.nombre} - Cantidad: ${detalle.cantidad}
-                                                            ${estadoIcono}
-                                                            ${botonEntregado}
-                                                        </p>`;
+                                                                <p>
+                                                                    ${detalle.nombre} - Cantidad: ${detalle.cantidad}
+                                                                    ${estadoIcono}
+                                                                    ${botonEntregado}
+                                                                </p>`;
                                 });
 
                                 // Botones de acciones adicionales
-                                let accionesHtml02 ='';
+                                let accionesHtml02 = '';
 
                                 let accionesHtml = `
-                                                            <a href="/Pedido/DetallesPedido/${pedido.id}" class="btn btn-primary">Detalles</a>`;
+                                                                    <a href="/Pedido/DetallesPedido/${pedido.id}" class="btn btn-primary">Detalles</a>`;
                                 if (pedido.estado === 'PENDIENTE') {
                                     accionesHtml02 = `
-                                                <button class="btn btn-info" onclick="mandarACocina('${pedido.id}')">Mandar a cocina</button>`;
+                                                        <button class="btn btn-info" onclick="mandarACocina('${pedido.id}')">Mandar a cocina</button>`;
                                 }
                                 if (pedido.estado === 'ORDEN LISTA') {
                                     accionesHtml02 += `
-                                                                <button class="btn btn-info" onclick="verificarDetallesPendientes('${pedido.id}')">Facturar</button>`;
+                                                                        <button class="btn btn-info" onclick="verificarDetallesPendientes('${pedido.id}')">Facturar</button>`;
                                 }
 
 
                                 $('#pedidos-container').append(
                                     `<div class="card">
-                                                <div class="card-body">
-                                                    <h5 class="card-title">Mesa: ${pedido.mesa.numMesa}</h5>
-                                                    <p class="card-text">Fecha: ${fechaFormateada}</p>
-                                                    <p class="card-text">Estado: ${pedido.estado}</p>
-                                                    <p class="card-text">Total: ${pedido.total}</p>
-                                                    <p class="card-text">Detalles:</p>
-                                                    ${detallesHtml}
-                                                    ${accionesHtml}
-                                                    <div class="btn-actions">
-                                                            ${accionesHtml02}
-                                                    </div>
-                                                    
-                                                </div>
-                                            </div>`
+                                                        <div class="card-body">
+                                                            <h5 class="card-title">Mesa: ${pedido.mesa.numMesa}</h5>
+                                                            <p class="card-text">Fecha: ${fechaFormateada}</p>
+                                                            <p class="card-text">Estado: ${pedido.estado}</p>
+                                                            <p class="card-text">Total: ${pedido.total}</p>
+                                                            <p class="card-text">Detalles:</p>
+                                                            ${detallesHtml}
+                                                            ${accionesHtml}
+                                                            <div class="btn-actions">
+                                                                    ${accionesHtml02}
+                                                            </div>
+
+                                                        </div>
+                                                    </div>`
                                 );
                             } else {
                                 console.error('Pedido sin Mesa o NumMesa:', pedido);
@@ -436,7 +433,7 @@
                 type: 'GET',
                 data: { idPedido: idPedido },
                 success: function (response) {
-                        if (response.detallesPendientes && response.detallesPendientes.length > 0) {
+                    if (response.detallesPendientes && response.detallesPendientes.length > 0) {
                         mostrarModalDetallesPendientes(response.detallesPendientes);
                     } else {
                         var facturarUrl = '@Url.Action("Create", "Factura")';
@@ -449,21 +446,21 @@
             });
         }
 
-            function mostrarModalDetallesPendientes(detallesPendientes) {
-                console.log("Tipo de detallesPendientes:", typeof detallesPendientes);
-                console.log("Contenido de detallesPendientes:", detallesPendientes);
+        function mostrarModalDetallesPendientes(detallesPendientes) {
+            console.log("Tipo de detallesPendientes:", typeof detallesPendientes);
+            console.log("Contenido de detallesPendientes:", detallesPendientes);
 
-                if (Array.isArray(detallesPendientes)) {
-                    var lista = $("#listaDetallesPendientes");
-                    lista.empty();
-                    detallesPendientes.forEach(function (detalle) {
-                        lista.append("<li>" + "Nombre: " + detalle.nombre + "  Cantidad: " + detalle.cantidad + "</li>");
-                    });
-                    $("#modalDetallesPendientes").modal("show");
-                } else {
-                    console.error("detallesPendientes no es un arreglo");
-                }
+            if (Array.isArray(detallesPendientes)) {
+                var lista = $("#listaDetallesPendientes");
+                lista.empty();
+                detallesPendientes.forEach(function (detalle) {
+                    lista.append("<li>" + "Nombre: " + detalle.nombre + "  Cantidad: " + detalle.cantidad + "</li>");
+                });
+                $("#modalDetallesPendientes").modal("show");
+            } else {
+                console.error("detallesPendientes no es un arreglo");
             }
+        }
 
     </script>
 </body>

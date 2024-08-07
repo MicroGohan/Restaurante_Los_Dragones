@@ -113,6 +113,35 @@
                 <h2 class="all-tittles">@Html.DisplayNameFor(model => model.Observaciones) : <small>@Html.DisplayFor(model => model.Observaciones)</small></h2>
                 <h2 class="all-tittles">@Html.DisplayNameFor(model => model.MetodoPago) : <small>@Html.DisplayFor(model => model.MetodoPago)</small></h2>
                 <h2 class="all-tittles">Estado del pedido : <small>@Html.DisplayFor(model => model.Pedidos.Estado)</small></h2>
+
+                <!-- Botón para abrir el modal -->
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#creditNoteModal">
+                    Aplicar Nota de Crédito
+                </button>
+
+                <!-- Modal -->
+                <div class="modal fade" id="creditNoteModal" tabindex="-1" role="dialog" aria-labelledby="creditNoteModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="creditNoteModalLabel">Aplicar Nota de Crédito</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="creditNoteForm">
+                                    <div class="mb-3">
+                                        <label for="creditNoteAmount" class="form-label">Monto de la Nota de Crédito</label>
+                                        <input type="number" class="form-control" id="creditNoteAmount" required>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Aplicar</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <a asp-action="Index">
                     <button class="btn btn-primary">
                         Volver a facturas
