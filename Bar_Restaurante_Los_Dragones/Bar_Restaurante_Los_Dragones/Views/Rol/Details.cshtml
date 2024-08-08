@@ -1,25 +1,110 @@
 ﻿@model Dal.Dragones.Rol
-
+@using System.Security.Claims
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Details</h2>
 
-<div>
-    <h4>Rol</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Nombre)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Nombre)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.ID">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <style>
+        .nav-item a {
+            text-decoration: none; /* Quitar subrayado */
+            color: inherit; /* Heredar el color del texto */
+            display: inline-block; /* Hacerlo un bloque en línea para aplicar padding correctamente */
+            cursor: pointer; /* Cambiar el cursor a puntero */
+            font-size: 27px;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        .dl-horizontal {
+            display: inline-block;
+            text-align: left;
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #f9f9f9;
+        }
+
+            .dl-horizontal dt {
+                font-weight: bold;
+                text-align: left;
+            }
+
+            .dl-horizontal dd {
+                margin-bottom: 10px;
+            }
+
+        .actions {
+            margin-top: 20px;
+        }
+
+        h2 {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+    </style>
+</head>
+<div class="content-page-container full-reset custom-scroll-containers">
+    <nav class="navbar-user-top full-reset">
+        <ul class="list-unstyled full-reset">
+            <figure>
+                <img src="~/assets/img/user01.png" alt="user-picture" class="img-responsive img-circle center-box">
+            </figure>
+            <li class="user-info" style="color:#fff; cursor:default;">
+                @if (User.Identity.IsAuthenticated)
+                {
+                <li class="user-info">
+                    <div class="user-details">
+                        <span data-placement="bottom" title="Usuario">Bienvenido, @User.FindFirst(ClaimTypes.Role)?.Value @User.Identity.Name</span>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="" asp-area="" asp-controller="Login" asp-action="Salir">
+                        <i class="zmdi zmdi-power"></i>
+                    </a>
+                </li>
+                }
+            </li>
+            <li class="tooltips-general btn-help" data-placement="bottom" title="Ayuda">
+                <i class="zmdi zmdi-help-outline zmdi-hc-fw"></i>
+            </li>
+            <li class="mobile-menu-button visible-xs" style="float: left !important;">
+                <i class="zmdi zmdi-menu"></i>
+            </li>
+            <li class="desktop-menu-button hidden-xs" style="float: left !important;">
+                <i class="zmdi zmdi-swap"></i>
+            </li>
+        </ul>
+    </nav>
+    <h2>Detalles de Rol</h2>
+    <div class="container">
+        <div class="user-info">
+            <hr />
+            <dl class="dl-horizontal">
+                <dt>@Html.DisplayNameFor(model => model.Nombre)</dt>
+                <dd>@Html.DisplayFor(model => model.Nombre)</dd>
+            </dl>
+        </div>
+        <div class="actions">
+            <a asp-action="Edit" asp-route-id="@Model.ID" class="btn btn-info tooltips-general" data-toggle="tooltip" data-placement="top" title="Editar"><i class="zmdi zmdi-edit"></i></a> |
+            <a asp-action="Index" class="btn btn-success tooltips-general" data-toggle="tooltip" data-placement="top" title="Atras"><i class="zmdi zmdi-arrow-left"></i></a>
+        </div>
+    </div>
