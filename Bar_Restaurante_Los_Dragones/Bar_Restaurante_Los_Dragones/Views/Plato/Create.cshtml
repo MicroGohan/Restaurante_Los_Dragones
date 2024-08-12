@@ -67,7 +67,7 @@
     <div class="container-fluid">
         <div class="container-flat-form">
             <div class="title-flat-form title-flat-blue">Crear Nuevo Plato</div>
-            <form asp-action="Create" enctype="multipart/form-data">
+            <form asp-action="Create" enctype="multipart/form-data" class="form-padding">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="row">
                     <div class="col-xs-12">
@@ -122,16 +122,14 @@
                     </div>
                     <div class="col-xs-12 col-sm-6">
                         <button type="reset" class="btn btn-info" style="margin-right: 20px;"><i class="zmdi zmdi-roller"></i> &nbsp;&nbsp; Limpiar</button>
-                        <button type="submit" value="Save" class="btn btn-primary"><i class="zmdi zmdi-floppy"></i> &nbsp;&nbsp; Guardar</button>
-                        <a asp-action="Index">Volver a la lista</a>
+                        <button type="submit" value="Save" class="btn btn-primary" style="margin-right: 20px;"><i class="zmdi zmdi-floppy"></i> &nbsp;&nbsp; Guardar</button>
+                        <button type="button" class="btn btn-secondary" onclick="location.href='@Url.Action("Index")'">
+                            <i class="zmdi zmdi-arrow-left"></i> &nbsp;&nbsp; Volver a la lista
+                        </button>
                     </div>
                 </div>
             </form>
         </div>
-    </div>
-
-    <div>
-        <a asp-action="Index">Back to List</a>
     </div>
 
 </div>

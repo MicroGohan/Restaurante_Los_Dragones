@@ -212,6 +212,9 @@
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#añadirPlatoModal">
                         Añadir Plato
                     </button>
+                    <button type="button" class="btn btn-secondary" onclick="location.href='@Url.Action("Index")'">
+                        <i class="zmdi zmdi-arrow-left"></i> &nbsp;&nbsp; Volver a la lista
+                    </button>
                 </div>
             </div>
 
@@ -246,18 +249,11 @@
                     </div>
                 </div>
             </div>
-
-            <div class="row mt-4">
-                <div class="col-md-12">
-                    <a asp-action="Index" class="btn btn-secondary">Volver a la lista</a>
-                </div>
             </div>
 
         </div>
 
     </div>
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <script>
         $(document).ready(function () {

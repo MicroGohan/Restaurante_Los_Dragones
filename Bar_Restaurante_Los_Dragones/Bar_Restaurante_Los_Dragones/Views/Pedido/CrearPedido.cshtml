@@ -16,6 +16,7 @@
         .container-table {
             max-width: 90%;
             margin: auto;
+            padding-bottom: 70px; /* Asegura suficiente espacio al final */
         }
 
         .nav-item a {
@@ -54,19 +55,6 @@
             border: 2px solid #0000ff; /* Azul */
         }
 
-        .btn-link {
-            color: #007bff;
-            text-decoration: none;
-            background-color: transparent;
-            border: none;
-            padding: 0;
-            cursor: pointer;
-        }
-
-            .btn-link:hover {
-                text-decoration: underline;
-            }
-
         .card {
             border: 1px solid #ddd;
             border-radius: 8px;
@@ -86,11 +74,29 @@
             margin-bottom: 1.25rem;
         }
 
-        .scrollable-container {
-            max-height: 325px; /* Define una altura máxima fija */
-            overflow-y: auto; /* Solo habilita el scroll vertical */
+        .card {
+            margin-bottom: 20px;
+            max-width: 250px; /* Tamaño máximo de la tarjeta */
+            border: 1px solid #ddd;
+            border-radius: 5px;
         }
 
+        .card-img-top {
+            width: 100%;
+            height: 150px; /* Altura fija para las imágenes */
+            object-fit: cover; /* Asegura que la imagen cubra el área sin distorsionar */
+        }
+
+        .btn-success {
+            font-size: 16px; /* Aumenta el tamaño del texto del botón */
+            padding: 10px 20px; /* Aumenta el padding del botón */
+            margin-top: 05px; /* Agrega un margen superior para separarlo del contenido */
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center; /* Centra el contenido horizontalmente */
+        }
 
     </style>
 </head>
@@ -227,6 +233,7 @@
 
                     </div>
                     <input type="hidden" id="IdMesa" name="IdMesa" />
+
                 </div>
 
                 <div>
@@ -241,7 +248,7 @@
 
                 <div>
                     <label>Seleccionar Plato</label>
-                    <div id="platosContainer" class="scrollable-container">
+                    <div id="platosContainer">
                         <!-- Contenido con scroll -->
                     </div>
                 </div>
@@ -268,15 +275,55 @@
 
                 <div>
                     <label>Total:</label>
-                    <span id="totalPedido">0.00</span>
+                    <span id="totalPedido">0</span>
                     <input type="hidden" id="Total" name="Total" value="0" />
                 </div>
 
-                <button type="submit" class="btn btn-success">Crear</button>
+                <div class="button-container">
+                    <button type="submit" class="btn btn-success">Crear Pedido</button>
+                </div>
             </form>
         </div>
-    </div>
 
+        <!-- Modal de aviso de productos -->
+        <div class="modal fade" id="noProductosModal" tabindex="-1" role="dialog" aria-labelledby="noProductosModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="noProductosModalLabel">Aviso</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Debes agregar al menos un producto antes de enviar el pedido.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de aviso de mesa -->
+        <div class="modal fade" id="noMesaModal" tabindex="-1" role="dialog" aria-labelledby="noMesaModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="noMesaModalLabel">Aviso</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Debes seleccionar una mesa antes de enviar el pedido.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     <script>
         $(document).ready(function () {
             var platos = @Html.Raw(JsonConvert.SerializeObject(ViewBag.Platos));
@@ -287,28 +334,38 @@
                 container.empty();
 
                 filteredPlatos.forEach(function (plato) {
+                    var imageSrc = plato.ImagenData
+                        ? `data:image/jpeg;base64,${plato.ImagenData}`  // Asegúrate de que el tipo MIME sea correcto
+                        : 'https://via.placeholder.com/150';  // Placeholder en caso de no tener imagen
+
                     var platoCard = `
-                                <div class="col-xs-12 col-sm-6 col-md-4">
-                                    <div class="card" data-id="${plato.Id}" data-nombre="${plato.Nombre}" data-precio="${plato.Precio}">
-                                        <div class="card-body">
-                                            <h5 class="card-title">${plato.Nombre}</h5>
-                                            <p class="card-text">Precio: ${plato.Precio.toFixed(2)}</p>
-                                            <button type="button" class="btn btn-primary agregarPlatoBtn">Agregar</button>
+                                    <div class="col-xs-12 col-sm-6 col-md-3">
+                                        <div class="card" data-id="${plato.Id}" data-nombre="${plato.Nombre}" data-precio="${plato.Precio}">
+                                            <img src="${imageSrc}" class="card-img-top" alt="${plato.Nombre}">
+                                            <div class="card-body">
+                                                <h5 class="card-title">${plato.Nombre}</h5>
+                                                <p class="card-text">Categoría: ${plato.Categoria}</p>
+                                                <p class="card-text">Precio: ${plato.Precio}</p>
+                                                <button type="button" class="btn btn-primary agregarPlatoBtn">Agregar</button>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            `;
+                                `;
                     container.append(platoCard);
                 });
             }
 
+            var platosDisponibles = platos.filter(function (plato) {
+                return plato.Disponible;
+            });
+
             // Inicializa el contenedor con todos los platos al cargar la página
-            populatePlatoContainer(platos);
+            populatePlatoContainer(platosDisponibles);
 
             // Filtra los platos cuando se escribe en el campo de búsqueda
             $('#searchPlato').on('input', function () {
                 var searchTerm = $(this).val().toLowerCase();
-                var filteredPlatos = platos.filter(function (plato) {
+                var filteredPlatos = platosDisponibles.filter(function (plato) {
                     return plato.Nombre.toLowerCase().includes(searchTerm);
                 });
                 populatePlatoContainer(filteredPlatos);
@@ -321,16 +378,16 @@
                 var platoPrecio = $(this).closest('.card').data('precio');
 
                 var newRow = `
-                            <tr data-id="${platoId}">
-                                <td>${platoNombre}</td>
-                                <td>
-                                    <input type="number" name="Platos[${platoId}].Cantidad" value="1" class="form-control cantidadPlato" min="1" />
-                                </td>
-                                <td>
-                                    <button type="button" class="btn btn-danger btn-sm eliminarPlatoBtn">Eliminar</button>
-                                </td>
-                            </tr>
-                        `;
+                                <tr data-id="${platoId}">
+                                    <td>${platoNombre}</td>
+                                    <td>
+                                        <input type="number" name="PlatosSeleccionados[${platoId}]" value="1" min="1" max="10" class="form-control cantidadPlato" min="1" />
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-danger btn-sm eliminarPlatoBtn">Eliminar</button>
+                                    </td>
+                                </tr>
+                            `;
 
                 $('#platosSeleccionados').append(newRow);
                 actualizarTotal();
@@ -355,13 +412,13 @@
                     var platoId = $(this).data('id');
                     var cantidad = $(this).find('.cantidadPlato').val();
                     var plato = platos.find(function (p) { return p.Id == platoId; });
-                    total += plato.Precio * cantidad;
+                    total += (plato.Precio) * (cantidad);
+
                 });
 
-                $('#totalPedido').text(total.toFixed(2));
-                $('#inputTotalPedido').val(total.toFixed(2));
+                $('#totalPedido').text(total);
+                $('#inputTotalPedido').val(total);
             }
-
 
             $('.mesa-boton').on('click', function () {
                 console.log('Botón de mesa clickeado');
@@ -378,17 +435,20 @@
                 }
             });
 
-            (function ($) {
-                $(window).on('load', function () {
-                    $(".scrollable-container").mCustomScrollbar({
-                        theme: "dark-thin",
-                        scrollbarPosition: "inside",
-                        autoHideScrollbar: true,
-                        scrollButtons: { enable: true }
-                    });
-                });
-            })(jQuery);
+            $('form').on('submit', function (e) {
+                var hayProductos = $('#platosSeleccionados tr').length > 0;
+                var mesaSeleccionada = $('#IdMesa').val() !== '';
+
+                if (!hayProductos) {
+                    e.preventDefault();
+                    $('#noProductosModal').modal('show');
+                } else if (!mesaSeleccionada) {
+                    e.preventDefault();
+                    $('#noMesaModal').modal('show');
+                }
+            });
         });
     </script>
+
 </body>
 </html>

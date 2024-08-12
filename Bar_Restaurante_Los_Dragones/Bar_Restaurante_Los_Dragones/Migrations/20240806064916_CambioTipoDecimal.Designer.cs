@@ -4,6 +4,7 @@ using Bar_Restaurante_Los_Dragones.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bar_Restaurante_Los_Dragones.Migrations
 {
     [DbContext(typeof(ProyectoContext))]
-    partial class ProyectoContextModelSnapshot : ModelSnapshot
+    [Migration("20240806064916_CambioTipoDecimal")]
+    partial class CambioTipoDecimal
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -50,8 +53,8 @@ namespace Bar_Restaurante_Los_Dragones.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Precio")
-                        .HasColumnType("int");
+                    b.Property<decimal>("Precio")
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
@@ -90,11 +93,11 @@ namespace Bar_Restaurante_Los_Dragones.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Subtotal")
-                        .HasColumnType("int");
+                    b.Property<decimal>("Subtotal")
+                        .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("TotalPagar")
-                        .HasColumnType("int");
+                    b.Property<decimal>("TotalPagar")
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("id");
 
@@ -143,30 +146,6 @@ namespace Bar_Restaurante_Los_Dragones.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Dal.Dragones.NotaDeCredito", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("FacturaId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("Fecha")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Monto")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FacturaId");
-
-                    b.ToTable("NotasDeCredito");
-                });
-
             modelBuilder.Entity("Dal.Dragones.Pedido", b =>
                 {
                     b.Property<int>("Id")
@@ -188,8 +167,8 @@ namespace Bar_Restaurante_Los_Dragones.Migrations
                     b.Property<string>("Observacion")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Total")
-                        .HasColumnType("int");
+                    b.Property<decimal>("Total")
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
@@ -220,8 +199,8 @@ namespace Bar_Restaurante_Los_Dragones.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Precio")
-                        .HasColumnType("int");
+                    b.Property<decimal>("Precio")
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
@@ -234,7 +213,7 @@ namespace Bar_Restaurante_Los_Dragones.Migrations
                             Categoria = "Comida",
                             Disponible = true,
                             Nombre = "Sopa",
-                            Precio = 2300
+                            Precio = 10.00m
                         },
                         new
                         {
@@ -242,7 +221,7 @@ namespace Bar_Restaurante_Los_Dragones.Migrations
                             Categoria = "Comida",
                             Disponible = true,
                             Nombre = "Ceviche",
-                            Precio = 5500
+                            Precio = 25.00m
                         },
                         new
                         {
@@ -250,7 +229,7 @@ namespace Bar_Restaurante_Los_Dragones.Migrations
                             Categoria = "Comida",
                             Disponible = true,
                             Nombre = "Arroz con pollo",
-                            Precio = 2500
+                            Precio = 8.00m
                         },
                         new
                         {
@@ -258,7 +237,7 @@ namespace Bar_Restaurante_Los_Dragones.Migrations
                             Categoria = "Comida",
                             Disponible = true,
                             Nombre = "Pizza",
-                            Precio = 7500
+                            Precio = 12.99m
                         },
                         new
                         {
@@ -266,7 +245,7 @@ namespace Bar_Restaurante_Los_Dragones.Migrations
                             Categoria = "Bebida",
                             Disponible = true,
                             Nombre = "Coca Cola",
-                            Precio = 1200
+                            Precio = 1.99m
                         });
                 });
 
@@ -341,17 +320,6 @@ namespace Bar_Restaurante_Los_Dragones.Migrations
                         .IsRequired();
 
                     b.Navigation("Pedidos");
-                });
-
-            modelBuilder.Entity("Dal.Dragones.NotaDeCredito", b =>
-                {
-                    b.HasOne("Dal.Dragones.Factura", "Factura")
-                        .WithMany()
-                        .HasForeignKey("FacturaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Factura");
                 });
 
             modelBuilder.Entity("Dal.Dragones.Pedido", b =>

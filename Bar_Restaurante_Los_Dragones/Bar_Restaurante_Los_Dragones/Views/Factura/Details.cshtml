@@ -95,7 +95,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var detalle in Model.Pedidos.Detalles.Where(d => !d.Disponible))
+                            @foreach (var detalle in Model.Pedidos.Detalles)
                             {
                                 <tr data-id="@detalle.Id" data-categoria="@detalle.Categoria" data-lista-comida="@detalle.ListaComida">
                                     <td>@detalle.Nombre</td>
@@ -113,6 +113,35 @@
                 <h2 class="all-tittles">@Html.DisplayNameFor(model => model.Observaciones) : <small>@Html.DisplayFor(model => model.Observaciones)</small></h2>
                 <h2 class="all-tittles">@Html.DisplayNameFor(model => model.MetodoPago) : <small>@Html.DisplayFor(model => model.MetodoPago)</small></h2>
                 <h2 class="all-tittles">Estado del pedido : <small>@Html.DisplayFor(model => model.Pedidos.Estado)</small></h2>
+
+                <!-- Botón para abrir el modal -->
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#creditNoteModal">
+                    Aplicar Nota de Crédito
+                </button>
+
+                <!-- Modal -->
+                <div class="modal fade" id="creditNoteModal" tabindex="-1" role="dialog" aria-labelledby="creditNoteModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="creditNoteModalLabel">Aplicar Nota de Crédito</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="creditNoteForm">
+                                    <div class="mb-3">
+                                        <label for="creditNoteAmount" class="form-label">Monto de la Nota de Crédito</label>
+                                        <input type="number" class="form-control" id="creditNoteAmount" required>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Aplicar</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <a asp-action="Index">
                     <button class="btn btn-primary">
                         Volver a facturas
@@ -121,12 +150,9 @@
                 <a class="btn btn-primary" href="@Url.Action("DownloadPDF", "Factura", new { id = Model.id })">Descargar PDF</a>
             </div>
         </div>
-        <div>
-            </a>
-        </div>
     </div>
     </div>
-
+    
     <script>
         $(document).ready(function () {
             $('#tabla').DataTable({
@@ -151,6 +177,39 @@
                         sortAscending: ": activar para ordenar la columna de manera ascendente",
                         sortDescending: ": activar para ordenar la columna de manera descendente"
                     }
+                }
+            });
+        });
+
+
+    </script>
+
+    <script>
+        document.getElementById('creditNoteForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const facturaId = @Model.id;
+            const creditNoteAmount = parseFloat(document.getElementById('creditNoteAmount').value);
+
+            $.ajax({
+                url: '@Url.Action("AplicarNotaDeCredito", "Factura")',
+                type: 'POST',
+                data: {
+                    facturaId: facturaId,
+                    monto: creditNoteAmount
+                },
+                success: function (response) {
+                    if (response.success) {
+                        // Actualizar el total de la factura en la vista
+                        $('#totalFactura').text(response.nuevoTotal);
+                        // Cerrar el modal
+                        $('#creditNoteModal').modal('hide');
+                    } else {
+                        alert('Error al aplicar la nota de crédito.');
+                    }
+                },
+                error: function () {
+                    alert('Error en la solicitud.');
                 }
             });
         });

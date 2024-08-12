@@ -64,7 +64,7 @@
         <div class="container-fluid">
             <div class="container-flat-form">
                 <div class="title-flat-form title-flat-blue">Editar Factura</div>
-                <form asp-action="Create">
+                <form asp-action="Create" class="form-padding" onsubmit="agregarComensalesAObservaciones()">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <input type="hidden" asp-for="id" />
                     <div class="row">
@@ -131,12 +131,22 @@
                                 <label>Observaciones</label>
                             </div>
                         </div>
+
+                        <!-- Nueva sección para dividir la cuenta -->
                         <div class="col-xs-12 col-sm-6">
-                            <label>Metodo de pago</label>
                             <div class="group-material">
-                                <select asp-for="MetodoPago" class="material-control tooltips-general" placeholder="Metodo de pago" data-toggle="tooltip" data-placement="top" title="Metodo de pago" asp-items="ViewBag.MetodoPagoList"></select>
-                                <span asp-validation-for="MetodoPago" class="text-danger"></span>  
+                                <input id="numComensales" type="number" class="material-control tooltips-general" placeholder="Número de comensales" data-toggle="tooltip" data-placement="top" title="Ingrese el número de comensales">
+                                <button type="button" class="btn btn-secondary" onclick="dividirCuenta()">Dividir Cuenta</button>
+                                <label for="numComensales">Número de comensales</label>
                             </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6">
+                            <div class="group-material">
+                                <input id="totalPorComensal" type="text" class="material-control tooltips-general" placeholder="Total por comensal" readonly>
+                                <label for="totalPorComensal">Total por comensal</label>
+                            </div>
+                        </div>
+                        <div class="col-xs-12">
                             <label>Productos</label>
                             <div class="container mt-5">
                                 <table class="table table-secondary table-bordered table-hover">
@@ -148,7 +158,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach (var detalle in Model.Pedidos.Detalles.Where(d => !d.Disponible))
+                                        @foreach (var detalle in Model.Pedidos.Detalles)
                                         {
                                             <tr data-id="@detalle.Id" data-categoria="@detalle.Categoria" data-lista-comida="@detalle.ListaComida">
                                                 <td>@detalle.Nombre</td>
@@ -160,7 +170,6 @@
                                 </table>
                             </div>
                         </div>
-
                         <input type="hidden" asp-for="PedidoId" />
                         <div class="col-xs-12">
                             <button type="submit" value="Create" class="btn btn-primary"><i class="zmdi zmdi-floppy"></i> &nbsp;&nbsp; Guardar</button>
@@ -186,5 +195,35 @@
             </div>
         </div>
     </div>
+
 </body>
 </html>
+<script>
+    function dividirCuenta() {
+        // Obtener el valor del campo TotalPagar
+        var totalPagarElement = document.querySelector('[name="TotalPagar"]');
+        var totalPagar = parseFloat(totalPagarElement.value);
+
+        // Obtener el número de comensales
+        var numComensales = parseInt(document.getElementById('numComensales').value);
+
+        // Verificar que ambos valores sean válidos
+        if (!isNaN(totalPagar) && !isNaN(numComensales) && numComensales > 0) {
+            // Calcular el total por comensal y redondear al entero más cercano
+            var totalPorComensal = Math.round(totalPagar / numComensales);
+            // Asignar el valor calculado al campo totalPorComensal
+            document.getElementById('totalPorComensal').value = totalPorComensal;
+        } else {
+            alert('Por favor, ingrese un número válido de comensales.');
+        }
+    }
+</script>
+<script>
+    function agregarComensalesAObservaciones() {
+        var numComensales = document.getElementById('numComensales').value;
+        var observacionesInput = document.getElementById('Observaciones');
+        if (numComensales) {
+            observacionesInput.value += " | Cuenta dividida entre " + numComensales + " comensales";
+        }
+    }
+</script>

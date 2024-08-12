@@ -102,7 +102,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
                 }
 
                 pedido.Estado = "ENTREGADO";
-                pedido.Mesa.Estado = "DISPONIBLE";
+                pedido.Mesa.Estado = "Disponible";
                 _context.Update(pedido);
                 _context.Update(pedido.Mesa);
 
@@ -163,11 +163,11 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
                 PedidoId = pedido.Id,
                 Fecha = DateTime.Now,
                 Subtotal = pedido.Total,
-                Iva = (int)13m, 
+                Iva = 13m,
                 Pedidos = pedido
         };
 
-            factura.TotalPagar = factura.Subtotal+((factura.Iva/100m)*factura.Subtotal);
+            factura.TotalPagar = ((int)(factura.Iva / 100m * factura.Subtotal)) + factura.Subtotal;
 
             factura.Responsable = User.Identity.Name;
 
@@ -266,6 +266,31 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
         private bool FacturaExists(int id)
         {
             return _context.Facturas.Any(e => e.id == id);
+        }
+
+        [HttpPost]
+        public IActionResult AplicarNotaDeCredito(int facturaId, int monto)
+        {
+            var factura = _context.Facturas.FirstOrDefault(f => f.id == facturaId);
+            if (factura != null)
+            {
+                // Guardar la nota de crédito en la base de datos
+                var notaDeCredito = new NotaDeCredito
+                {
+                    FacturaId = facturaId,
+                    Monto = monto,
+                    Fecha = DateTime.Now
+                };
+                _context.NotasDeCredito.Add(notaDeCredito);
+
+                // Aplicar el descuento al total de la factura
+                factura.TotalPagar -= monto;
+                _context.SaveChanges();
+
+                return Json(new { success = true, nuevoTotal = factura.TotalPagar });
+            }
+
+            return Json(new { success = false });
         }
 
         //descarga pdf
