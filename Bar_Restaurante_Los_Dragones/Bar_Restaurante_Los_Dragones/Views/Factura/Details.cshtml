@@ -13,6 +13,10 @@
             display: inline-block; /* Hacerlo un bloque en línea para aplicar padding correctamente */
             cursor: pointer; /* Cambiar el cursor a puntero */
             font-size: 27px;
+            border:none;
+        }
+        .btn {
+            margin-right:5px;
         }
     </style>
 </head>
@@ -141,11 +145,8 @@
                         </div>
                     </div>
                 </div>
-
-                <a asp-action="Index">
-                    <button class="btn btn-primary">
-                        Volver a facturas
-                    </button>
+                <a asp-action="Index" class="btn btn-primary">
+                    Volver a facturas
                 </a>
                 <a class="btn btn-primary" href="@Url.Action("DownloadPDF", "Factura", new { id = Model.id })">Descargar PDF</a>
             </div>

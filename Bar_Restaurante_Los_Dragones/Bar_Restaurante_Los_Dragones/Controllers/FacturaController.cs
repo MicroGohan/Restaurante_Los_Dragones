@@ -92,6 +92,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
             ModelState.Remove("Pedidos");
             if (ModelState.IsValid)
             {
+                factura.Fecha = DateTime.Now;
                 var pedido = await _context.Pedidos
                 .Include(p => p.Mesa)
                 .FirstOrDefaultAsync(p => p.Id == factura.PedidoId);

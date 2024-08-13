@@ -24,21 +24,36 @@
             transform: translateY(-50%); /* Ajusta la posición para centrar */
         }
 
-            .toast-custom .toast-message {
+        .toast-custom .toast-message {
                 font-size: 18px; /* Tamaño de la fuente */
                 font-weight: bold; /* Opcional: para que el texto sea negrita */
-            }
+        }
 
-            .toast-custom .toast-title {
+        .toast-custom .toast-title {
                 font-size: 20px; /* Tamaño de la fuente del título de la notificación */
                 font-weight: bold; /* Opcional: para que el título sea negrita */
+        }
+
+        .btn {
+            vertical-align: bottom !important;
+        }
+
+        @@media (min-width: 768px) 
+        {
+            .form-inline .form-control {
+                display: block !important;
+                width: 200px !important;
             }
+        }
     </style>
 </head>
 <body>
     <div class="content-page-container full-reset custom-scroll-containers">
         <nav class="navbar-user-top full-reset">
             <ul class="list-unstyled full-reset">
+                <figure>
+                    <img src="~/assets/img/user01.png" alt="user-picture" class="img-responsive img-circle center-box">
+                </figure>
                 <li class="user-info" style="color:#fff; cursor:default;">
                     @if (User.Identity.IsAuthenticated)
                     {
@@ -83,14 +98,14 @@
                     <div class="form-inline">
                         <div class="form-group">
                             <label for="minPrice">Precio Mínimo:</label>
-                            <input type="number" id="minPrice" class="form-control" placeholder="Precio Mínimo">
+                            <input type="number" id="minPrice" class="form-control input-fixed-width" placeholder="Precio Mínimo">
                         </div>
                         <div class="form-group">
                             <label for="maxPrice">Precio Máximo:</label>
-                            <input type="number" id="maxPrice" class="form-control" placeholder="Precio Máximo">
+                            <input type="number" id="maxPrice" class="form-control input-fixed-width" placeholder="Precio Máximo">
                         </div>
                         <button id="filterButton" class="btn btn-primary">Filtrar</button>
-                        <button id="reloadButton" class="btn btn-secondary">Reiniciar</button>
+                        <button id="reloadButton" class="btn btn-secondary">Recargar Datos</button>
                     </div>
                 </div>
             </div>
