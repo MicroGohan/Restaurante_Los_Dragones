@@ -129,7 +129,7 @@
                         </div>
                     </li>
                     <li class="nav-item">
-                        <a class="" asp-area="" asp-controller="Login" asp-action="Salir">
+                        <a href="#" id="logout-button" class="exit-system-button">
                             <i class="zmdi zmdi-power"></i>
                         </a>
                     </li>
@@ -189,7 +189,7 @@
                         {
                             <p>
                                 @detalle.Nombre - Cantidad: @detalle.Cantidad
-                                @if (detalle.ListaComida)
+                                @if (detalle.ListaComida || detalle.Categoria == "Bebida")
                                 {
                                     <span class="text-success">&#x2714;</span> <!-- Check mark -->
                                 }
@@ -274,7 +274,7 @@
                                 // Crear el contenido HTML para los detalles del pedido
                                 let detallesHtml = '';
                                 pedido.detalles.forEach(function (detalle) {
-                                    let estadoIcono = detalle.listaComida
+                                    let estadoIcono = detalle.listaComida || detalle.categoria == "Bebida"
                                         ? '<span class="text-success">&#x2714;</span>' // Check mark
                                         : '<span class="text-danger">&#x26A0;</span>'; // Warning icon
 

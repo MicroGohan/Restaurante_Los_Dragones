@@ -16,7 +16,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var pedidos = await _context.Pedidos.Include(p => p.Mesa).ToListAsync();
+            var pedidos = await _context.Pedidos.Include(p => p.Mesa).Include(pe => pe.Detalles).ToListAsync();
             return View(pedidos);
         }
 

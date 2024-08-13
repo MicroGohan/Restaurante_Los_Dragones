@@ -44,7 +44,7 @@
                         </div>
                     </li>
                     <li class="nav-item">
-                        <a class="" asp-area="" asp-controller="Login" asp-action="Salir">
+                        <a href="#" id="logout-button" class="exit-system-button">
                             <i class="zmdi zmdi-power"></i>
                         </a>
                     </li>
@@ -130,8 +130,15 @@
                                     </button>
                                 </form>
                             </td>
+                            @{
+                                // Función auxiliar para verificar si todos los detalles del pedido son bebidas
+                                bool SoloContieneBebidas(Dal.Dragones.Pedido pedido)
+                                {
+                                    return pedido.Detalles.All(d => d.Categoria == "Bebida");
+                                }
+                            }
                             <td class="text-center">
-                                @if (pedido.Estado == "PENDIENTE")
+                                @if (pedido.Estado == "PENDIENTE" && !SoloContieneBebidas(pedido))
                                 {
                                     <form asp-action="MandarACocina" asp-route-id="@pedido.Id" method="post" style="display:inline;">
                                         <button type="submit" class="btn btn-success tooltips-general" data-toggle="tooltip" data-placement="top" title="Mandar Cocina">
@@ -142,7 +149,7 @@
                             </td>
 
                             <td class="text-center">
-                                @if (pedido.Estado == "ORDEN LISTA")
+                                @if (pedido.Estado == "ORDEN LISTA" && SoloContieneBebidas(pedido) || pedido.Estado != "ENTREGADO" && SoloContieneBebidas(pedido))
                                 {
                                     <a asp-controller="Factura" asp-action="Create" asp-route-id="@pedido.Id" class="btn btn-info tooltips-general" data-toggle="tooltip" data-placement="top" title="Facturar">
                                         <i class="fas fa-receipt"></i>

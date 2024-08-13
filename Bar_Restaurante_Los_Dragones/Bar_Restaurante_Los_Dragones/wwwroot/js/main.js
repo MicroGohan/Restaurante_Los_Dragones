@@ -54,23 +54,41 @@ $(document).ready(function(){
         var dropMenu=$(this).next('ul');
         dropMenu.slideToggle('slow');
     });
-    $('.exit-system-button').on('click', function(e){
-        e.preventDefault();
-        var LinkExitSystem=$(this).attr("data-href");
-        swal({
-            title: "¿Estás seguro?",
+    // Asegúrate de que jQuery y SweetAlert2 se carguen en tu página
+    $('#logout-button').on('click', function (e) {
+        e.preventDefault(); // Prevenir la acción por defecto del enlace
+
+        Swal.fire({
+            title: '¿Estás seguro?',
             text: "Quieres salir del sistema y cerrar la sesión actual",
-            type: "warning",
+            icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: "#5cb85c",
-            confirmButtonText: "Si, salir",
-            cancelButtonText: "No, cancelar",
-            animation: "slide-from-top",
-            closeOnConfirm: false 
-        },function(){
-            window.location=LinkExitSystem; 
-        });  
+            confirmButtonColor: '#5cb85c',
+            confirmButtonText: 'Sí, salir',
+            cancelButtonText: 'No, cancelar',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: 'POST',
+                    url: logoutUrl, // Usa la variable que contiene la URL
+                    success: function (response) {
+                        if (response.success) {
+                            window.location.href = indexUrl; // Redirige al Index del controlador Login
+                        }
+                    },
+                    error: function () {
+                        Swal.fire('Error', 'No se pudo cerrar la sesión. Inténtalo de nuevo.', 'error');
+                    }
+                });
+            }
+        });
     });
+
+
+
+
+
     $('.search-book-button').click(function(e){
         e.preventDefault();
         var LinkSearchBook=$(this).attr("data-href");

@@ -99,13 +99,12 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
         }
 
         [AllowAnonymous]
+        [HttpPost] // Asegúrate de que sea un POST
         public async Task<IActionResult> Salir()
         {
-
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-
-            return RedirectToAction("Index");
-
+            return Json(new { success = true }); // Responde con JSON indicando éxito
         }
+
     }
 }
