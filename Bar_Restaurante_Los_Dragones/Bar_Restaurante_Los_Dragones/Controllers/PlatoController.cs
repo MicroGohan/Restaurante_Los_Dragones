@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Bar_Restaurante_Los_Dragones.Models;
 using Dal.Dragones;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Bar_Restaurante_Los_Dragones.Controllers
 {
@@ -20,12 +21,14 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
         }
 
         // GET: Plato
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Index()
         {
             return View(await _context.Platos.ToListAsync());
         }
 
         // GET: Plato/Details/5
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -44,6 +47,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
         }
 
         // GET: Plato/Create
+        [Authorize(Roles = "Administrador")]
         public IActionResult Create()
         {
             return View();
@@ -54,6 +58,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Create([Bind("Id,Nombre,Precio,ImagenData,Disponible,Categoria")] Plato plato, IFormFile imagenArchivo)
         {
             ModelState.Remove("ImagenData");
@@ -76,6 +81,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
         }
 
         // GET: Plato/Edit/5
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -96,6 +102,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Precio,ImagenData,Disponible,Categoria")] Plato plato, IFormFile ImagenData)
         {
             if (id != plato.Id)
@@ -145,6 +152,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
         }
 
         // GET: Plato/Delete/5
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -165,6 +173,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
         // POST: Plato/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var plato = await _context.Platos.FindAsync(id);
@@ -177,6 +186,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = "Administrador")]
         private bool PlatoExists(int id)
         {
             return _context.Platos.Any(e => e.Id == id);

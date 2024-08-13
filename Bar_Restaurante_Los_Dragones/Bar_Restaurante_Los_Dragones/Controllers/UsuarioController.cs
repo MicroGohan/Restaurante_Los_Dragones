@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Bar_Restaurante_Los_Dragones.Models;
 using Dal.Dragones;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Bar_Restaurante_Los_Dragones.Controllers
 {
@@ -20,6 +21,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
         }
 
         // GET: Usuario
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Index()
         {
             var proyectoContext = _context.Usuarios.Include(u => u.Rol);
@@ -27,6 +29,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
         }
 
         // GET: Usuario/Details/5
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -46,6 +49,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
         }
 
         // GET: Usuario/Create
+        [Authorize(Roles = "Administrador")]
         public IActionResult Create()
         {
             ViewData["RolID"] = new SelectList(_context.Roles, "ID", "Nombre");
@@ -57,6 +61,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Create([Bind("ID,Nombre,Correo,Clave,RolID")] Usuario usuario)
         {
             ModelState.Remove("ConfirmarClave");
@@ -80,6 +85,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
         }
 
         // GET: Usuario/Edit/5
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -101,6 +107,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Edit(int id, [Bind("ID,Nombre,Correo,Clave,RolID")] Usuario usuario)
         {
             if (id != usuario.ID)
@@ -134,6 +141,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
         }
 
         // GET: Usuario/Delete/5
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -155,6 +163,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
         // POST: Usuario/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var usuario = await _context.Usuarios.FindAsync(id);
@@ -167,6 +176,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = "Administrador")]
         private bool UsuarioExists(int id)
         {
             return _context.Usuarios.Any(e => e.ID == id);

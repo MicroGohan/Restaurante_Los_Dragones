@@ -1,5 +1,6 @@
 ﻿using Bar_Restaurante_Los_Dragones.Models;
 using Dal.Dragones;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,13 +14,13 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
         {
             _context = context;
         }
-
+        [Authorize(Roles = "Administrador,Empleado")]
         public async Task<IActionResult> Index()
         {
             var pedidos = await _context.Pedidos.Include(p => p.Mesa).Include(pe => pe.Detalles).ToListAsync();
             return View(pedidos);
         }
-
+        [Authorize(Roles = "Administrador,Empleado")]
         public async Task<IActionResult> Mesero()
         {
             var pedidos = await _context.Pedidos
@@ -29,7 +30,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
                 .ToListAsync();
             return View(pedidos);
         }
-
+        [Authorize(Roles = "Administrador,Empleado")]
         public async Task<IActionResult> CrearPedido()
         {
             // Cargar las mesas con sus pedidos asociados
@@ -44,6 +45,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrador,Empleado")]
         public async Task<IActionResult> CrearPedido(Pedido pedido, Dictionary<int, int> PlatosSeleccionados)
         {
             ModelState.Remove("Total");
@@ -106,7 +108,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
 
 
 
-
+        [Authorize(Roles = "Administrador,Empleado")]
         public async Task<IActionResult> DetallesPedido(int id)
         {
             var pedido = await _context.Pedidos
@@ -125,6 +127,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrador,Empleado")]
         public async Task<IActionResult> AñadirPlato(int idPedido, int idPlato, int cantidad)
         {
             var pedido = await _context.Pedidos
@@ -163,6 +166,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrador,Empleado")]
         public async Task<IActionResult> CambiarCantidadPlatillo(int idPedido, int idDetalle, int nuevaCantidad)
         {
             var pedido = await _context.Pedidos
@@ -197,6 +201,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrador,Empleado")]
         public async Task<IActionResult> MandarACocina(int id)
         {
             var pedido = await _context.Pedidos.FindAsync(id);
@@ -213,6 +218,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Administrador,Empleado")]
         public async Task<IActionResult> MandarACocinaMesero(int id)
         {
             var pedido = await _context.Pedidos.FindAsync(id);
@@ -228,7 +234,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
             return Ok(new { success = true, message = "Pedido en cocina exitosamente" });
         }
 
-
+        [Authorize(Roles = "Administrador,Empleado")]
         public async Task<IActionResult> Cocina()
         {
             var pedidos = await _context.Pedidos
@@ -238,7 +244,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
                 .ToListAsync();
             return View(pedidos);
         }
-
+        [Authorize(Roles = "Administrador,Empleado")]
         public async Task<IActionResult> DetallesCocina(int id)
         {
             var pedido = await _context.Pedidos
@@ -257,6 +263,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrador,Empleado")]
         public async Task<IActionResult> FinalizarPedido(int idPedido)
         {
             var pedido = await _context.Pedidos.FindAsync(idPedido);
@@ -273,6 +280,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Administrador,Empleado")]
         public async Task<IActionResult> FinalizarPedido02(int idPedido)
         {
             var pedido = await _context.Pedidos.FindAsync(idPedido);
@@ -291,6 +299,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrador,Empleado")]
         public async Task<IActionResult> EliminarPedido(int id)
         {
             var pedido = await _context.Pedidos.FindAsync(id);
@@ -317,6 +326,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrador,Empleado")]
         public async Task<IActionResult> EliminarPlatillo(int idPedido, int idDetalle)
         {
             var pedido = await _context.Pedidos
@@ -345,6 +355,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrador,Empleado")]
         public async Task<IActionResult> CambiarDisponibilidad(int idPedido, List<int> detallesSeleccionados)
         {
             var pedido = await _context.Pedidos
@@ -373,6 +384,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrador,Empleado")]
         public async Task<IActionResult> CambiarEstadoEntregado(int idPedido, List<int> detallesSeleccionados)
         {
             var pedido = await _context.Pedidos
@@ -399,6 +411,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Administrador,Empleado")]
         public async Task<IActionResult> CambiarEstadoEntregadoCocina(int idPedido, List<int> detallesSeleccionados)
         {
             var pedido = await _context.Pedidos
@@ -426,6 +439,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
 
 
         [HttpPost]
+        [Authorize(Roles = "Administrador,Empleado")]
         public async Task<IActionResult> CambiarEstadoEntregadoMesero(int idPedido, List<int> detallesSeleccionados)
         {
             var pedido = await _context.Pedidos
@@ -451,6 +465,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
             return Json(new { success = true });
         }
 
+        [Authorize(Roles = "Administrador,Empleado")]
         public IActionResult ObtenerPedidosCocina()
         {
             var pedidos = _context.Pedidos
@@ -476,7 +491,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
 
             return Json(pedidos);
         }
-
+        [Authorize(Roles = "Administrador,Empleado")]
         public IActionResult ObtenerPedidosMesero()
         {
             var pedidos = _context.Pedidos
@@ -506,6 +521,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Administrador,Empleado")]
         public JsonResult ObtenerDetallesPedido(int idPedido)
         {
             var pedido = _context.Pedidos
@@ -530,6 +546,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Administrador,Empleado")]
         public async Task<IActionResult> VerificarDetallesPendientes(int idPedido)
         {
             var pedido = await _context.Pedidos

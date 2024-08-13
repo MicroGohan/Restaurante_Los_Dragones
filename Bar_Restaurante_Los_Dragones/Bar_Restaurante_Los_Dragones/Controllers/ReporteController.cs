@@ -6,6 +6,7 @@ using System.IO;
 using Dal.Dragones;
 using iTextSharp.text.pdf;
 using iTextSharp.text;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Bar_Restaurante_Los_Dragones.Controllers
 {
@@ -17,18 +18,21 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
         {
             _reporteService = reporteService;
         }
+        [Authorize(Roles = "Administrador")]
         public IActionResult Index()
         {
             return View();
         }
         //DIA
         [HttpGet]
+        [Authorize(Roles = "Administrador")]
         public IActionResult TotalFacturadoPorDia()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> TotalFacturadoPorDia(DateTime? fecha)
         {
             if (!fecha.HasValue)
@@ -56,12 +60,14 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
 
         //MES
         [HttpGet]
+        [Authorize(Roles = "Administrador")]
         public IActionResult TotalFacturadoPorMes()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize(Roles = "Administrador")]
         public IActionResult TotalFacturadoPorMes(int mes, int año)
         {
             var currentDate = DateTime.Now;
@@ -83,12 +89,14 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
 
         //FECHA PER
         [HttpGet]
+        [Authorize(Roles = "Administrador")]
         public IActionResult TotalFacturadoPorFechaSeleccionada()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> TotalFacturadoPorFechaSeleccionada(DateTime fechaInicio, DateTime fechaFin)
         {
             if (fechaInicio > fechaFin)
@@ -109,6 +117,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
         }
 
         //DOWNLOAD PDF POR DIA
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> DownloadPDF(DateTime fecha)
         {
             Console.WriteLine($"Fecha recibida: {fecha}");
@@ -176,7 +185,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
         }
 
         //DOWNLOAD PDF POR MES
-
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> DownloadPDFPorMes(int mes, int año)
         {
             Console.WriteLine($"Mes y Año recibidos: {mes}, {año}");

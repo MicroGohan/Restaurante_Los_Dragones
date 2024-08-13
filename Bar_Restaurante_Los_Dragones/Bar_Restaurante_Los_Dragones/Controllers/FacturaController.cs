@@ -11,6 +11,7 @@ using System.Configuration;
 using System.Security.Claims;
 using iTextSharp.text.pdf;
 using iTextSharp.text;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Bar_Restaurante_Los_Dragones.Controllers
 {
@@ -24,6 +25,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
         }
 
         // GET: Factura
+        [Authorize(Roles = "Administrador,Empleado")]
         public async Task<IActionResult> Index()
         {
             var proyectoContext = _context.Facturas.Include(f => f.Pedidos);
@@ -31,6 +33,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
         }
 
         // GET: Factura/Details/5
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -86,6 +89,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrador,Empleado")]
         public async Task<IActionResult> Create([Bind("id,Fecha,NombreCliente,Responsable,Subtotal,Descuento,Iva,TotalPagar,Observaciones,MetodoPago,PedidoId")] Factura factura)
         {
             factura.id = 0;
@@ -116,6 +120,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Administrador,Empleado")]
         public async Task<IActionResult> Create(int? id)
         {
 
@@ -178,6 +183,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
         }
 
         // GET: Factura/Edit/5
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -199,6 +205,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Edit(int id, [Bind("id,Fecha,NombreCliente,Responsable,Subtotal,Descuento,Iva,TotalPagar,Observaciones,MetodoPago,PedidoId")] Factura factura)
         {
             if (id != factura.id)
@@ -231,6 +238,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
         }
 
         // GET: Factura/Delete/5
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -252,6 +260,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
         // POST: Factura/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var factura = await _context.Facturas.FindAsync(id);

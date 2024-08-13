@@ -110,40 +110,39 @@
             </div>
         </div>
 
-        <div class="container-fluid mt-4">
-            <!-- Formulario de Filtros por Fecha -->
-            <form id="filterForm" class="form-inline mb-4">
-                <div class="form-group mr-3">
+        <div class="container-fluid">
+            <form id="filterForm" class="form-inline mb-3">
+                <div class="form-group">
                     <label for="startDate" class="mr-2">Fecha de Inicio:</label>
                     <input type="date" id="startDate" class="form-control" />
                 </div>
-                <div class="form-group mr-3">
+                <div class="form-group ml-3">
                     <label for="endDate" class="mr-2">Fecha de Fin:</label>
                     <input type="date" id="endDate" class="form-control" />
                 </div>
-                <div class="btn-group">
-                    <button type="button" id="filterByDateButton" class="btn btn-primary" data-toggle="tooltip" title="Filtra los registros dentro del rango de fechas especificado. Si dejas los campos de fecha vacíos, se mostrarán todos los registros.">Filtrar por Fecha</button>
-                    <button type="button" id="reloadButton" class="btn btn-secondary" data-toggle="tooltip" title="Recarga todos los registros sin aplicar filtros.">Recargar Datos</button>
-                </div>
+                <button type="button" id="filterDateButton" class="btn btn-primary ml-3">Filtrar por Fecha</button>
+                <button id="reloadButton" class="btn btn-secondary">Recargar Datos</button>
             </form>
-            <br />
-            <!-- Formulario de Filtros por Monto -->
-            <form id="amountFilterForm" class="form-inline mb-4">
-                <div class="form-group mr-3">
-                    <label for="minPrice" class="mr-2">Precio Mínimo:</label>
+        </div>
+
+        <div class="container-fluid">
+            <form id="amountFilterForm" class="form-inline mb-3">
+                <div class="form-group">
+                    <label for="minPrice">Precio Mínimo:</label>
                     <input type="number" id="minPrice" class="form-control" placeholder="Precio Mínimo">
                 </div>
-                <div class="form-group mr-3">
-                    <label for="maxPrice" class="mr-2">Precio Máximo:</label>
+                <div class="form-group">
+                    <label for="maxPrice">Precio Máximo:</label>
                     <input type="number" id="maxPrice" class="form-control" placeholder="Precio Máximo">
                 </div>
-                <div class="btn-group">
-                    <button type="button" id="filterByAmountButton" class="btn btn-primary" data-toggle="tooltip" title="Filtra los registros con montos dentro del rango especificado. Si dejas los campos de monto vacíos, se mostrarán todos los registros.">Filtrar por Monto</button>
-                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#helpModal">¿Cómo usar Filtros?</button>
-                </div>
+                <button type="button" id="filterAmountButton" class="btn btn-primary">Filtrar por Monto</button>
+                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#helpModal">
+                    ¿Como usar filtro?
+                </button>
             </form>
-
         </div>
+
+
 
         <br />
 
@@ -221,6 +220,26 @@
             </table>
         </div>
 
+        <div class="modal fade vertical-align-center" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmar eliminación</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        ¿Está seguro de que desea eliminar esta factura?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-danger" id="confirmDeleteButton">Eliminar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="modal fade" tabindex="-1" role="dialog" id="ModalHelp">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
@@ -238,19 +257,6 @@
             </div>
         </div>
     </div>
-
-    <script>
-        $(document).ready(function () {
-            $('#helpButton').click(function () {
-                $('#helpToast').toast('show');
-            });
-
-            // Inicializar el toast
-            $('#helpToast').toast({
-                delay: 5000
-            });
-        });
-    </script>
 
 
 
@@ -342,6 +348,8 @@
                 }
             );
         });
+
+
 
     </script>
 
