@@ -8,6 +8,9 @@
     var selectedDate = ViewBag.Fecha != null ? ((DateTime)ViewBag.Fecha).ToString("yyyy-MM-dd") : today;
     var selectedDate2 = ViewBag.Fecha != null ? ((DateTime)ViewBag.Fecha).ToString("dd-MM-yyyy") : today;
 }
+
+
+
 <head>
     <style>
         .nav-item a {
@@ -80,12 +83,17 @@
                 <button type="submit" class="btn btn-primary">Descargar PDF</button>
 
         </form>
+
     }
 
 @if (facturas != null && facturas.Any())
 {
+
+
             <h3>Facturas del Día @selectedDate2 </h3>
+            <button id="export-btn" class="btn btn-success">Exportar a Excel</button>
     <div>
+
         <table class="table table-secondary table-bordered table-hover" id="tabla">
             <thead class="thead-dark">
                 <tr>
@@ -142,3 +150,17 @@
             });
         });
     </script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+
+<script>
+    document.getElementById('export-btn').addEventListener('click', function () {
+        // Obtén la tabla
+        var wb = XLSX.utils.table_to_book(document.getElementById('tabla'), { sheet: "Sheet1" });
+
+        // Crea un archivo Excel
+        XLSX.writeFile(wb, 'Datos.xlsx');
+    });
+</script>
+
+
