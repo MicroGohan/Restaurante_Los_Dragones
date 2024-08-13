@@ -284,7 +284,8 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
                 _context.NotasDeCredito.Add(notaDeCredito);
 
                 // Aplicar el descuento al total de la factura
-                factura.TotalPagar -= monto;
+                factura.Subtotal -= monto;
+                factura.TotalPagar = ((int)(factura.Iva / 100m * factura.Subtotal)) + factura.Subtotal;
                 _context.SaveChanges();
 
                 return Json(new { success = true, nuevoTotal = factura.TotalPagar });

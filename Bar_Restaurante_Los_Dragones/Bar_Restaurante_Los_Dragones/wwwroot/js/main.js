@@ -1,13 +1,23 @@
 $(document).ready(function(){
     $('.tooltips-general').tooltip('hide');
-    $('.mobile-menu-button').on('click', function(){
-        var mobileMenu=$('.navbar-lateral');	
-        if(mobileMenu.css('display')=='none'){
-            mobileMenu.fadeIn(300);
-        }else{
+    $('.mobile-menu-button').on('click', function () {
+        var mobileMenu = $('.navbar-lateral');
+        if (mobileMenu.is(':visible')) {
             mobileMenu.fadeOut(300);
+        } else {
+            mobileMenu.fadeIn(300);
         }
     });
+
+    $(window).on('resize', function () {
+        var mobileMenu = $('.navbar-lateral');
+        if ($(window).width() <= 923) {
+            mobileMenu.hide();
+        } else {
+            mobileMenu.show();
+        }
+    });
+
     $('.desktop-menu-button').on('click', function(e){
         e.preventDefault();
         var NavLateral=$('.navbar-lateral'); 

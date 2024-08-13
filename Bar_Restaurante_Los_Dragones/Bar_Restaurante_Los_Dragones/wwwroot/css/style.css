@@ -625,51 +625,124 @@ input.material-control:focus ~ .highlight {
 =                                        Media queries                                                  =
 ========================================================================================================*/
 /* col-xs */
-@media (max-width: 767px) {
-    .navbar-lateral{
+@media (max-width: 923px) {
+    .navbar-lateral {
         position: fixed;
-        width: 100%;
+        width: 320px; /* Ajusta el ancho según sea necesario */
+        height: 100%;
         z-index: 9999;
-        background-color: transparent;
-        background-image: none;
-        display: none;
+        background-color: var(--second-color); /* O cualquier color de fondo deseado */
+        display: block; /* Cambia display a block para asegurarte de que sea visible */
     }
-    .container-menu-movile{
+
+    .modal {
+        margin: 0 auto; /* Centra el modal en la pantalla */
+        width: 90%; /* Ajusta el ancho según sea necesario */
+    }
+
+    .modal-backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5); /* Fondo translúcido */
+    }
+
+    .container-menu-movile {
         width: 320px;
         position: relative;
         z-index: 7;
         background-color: var(--second-color);
     }
-    .content-page-container{ padding-left: 0; }
-    .font-movile-menu{
+
+    .content-page-container {
+        padding-left: 0;
+    }
+
+    .font-movile-menu {
         position: fixed;
         background-color: rgba(0,0,0,.5);
         z-index: 2;
         height: 100%;
         width: 100%;
     }
-    .navbar-user-top > ul > li{ margin: 0 10px; }
-    form.form_SRCB{ padding: 7px;}
+
+    .navbar-user-top > ul > li {
+        margin: 0 10px;
+    }
+
+    form.form_SRCB {
+        padding: 7px;
+    }
+
     .table-responsive {
         margin-bottom: 0 !important;
         border: none !important;
     }
+
     .modal-body {
         max-height: 300px;
     }
 }
 
-/* col-sm */
-@media (min-width: 768px) and (max-width: 991px) {
+/* Para pantallas pequeñas (col-sm) */
+@media (min-width: 924px) and (max-width: 991px) {
+    .modal {
+        margin-left: 300px;
+        margin-right: 20px;
+        width: calc(100% - 320px);
+        max-width: calc(100% - 40px);
+    }
+
+    .modal-backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
 }
 
-/* col-md */
+/* Para pantallas medianas (col-md) */
 @media (min-width: 992px) and (max-width: 1199px) {
+    .modal {
+        margin-left: 300px;
+        margin-right: 20px;
+        width: calc(100% - 320px);
+        max-width: calc(100% - 30px);
+    }
+
+    .modal-backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
 }
 
-/* col-lg */
+/* Para pantallas grandes (col-lg) */
 @media (min-width: 1200px) {
+    .modal {
+        margin-left: 300px;
+        margin-right: 30px;
+        width: calc(100% - 320px);
+        max-width: calc(100% - 30px);
+    }
+
+    .modal-backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
 }
+
 
 .button-common.exit-system-button {
     background: none;

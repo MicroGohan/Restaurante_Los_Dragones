@@ -93,7 +93,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
 
                 _context.Add(pedido);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Mesero));
             }
 
             ViewBag.Mesas = await _context.Mesas.ToListAsync();

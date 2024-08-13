@@ -95,6 +95,7 @@
                 font-weight: bold; /* Opcional: para que el título sea negrita */
             }
 
+
     </style>
 
 
@@ -136,6 +137,29 @@
             </ul>
         </nav>
 
+        <!-- Modal para mostrar detalles pendientes -->
+        <div class="modal fade" id="modalDetallesPendientes" tabindex="-1" role="dialog" aria-labelledby="modalDetallesPendientesLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalDetallesPendientesLabel">Detalles Pendientes</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <span class="warning-icon">&#x26A0;</span>
+                        <p>No se puede facturar porque faltan los siguientes productos que aún no están Entregados:</p>
+                        <ul id="listaDetallesPendientes"></ul>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Volver</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
         <!-- Contenido principal -->
         <div class="container">
             <div class="page-header">
@@ -158,7 +182,7 @@
             <div class="row">
                 <div class="col-xs-12 lead">
                     <ol class="breadcrumb">
-                        <li class="active">Listado de Pedidos</li>
+                        <li class="active">Mesero</li>
                         <li><a asp-controller="Pedido" asp-action="CrearPedido">Crear Pedido</a></li>
 
                     </ol>
@@ -198,16 +222,24 @@
                                 }
                             </p>
                         }
+
+                        @{
+                            // Función auxiliar para verificar si todos los detalles del pedido son bebidas
+                            bool SoloContieneBebidas(Dal.Dragones.Pedido pedido)
+                            {
+                                return pedido.Detalles.All(d => d.Categoria == "Bebida");
+                            }
+                        }
                         <a asp-action="DetallesPedido" asp-route-id="@pedido.Id" class="btn btn-primary">Detalles</a>
 
                         <div class="btn-actions">
-                            @if (pedido.Estado == "PENDIENTE")
-                            {
-                                <button class="btn btn-info" onclick="mandarACocina('@pedido.Id')">Mandar a cocina</button>
-                            }
-                            @if (pedido.Estado == "ORDEN LISTA")
+                            @if (pedido.Estado == "ORDEN LISTA" || SoloContieneBebidas(pedido))
                             {
                                 <button class="btn btn-info" onclick="verificarDetallesPendientes('@pedido.Id')">Facturar</button>
+                            }
+                            else if (pedido.Estado == "PENDIENTE" && !SoloContieneBebidas(pedido))
+                            {
+                                <button class="btn btn-info" onclick="mandarACocina('@pedido.Id')">Mandar a cocina</button>
                             }
                         </div>
                     </div>
@@ -215,28 +247,7 @@
             }
         </div>
 
-        <!-- Modal para mostrar detalles pendientes -->
-        <div class="modal fade" id="modalDetallesPendientes" tabindex="-1" role="dialog" aria-labelledby="modalDetallesPendientesLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="modalDetallesPendientesLabel">Detalles Pendientes</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <span class="warning-icon">&#x26A0;</span>
-                        <p>No se puede facturar porque faltan los siguientes productos que aún no están Entregados:</p>
-                        <ul id="listaDetallesPendientes"></ul>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Volver</button>
-                    </div>
-                </div>
-            </div>
-
-        </div>
+        
     </div>
 
 
@@ -254,7 +265,7 @@
                     url: '@Url.Action("ObtenerPedidosMesero")',
                     method: 'GET',
                     success: function (data) {
-                        console.log(data); // Para inspeccionar los datos recibidos
+                        console.log(data);
                         $('#pedidos-container').empty();
 
                         data.forEach(function (pedido) {
@@ -318,17 +329,17 @@
                                                                     ${botonEntregado}
                                                                 </p>`;
                                 });
-
+                                const soloContieneBebidas = pedido.detalles.every(d => d.categoria === 'Bebida');
                                 // Botones de acciones adicionales
                                 let accionesHtml02 = '';
 
                                 let accionesHtml = `
                                                                     <a href="/Pedido/DetallesPedido/${pedido.id}" class="btn btn-primary">Detalles</a>`;
-                                if (pedido.estado === 'PENDIENTE') {
+                                if (pedido.estado == 'PENDIENTE' && !soloContieneBebidas) {
                                     accionesHtml02 = `
                                                         <button class="btn btn-info" onclick="mandarACocina('${pedido.id}')">Mandar a cocina</button>`;
                                 }
-                                if (pedido.estado === 'ORDEN LISTA') {
+                                if (pedido.estado == "ORDEN LISTA" || soloContieneBebidas) {
                                     accionesHtml02 += `
                                                                         <button class="btn btn-info" onclick="verificarDetallesPendientes('${pedido.id}')">Facturar</button>`;
                                 }

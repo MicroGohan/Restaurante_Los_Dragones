@@ -12,6 +12,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <style>
         .container-table {
             max-width: 90%;
@@ -98,6 +99,10 @@
             justify-content: center; /* Centra el contenido horizontalmente */
         }
 
+        .scrollable-container {
+            max-height: 350px; /* Define una altura máxima fija */
+            overflow-y: auto; /* Solo habilita el scroll vertical */
+        }
     </style>
 </head>
 <body>
@@ -157,7 +162,7 @@
             <div class="row">
                 <div class="col-xs-12 lead">
                     <ol class="breadcrumb">
-                        <li><a asp-controller="Pedido" asp-action="Mesero">Listado de Pedidos</a></li>
+                        <li><a asp-controller="Pedido" asp-action="Mesero">Mesero</a></li>
                         <li class="active">Crear Pedido</li>
                     </ol>
                 </div>
@@ -248,7 +253,7 @@
 
                 <div>
                     <label>Seleccionar Plato</label>
-                    <div id="platosContainer">
+                    <div id="platosContainer" class="scrollable-container">
                         <!-- Contenido con scroll -->
                     </div>
                 </div>
@@ -324,7 +329,16 @@
                 </div>
             </div>
         </div>
+    </div>
     <script>
+        function initializeScrollbar() {
+            setTimeout(function () {
+                $('#platosContainer').mCustomScrollbar({
+                    theme: 'minimal-dark'
+                });
+            }, 350); // Ajusta el tiempo según sea necesario
+        }
+
         $(document).ready(function () {
             var platos = @Html.Raw(JsonConvert.SerializeObject(ViewBag.Platos));
 
@@ -339,18 +353,18 @@
                         : 'https://via.placeholder.com/150';  // Placeholder en caso de no tener imagen
 
                     var platoCard = `
-                                    <div class="col-xs-12 col-sm-6 col-md-3">
-                                        <div class="card" data-id="${plato.Id}" data-nombre="${plato.Nombre}" data-precio="${plato.Precio}">
-                                            <img src="${imageSrc}" class="card-img-top" alt="${plato.Nombre}">
-                                            <div class="card-body">
-                                                <h5 class="card-title">${plato.Nombre}</h5>
-                                                <p class="card-text">Categoría: ${plato.Categoria}</p>
-                                                <p class="card-text">Precio: ${plato.Precio}</p>
-                                                <button type="button" class="btn btn-primary agregarPlatoBtn">Agregar</button>
+                                            <div class="col-xs-12 col-sm-6 col-md-3">
+                                                <div class="card" data-id="${plato.Id}" data-nombre="${plato.Nombre}" data-precio="${plato.Precio}">
+                                                    <img src="${imageSrc}" class="card-img-top" alt="${plato.Nombre}">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title">${plato.Nombre}</h5>
+                                                        <p class="card-text">Categoría: ${plato.Categoria}</p>
+                                                        <p class="card-text">Precio: ${plato.Precio}</p>
+                                                        <button type="button" class="btn btn-primary agregarPlatoBtn">Agregar</button>
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                `;
+                                        `;
                     container.append(platoCard);
                 });
             }
@@ -368,6 +382,8 @@
                 var filteredPlatos = platosDisponibles.filter(function (plato) {
                     return plato.Nombre.toLowerCase().includes(searchTerm);
                 });
+                $('#platosContainer').mCustomScrollbar('destroy');
+                initializeScrollbar();
                 populatePlatoContainer(filteredPlatos);
             });
 
@@ -378,16 +394,16 @@
                 var platoPrecio = $(this).closest('.card').data('precio');
 
                 var newRow = `
-                                <tr data-id="${platoId}">
-                                    <td>${platoNombre}</td>
-                                    <td>
-                                        <input type="number" name="PlatosSeleccionados[${platoId}]" value="1" min="1" max="10" class="form-control cantidadPlato" min="1" />
-                                    </td>
-                                    <td>
-                                        <button type="button" class="btn btn-danger btn-sm eliminarPlatoBtn">Eliminar</button>
-                                    </td>
-                                </tr>
-                            `;
+                                        <tr data-id="${platoId}">
+                                            <td>${platoNombre}</td>
+                                            <td>
+                                                <input type="number" name="PlatosSeleccionados[${platoId}]" value="1" min="1" max="10" class="form-control cantidadPlato" min="1" />
+                                            </td>
+                                            <td>
+                                                <button type="button" class="btn btn-danger btn-sm eliminarPlatoBtn">Eliminar</button>
+                                            </td>
+                                        </tr>
+                                    `;
 
                 $('#platosSeleccionados').append(newRow);
                 actualizarTotal();
@@ -445,8 +461,36 @@
                 } else if (!mesaSeleccionada) {
                     e.preventDefault();
                     $('#noMesaModal').modal('show');
+                } else {
+                    // Agrupar platos por ID y actualizar el formulario
+                    var platosAgrupados = {};
+
+                    $('#platosSeleccionados tr').each(function () {
+                        var platoId = $(this).data('id');
+                        var cantidad = $(this).find('.cantidadPlato').val();
+
+                        if (platosAgrupados[platoId]) {
+                            platosAgrupados[platoId] += parseInt(cantidad);
+                        } else {
+                            platosAgrupados[platoId] = parseInt(cantidad);
+                        }
+                    });
+
+                    // Limpiar los datos previos del formulario
+                    $('input[name^="PlatosSeleccionados"]').remove();
+
+                    // Añadir datos agrupados al formulario
+                    for (var id in platosAgrupados) {
+                        $('<input>').attr({
+                            type: 'hidden',
+                            name: `PlatosSeleccionados[${id}]`,
+                            value: platosAgrupados[id]
+                        }).appendTo('form');
+                    }
                 }
+                
             });
+            initializeScrollbar();
         });
     </script>
 

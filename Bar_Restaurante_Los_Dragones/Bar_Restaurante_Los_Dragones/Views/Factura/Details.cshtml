@@ -204,6 +204,7 @@
                         $('#totalFactura').text(response.nuevoTotal);
                         // Cerrar el modal
                         $('#creditNoteModal').modal('hide');
+                        location.reload();
                     } else {
                         alert('Error al aplicar la nota de crédito.');
                     }
