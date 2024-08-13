@@ -29,6 +29,9 @@
             justify-content: center; /* Centrar los elementos verticalmente */
         }
 
+        .btn{
+        margin-bottom: 5px;
+        }
     </style>
 </head>
 <div class="content-page-container full-reset custom-scroll-containers">
@@ -75,7 +78,7 @@
                 <label for="fechaFin">Fecha de Finalizacion:</label> <br />
                 <input type="date" id="fechaFin" name="fechaFin" max="@DateTime.Now.ToString("yyyy-MM-dd")" value="@fechaFin" required />
             </div>
-            <div>
+            <div style ="text-align: center;">
                 <button type="submit" class="btn btn-primary">Obtener Total</button>
             </div>
         </form>

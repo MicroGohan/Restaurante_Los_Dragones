@@ -4,39 +4,193 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@using System.Security.Claims
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <style>
+        .nav-item a {
+            text-decoration: none; /* Quitar subrayado */
+            color: inherit; /* Heredar el color del texto */
+            display: inline-block; /* Hacerlo un bloque en línea para aplicar padding correctamente */
+            cursor: pointer; /* Cambiar el cursor a puntero */
+            font-size: 27px;
+        }
+        /* Estilo personalizado para centrar la tabla */
+        .container-table {
+            max-width: 90%; /* Ajusta el ancho máximo de la tabla */
+            margin: auto; /* Centra la tabla en el contenedor */
+        }
+    </style>
+</head>
+<body>
+    <div class="content-page-container full-reset custom-scroll-containers">
+        <nav class="navbar-user-top full-reset">
+            <ul class="list-unstyled full-reset">
+                <figure>
+                    <img src="~/assets/img/user01.png" alt="user-picture" class="img-responsive img-circle center-box">
+                </figure>
+                <li class="user-info" style="color:#fff; cursor:default;">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                    <li class="user-info">
+                        <div class="user-details">
+                            <span data-placement="bottom" title="Usuario">Bienvenido, @User.FindFirst(ClaimTypes.Role)?.Value @User.Identity.Name</span>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" id="logout-button" class="exit-system-button">
+                            <i class="zmdi zmdi-power"></i>
+                        </a>
+                    </li>
+                    }
+                </li>
+                <li class="tooltips-general btn-help" data-placement="bottom" title="Ayuda">
+                    <i class="zmdi zmdi-help-outline zmdi-hc-fw"></i>
+                </li>
+                <li class="mobile-menu-button visible-xs" style="float: left !important;">
+                    <i class="zmdi zmdi-menu"></i>
+                </li>
+                <li class="desktop-menu-button hidden-xs" style="float: left !important;">
+                    <i class="zmdi zmdi-swap"></i>
+                </li>
+            </ul>
+        </nav>
+        <div class="container">
+            <div class="page-header">
+                <h1 class="all-tittles">Sistema Restaurante Los Dragones <small>Administración de Mesas</small></h1>
+            </div>
+        </div>
+        <div class="container-fluid" style="margin: 50px 0;">
+            <div class="row">
+                <div class="col-xs-12 col-sm-4 col-md-3">
+                    <img src="~/assets/img/user01.png" alt="user" class="img-responsive center-box" style="max-width: 110px;">
+                </div>
+                <div class="col-xs-12 col-sm-8 col-md-8 text-justify lead">
+                    Bienvenido a la sección donde se encuentra el listado de las mesas, puedes editar, eliminar o ver detalles de las mesas en caso de ser necesario.
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xs-12 lead">
+                    <ol class="breadcrumb">
+                        <li><a asp-controller="Mesas" asp-action="Create">Nueva Mesa</a></li>
+                        <li class="active">Listado de Mesas</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <div class="container-table">
+            <table class="table table-secondary table-bordered table-hover" id="tabla">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.NumMesa)</th>
+                        <th>@Html.DisplayNameFor(model => model.Estado)</th>
+                        <th>Editar</th>
+                        <th>Eliminar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => item.NumMesa)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Estado)</td>
+                            <td class="text-center">
+                                <!-- Centra el botón Editar -->
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-info tooltips-general" data-toggle="tooltip" data-placement="top" title="Editar"><i class="zmdi zmdi-edit"></i></a>
+                            </td>
+                            <td class="text-center">
+                                <form id="form-delete-@item.Id" asp-action="Delete" asp-route-id="@item.Id" method="post">
+                                    <button type="button" onclick="confirmDelete(@item.Id)" class="btn btn-danger tooltips-general" data-toggle="tooltip" data-placement="top" title="Eliminar">
+                                        <i class="zmdi zmdi-delete"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
 
-<h2>Index</h2>
+        <div class="modal fade" tabindex="-1" role="dialog" id="ModalHelp">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title text-center all-tittles">ayuda del sistema</h4>
+                    </div>
+                    <div class="modal-body">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore dignissimos qui molestias ipsum officiis unde aliquid consequatur, accusamus delectus asperiores sunt. Quibusdam veniam ipsa accusamus error. Animi mollitia corporis iusto.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="zmdi zmdi-thumb-up"></i> &nbsp; De acuerdo</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.NumMesa)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Estado)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.NumMesa)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Estado)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+    <div class="modal fade vertical-align-center" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmar eliminación</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    ¿Está seguro de que desea eliminar esta mesa?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteButton">Eliminar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function confirmDelete(userId) {
+            $('#confirmDeleteModal').modal('show');
+
+            // Cuando se confirme la eliminación
+            $('#confirmDeleteButton').click(function () {
+                // Envía el formulario para eliminar
+                document.getElementById('form-delete-' + userId).submit();
+            });
+        }
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $('#tabla').DataTable({
+                language: {
+                    processing: "Procesando...",
+                    search: "Buscar:",
+                    lengthMenu: "Mostrar _MENU_ elementos",
+                    info: "Mostrando del _START_ al _END_ de un total de _TOTAL_ elementos",
+                    infoEmpty: "Mostrando 0 elementos",
+                    infoFiltered: "(filtrado de un total de _MAX_ elementos)",
+                    infoPostFix: "",
+                    loadingRecords: "Cargando...",
+                    zeroRecords: "No se encontraron registros coincidentes",
+                    emptyTable: "No hay datos disponibles en la tabla",
+                    paginate: {
+                        first: "Primero",
+                        previous: "Anterior",
+                        next: "Siguiente",
+                        last: "Último"
+                    },
+                    aria: {
+                        sortAscending: ": activar para ordenar la columna de manera ascendente",
+                        sortDescending: ": activar para ordenar la columna de manera descendente"
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

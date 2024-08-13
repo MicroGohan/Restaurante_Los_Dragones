@@ -4,6 +4,13 @@
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<style>
+    .group-material label {
+        top: -20px !important;
+        color: #333 !important;
+        font-size: 18px !important;
+    }
+</style>
 <body>
     <div class="content-page-container full-reset custom-scroll-containers">
         <nav class="navbar-user-top full-reset">
@@ -82,7 +89,7 @@
                         </div>
                         <div class="col-xs-12 col-sm-6">
                             <div class="group-material">
-                                <input asp-for="Responsable" class="material-control tooltips-general" placeholder="Responsable" data-toggle="tooltip" data-placement="top" title="Responsable">
+                                <input asp-for="Responsable" class="material-control tooltips-general" placeholder="Responsable" data-toggle="tooltip" data-placement="top" title="Responsable" readonly>
                                 <span class="highlight"></span>
                                 <span asp-validation-for="Responsable" class="text-danger" style="white-space: pre-line;"></span>
                                 <label>Responsable</label>
@@ -90,7 +97,7 @@
                         </div>
                         <div class="col-xs-12 col-sm-6">
                             <div class="group-material">
-                                <input asp-for="Fecha" type="date" class="material-control tooltips-general" placeholder="Fecha de Factura" data-toggle="tooltip" data-placement="top" title="Fecha de la factura">
+                                <input asp-for="Fecha" type="date" class="material-control tooltips-general" placeholder="Fecha de Factura" data-toggle="tooltip" data-placement="top" title="Fecha de la factura" readonly>
                                 <span class="highlight"></span>
                                 <span asp-validation-for="Fecha" class="text-danger"></span>
                                 <label>Fecha</label>
@@ -101,7 +108,7 @@
                         </div>
                         <div class="col-xs-12 col-sm-6">
                             <div class="group-material">
-                                <input input asp-for="Subtotal" type="text" class="material-control tooltips-general" placeholder="Subtotal" data-toggle="tooltip" data-placement="top" title="Subtotal">
+                                <input input asp-for="Subtotal" type="text" class="material-control tooltips-general" placeholder="Subtotal" data-toggle="tooltip" data-placement="top" title="Subtotal" readonly>
                                 <span class="highlight"></span>
                                 <span span asp-validation-for="Subtotal" class="text-danger"></span>
                                 <label>Subtotal</label>
@@ -109,7 +116,7 @@
                         </div>
                         <div class="col-xs-12 col-sm-6">
                             <div class="group-material">
-                                <input input asp-for="Iva" type="text" class="material-control tooltips-general" placeholder="Iva" data-toggle="tooltip" data-placement="top" title="Iva">
+                                <input input asp-for="Iva" type="text" class="material-control tooltips-general" placeholder="Iva" data-toggle="tooltip" data-placement="top" title="Iva" readonly>
                                 <span class="highlight"></span>
                                 <span span asp-validation-for="Subtotal" class="text-danger"></span>
                                 <label>Iva</label>
@@ -117,7 +124,7 @@
                         </div>
                         <div class="col-xs-12 col-sm-6">
                             <div class="group-material">
-                                <input input asp-for="TotalPagar" type="text" class="material-control tooltips-general" placeholder="Total a pagar" data-toggle="tooltip" data-placement="top" title="Total a pagar">
+                                <input input asp-for="TotalPagar" type="text" class="material-control tooltips-general" placeholder="Total a pagar" data-toggle="tooltip" data-placement="top" title="Total a pagar" readonly>
                                 <span class="highlight"></span>
                                 <span span asp-validation-for="TotalPagar" class="text-danger"></span>
                                 <label>Total a pagar</label>
