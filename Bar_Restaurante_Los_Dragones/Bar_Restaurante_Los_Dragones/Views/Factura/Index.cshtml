@@ -33,6 +33,18 @@
                 font-size: 20px; /* Tamaño de la fuente del título de la notificación */
                 font-weight: bold; /* Opcional: para que el título sea negrita */
             }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .btn-group {
+            margin-top: 1rem;
+        }
+
+        .modal-content {
+            border-radius: 0.5rem;
+        }
     </style>
 </head>
 <body>
@@ -78,43 +90,67 @@
                     </ol>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-xs-12">
-                    <div class="form-inline">
-                        <div class="form-group">
-                            <label for="minPrice">Precio Mínimo:</label>
-                            <input type="number" id="minPrice" class="form-control" placeholder="Precio Mínimo">
-                        </div>
-                        <div class="form-group">
-                            <label for="maxPrice">Precio Máximo:</label>
-                            <input type="number" id="maxPrice" class="form-control" placeholder="Precio Máximo">
-                        </div>
-                        <button id="filterButton" class="btn btn-primary">Filtrar</button>
-                        <button id="reloadButton" class="btn btn-secondary">Reiniciar</button>
-                    </div>
-                </div>
-            </div>
         </div>
         <br />
         
 
-        <div class="container-fluid">
-            <form id="filterForm" class="form-inline mb-3">
-                <div class="form-group">
+        <div class="container-fluid mt-4">
+            <!-- Formulario de Filtros por Fecha -->
+            <form id="filterForm" class="form-inline mb-4">
+                <div class="form-group mr-3">
                     <label for="startDate" class="mr-2">Fecha de Inicio:</label>
                     <input type="date" id="startDate" class="form-control" />
                 </div>
-                <div class="form-group ml-3">
+                <div class="form-group mr-3">
                     <label for="endDate" class="mr-2">Fecha de Fin:</label>
                     <input type="date" id="endDate" class="form-control" />
                 </div>
-                <button type="button" id="filterButton" class="btn btn-primary ml-3">Filtrar</button>
-                <button id="reloadButton" class="btn btn-secondary">Recargar Datos</button>
+                <div class="btn-group">
+                    <button type="button" id="filterByDateButton" class="btn btn-primary" data-toggle="tooltip" title="Filtra los registros dentro del rango de fechas especificado. Si dejas los campos de fecha vacíos, se mostrarán todos los registros.">Filtrar por Fecha</button>
+                    <button type="button" id="reloadButton" class="btn btn-secondary" data-toggle="tooltip" title="Recarga todos los registros sin aplicar filtros.">Recargar Datos</button>
+                </div>
             </form>
-            
+
+            <!-- Formulario de Filtros por Monto -->
+            <form id="amountFilterForm" class="form-inline mb-4">
+                <div class="form-group mr-3">
+                    <label for="minPrice" class="mr-2">Precio Mínimo:</label>
+                    <input type="number" id="minPrice" class="form-control" placeholder="Precio Mínimo">
+                </div>
+                <div class="form-group mr-3">
+                    <label for="maxPrice" class="mr-2">Precio Máximo:</label>
+                    <input type="number" id="maxPrice" class="form-control" placeholder="Precio Máximo">
+                </div>
+                <div class="btn-group">
+                    <button type="button" id="filterByAmountButton" class="btn btn-primary" data-toggle="tooltip" title="Filtra los registros con montos dentro del rango especificado. Si dejas los campos de monto vacíos, se mostrarán todos los registros.">Filtrar por Monto</button>
+                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#helpModal">¿Cómo usar Filtros?</button>
+                </div>
+            </form>
         </div>
+
         <br />
 
+
+        <!-- Modal de Ayuda -->
+        <div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="helpModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="helpModalLabel">Cómo Usar los Filtros</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p><strong>¿Cómo usar los filtros?</strong></p>
+                        <p>1. <strong>Filtrar por Fecha</strong>: Ingresa una <strong>Fecha de Inicio</strong> y una <strong>Fecha de Fin</strong>. Luego haz clic en **"Filtrar por Fecha"** para mostrar los registros dentro de ese rango de fechas. Si dejas los campos de fecha vacíos, se mostrarán todos los registros.</p>
+                        <p>2. <strong>Filtrar por Monto</strong>: Ingresa un <strong>Precio Mínimo</strong> y un <strong>Precio Máximo</strong>. Luego haz clic en **"Filtrar por Monto"** para mostrar los registros con montos dentro de ese rango. Si dejas los campos de monto vacíos, se mostrarán todos los registros.</p>
+                        <p>3. <strong>Filtrar por Fecha y Monto</strong>: Puedes combinar ambos filtros para mostrar solo los registros que cumplan con ambos criterios.</p>
+                        <p>4. <strong>Recargar Datos</strong>: Haz clic en **"Recargar Datos"** para volver a mostrar todos los registros sin filtros aplicados.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div class="container-table">
             <table class="table table-secondary table-bordered table-hover" id="tabla">
@@ -186,25 +222,19 @@
         </div>
     </div>
 
-    <div class="modal fade vertical-align-center" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmar eliminación</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    ¿Está seguro de que desea eliminar esta factura?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-danger" id="confirmDeleteButton">Eliminar</button>
-                </div>
-            </div>
-        </div>
-    </div>
+
+    <script>
+        $(document).ready(function () {
+            $('#helpButton').click(function () {
+                $('#helpToast').toast('show');
+            });
+
+            // Inicializar el toast
+            $('#helpToast').toast({
+                delay: 5000
+            });
+        });
+    </script>
 
 
 
@@ -219,6 +249,7 @@
             });
         }
     </script>
+
 
     <script>
         $(document).ready(function () {
@@ -244,11 +275,14 @@
                         sortAscending: ": activar para ordenar la columna de manera ascendente",
                         sortDescending: ": activar para ordenar la columna de manera descendente"
                     }
-
                 }
             });
 
-            $('#filterButton').click(function () {
+            $('#filterDateButton').click(function () {
+                table.draw();
+            });
+
+            $('#filterAmountButton').click(function () {
                 table.draw();
             });
 
@@ -292,6 +326,7 @@
                 }
             );
         });
+
     </script>
 
 
