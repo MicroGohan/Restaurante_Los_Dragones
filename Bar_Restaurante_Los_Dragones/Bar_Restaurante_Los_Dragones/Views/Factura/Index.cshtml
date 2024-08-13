@@ -62,7 +62,44 @@
                     </ol>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="form-inline">
+                        <div class="form-group">
+                            <label for="minPrice">Precio Mínimo:</label>
+                            <input type="number" id="minPrice" class="form-control" placeholder="Precio Mínimo">
+                        </div>
+                        <div class="form-group">
+                            <label for="maxPrice">Precio Máximo:</label>
+                            <input type="number" id="maxPrice" class="form-control" placeholder="Precio Máximo">
+                        </div>
+                        <button id="filterButton" class="btn btn-primary">Filtrar</button>
+                        <button id="reloadButton" class="btn btn-secondary">Reiniciar</button>
+                    </div>
+                </div>
+            </div>
         </div>
+        <br />
+        
+
+        <div class="container-fluid">
+            <form id="filterForm" class="form-inline mb-3">
+                <div class="form-group">
+                    <label for="startDate" class="mr-2">Fecha de Inicio:</label>
+                    <input type="date" id="startDate" class="form-control" />
+                </div>
+                <div class="form-group ml-3">
+                    <label for="endDate" class="mr-2">Fecha de Fin:</label>
+                    <input type="date" id="endDate" class="form-control" />
+                </div>
+                <button type="button" id="filterButton" class="btn btn-primary ml-3">Filtrar</button>
+                <button id="reloadButton" class="btn btn-secondary">Recargar Datos</button>
+            </form>
+            
+        </div>
+        <br />
+
+
         <div class="container-table">
             <table class="table table-secondary table-bordered table-hover" id="tabla">
                 <thead class="thead-dark">
@@ -169,7 +206,7 @@
 
     <script>
         $(document).ready(function () {
-            $('#tabla').DataTable({
+            var table = $('#tabla').DataTable({
                 language: {
                     processing: "Procesando...",
                     search: "Buscar:",
@@ -193,8 +230,57 @@
                     }
                 }
             });
+
+            $('#filterButton').click(function () {
+                table.draw();
+            });
+
+            $('#reloadButton').click(function () {
+                // Limpiar los campos de filtro
+                $('#startDate').val('');
+                $('#endDate').val('');
+                $('#minPrice').val('');
+                $('#maxPrice').val('');
+
+                // Redibujar la tabla sin filtros
+                table.search('').columns().search('').draw();
+            });
+
+            $.fn.dataTable.ext.search.push(
+                function (settings, data, dataIndex) {
+                    var startDate = $('#startDate').val();
+                    var endDate = $('#endDate').val();
+                    var minPrice = parseFloat($('#minPrice').val()) || 0;
+                    var maxPrice = parseFloat($('#maxPrice').val()) || Infinity;
+                    var fechaStr = data[0]; // Suponiendo que la fecha está en la primera columna (índice 0)
+                    var precio = parseFloat(data[3]); // Suponiendo que el precio está en la cuarta columna (índice 3)
+
+                    // Convertir las fechas a objetos Date
+                    var fecha = new Date(fechaStr);
+                    var start = startDate ? new Date(startDate) : null;
+                    var end = endDate ? new Date(endDate) : null;
+
+                    // Normalizar las fechas a medianoche para ignorar la hora
+                    fecha.setHours(0, 0, 0, 0);
+                    if (start) start.setHours(0, 0, 0, 0);
+                    if (end) end.setHours(23, 59, 59, 999);
+
+                    // Comparar las fechas
+                    var dateMatch = (!start && !end) || (!start && fecha <= end) || (!end && fecha >= start) || (fecha >= start && fecha <= end);
+
+                    // Comparar precios
+                    var priceMatch = (precio >= minPrice && precio <= maxPrice);
+
+                    return dateMatch && priceMatch;
+                }
+            );
         });
     </script>
+
+
+
+
+
 
 </body>
 </html>

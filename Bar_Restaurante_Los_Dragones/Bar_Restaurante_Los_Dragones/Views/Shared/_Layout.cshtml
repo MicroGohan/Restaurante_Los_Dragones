@@ -23,7 +23,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 </head>
-    <body>
+<body>
     <div class="navbar-lateral full-reset">
         <div class="visible-xs font-movile-menu mobile-menu-button"></div>
         <div class="full-reset container-menu-movile nav-lateral-scroll">
@@ -47,30 +47,21 @@
                         <li>
                             <div class="dropdown-menu-button"><i class="zmdi zmdi-case zmdi-hc-fw"></i>&nbsp;&nbsp; Administración <i class="zmdi zmdi-chevron-down pull-right zmdi-hc-fw icon-sub-menu"></i></div>
                             <ul class="list-unstyled">
-                                <li><a asp-controller="Administracion" asp-action="Restaurante"><i class="zmdi zmdi-balance zmdi-hc-fw"></i>&nbsp;&nbsp; Datos Restaurante</a></li>
-                                <li><a asp-controller="Administracion" asp-action="Proveedor"><i class="zmdi zmdi-truck zmdi-hc-fw"></i>&nbsp;&nbsp; Nuevo proveedor</a></li>
-                                <li><a asp-controller="Administracion" asp-action="AgregarComida"><i class="zmdi zmdi-bookmark-outline zmdi-hc-fw"></i>&nbsp;&nbsp; Nueva Comida</a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <div class="dropdown-menu-button"><i class="zmdi zmdi-account-add zmdi-hc-fw"></i>&nbsp;&nbsp; Registro de usuarios <i class="zmdi zmdi-chevron-down pull-right zmdi-hc-fw icon-sub-menu"></i></div>
-                            <ul class="list-unstyled">
-                                <li><a asp-controller="Usuario" asp-action="Create"><i class="zmdi zmdi-face zmdi-hc-fw"></i>&nbsp;&nbsp; Nuevo Usuario</a></li>
-                                <li><a asp-controller="Usuario" asp-action="Index"><i class="zmdi zmdi-bookmark-outline zmdi-hc-fw"></i>&nbsp;&nbsp; Listado Usuarios</a></li>
-                                <li><a asp-controller="Rol" asp-action="Index"><i class="zmdi zmdi-balance zmdi-hc-fw"></i>&nbsp;&nbsp; Roles</a></li>
-                            </ul>
-                        </li>
-                        <li><a asp-controller="Reporte" asp-action="Index"> <i class="zmdi zmdi-assignment-o zmdi-hc-fw"></i> &nbsp;&nbsp; Reportes </a></li>
-                        <li>
-                            <div class="dropdown-menu-button"><i class="zmdi zmdi-view-carousel zmdi-hc-fw"></i>&nbsp;&nbsp; Platos <i class="zmdi zmdi-chevron-down pull-right zmdi-hc-fw icon-sub-menu"></i></div>
-                            <ul class="list-unstyled">
+                                <li>
+                                    <div class="dropdown-menu-button"><i class="zmdi zmdi-account-add zmdi-hc-fw"></i>&nbsp;&nbsp; Registro de usuarios <i class="zmdi zmdi-chevron-down pull-right zmdi-hc-fw icon-sub-menu"></i></div>
+                                    <ul class="list-unstyled">
+                                        <li><a asp-controller="Usuario" asp-action="Create"><i class="zmdi zmdi-face zmdi-hc-fw"></i>&nbsp;&nbsp; Nuevo Usuario</a></li>
+                                        <li><a asp-controller="Usuario" asp-action="Index"><i class="zmdi zmdi-bookmark-outline zmdi-hc-fw"></i>&nbsp;&nbsp; Listado Usuarios</a></li>
+                                        <li><a asp-controller="Rol" asp-action="Index"><i class="zmdi zmdi-balance zmdi-hc-fw"></i>&nbsp;&nbsp; Roles</a></li>
+                                    </ul>
+                                </li>
+                                <li><a asp-controller="Reporte" asp-action="Index"> <i class="zmdi zmdi-assignment-o"></i> &nbsp;&nbsp; Reportes </a></li>
                                 <li>
                                     <a asp-controller="Plato" asp-action="Index"><i class="zmdi zmdi-balance-wallet"></i>&nbsp;&nbsp; Ver Platos</a>
                                 </li>
                             </ul>
                         </li>
                     }
-                    
                     <li>
                         <div class="dropdown-menu-button"><i class="zmdi zmdi-pizza zmdi-hc-fw"></i>&nbsp;&nbsp; Ordenes <i class="zmdi zmdi-chevron-down pull-right zmdi-hc-fw icon-sub-menu"></i></div>
                         <ul class="list-unstyled">
@@ -80,23 +71,8 @@
                         </ul>
                     </li>
                     <li>
-                        <div class="dropdown-menu-button"><i class="zmdi zmdi-alarm zmdi-hc-fw"></i>&nbsp;&nbsp; Reservaciones <i class="zmdi zmdi-chevron-down pull-right zmdi-hc-fw icon-sub-menu"></i></div>
-                        <ul class="list-unstyled">
-                            <li>
-                                <a asp-controller="Reservaciones" asp-action="Reservacion"><i class="zmdi zmdi-timer zmdi-hc-fw"></i>&nbsp;&nbsp; Reservaciones</a>
-                            </li>
-                        </ul>
+                        <a asp-controller="Factura" asp-action="Index"><i class="zmdi zmdi-balance-wallet"></i>&nbsp;&nbsp; Ver facturas</a>
                     </li>
-                    <li>
-                        <div class="dropdown-menu-button"><i class="zmdi zmdi-card zmdi-hc-fw"></i>&nbsp;&nbsp; Facturas <i class="zmdi zmdi-chevron-down pull-right zmdi-hc-fw icon-sub-menu"></i></div>
-                        <ul class="list-unstyled">
-                            <li>
-                                <a asp-controller="Factura" asp-action="Index"><i class="zmdi zmdi-balance-wallet"></i>&nbsp;&nbsp; Ver facturas</a>
-                            </li>
-                        </ul>
-                    </li>
-                    
-                    
                 </ul>
             </div>
         </div>

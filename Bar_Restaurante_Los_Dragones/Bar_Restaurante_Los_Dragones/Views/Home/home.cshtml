@@ -56,51 +56,85 @@
         </div>
         <section class="full-reset text-center" style="padding: 40px 0;">
             <article class="tile">
-                <div class="tile-icon full-reset"><i class="zmdi zmdi-face"></i></div>
-                <div class="tile-name all-tittles">administradores</div>
-                <div class="tile-num full-reset">7</div>
+                <a asp-controller="Usuario" asp-action="Index">
+                    <div class="tile-icon full-reset"><i class="zmdi zmdi-face"></i></div>
+                    <div class="tile-name all-tittles">Usuarios</div>
+                    <div class="tile-num full-reset">
+                        @ViewBag.CantidadUsuarios
+                    </div>
+                </a>
             </article>
             <article class="tile">
-                <div class="tile-icon full-reset"><i class="zmdi zmdi-male-female"></i></div>
-                <div class="tile-name all-tittles" style="width: 90%;">empleados</div>
-                <div class="tile-num full-reset">17</div>
+                <a asp-controller="Plato" asp-action="Index">
+                    <div class="tile-icon full-reset"><i class="zmdi zmdi-pizza"></i></div>
+                    <div class="tile-name all-tittles">comidas</div>
+                    <div class="tile-num full-reset">
+                        @ViewBag.CantidadComidas
+                    </div>
+                </a>
             </article>
             <article class="tile">
-                <div class="tile-icon full-reset"><i class="zmdi zmdi-truck"></i></div>
-                <div class="tile-name all-tittles">proveedores</div>
-                <div class="tile-num full-reset">21</div>
+                <a asp-controller="Factura" asp-action="Index">
+                    <div class="tile-icon full-reset"><i class="zmdi zmdi-file"></i></div>
+                    <div class="tile-name all-tittles">Facturas</div>
+                    <div class="tile-num full-reset">
+                        @ViewBag.CantidadFacturas
+                    </div>
+                </a>
             </article>
             <article class="tile">
-                <div class="tile-icon full-reset"><i class="zmdi zmdi-pizza"></i></div>
-                <div class="tile-name all-tittles">comida</div>
-                <div class="tile-num full-reset">77</div>
+                <a asp-controller="Pedido" asp-action="Index">
+                    <div class="tile-icon full-reset"><i class="zmdi zmdi-assignment-o"></i></div>
+                    <div class="tile-name all-tittles">Ordenes</div>
+                    <div class="tile-num full-reset">
+                        @ViewBag.CantidadOrdenes
+                    </div>
+                </a>
             </article>
             <article class="tile">
-                <div class="tile-icon full-reset"><i class="zmdi zmdi-timer"></i></div>
-                <div class="tile-name all-tittles">reservaciones</div>
-                <div class="tile-num full-reset">10</div>
+                <a asp-controller="Rol" asp-action="Index">
+                    <div class="tile-icon full-reset"><i class="zmdi zmdi-account"></i></div>
+                    <div class="tile-name all-tittles">Roles</div>
+                    <div class="tile-num full-reset">
+                        @ViewBag.CantidadRoles
+                    </div>
+                </a>
+                
             </article>
             <article class="tile">
-                <div class="tile-icon full-reset"><i class="zmdi zmdi-money"></i></div>
-                <div class="tile-name all-tittles" style="width: 90%;">ventas</div>
-                <div class="tile-num full-reset">9</div>
+                <a asp-controller="Mesa" asp-action="Index">
+                    <div class="tile-icon full-reset"><i class="zmdi zmdi-coffee"></i></div>
+                    <div class="tile-name all-tittles">Mesas</div>
+                    <div class="tile-num full-reset">
+                        @ViewBag.CantidadMesas
+                    </div>
+                </a>
             </article>
             <article class="tile">
-                <div class="tile-icon full-reset"><i class="zmdi zmdi-file"></i></div>
-                <div class="tile-name all-tittles">facturas</div>
-                <div class="tile-num full-reset">
-                    @ViewBag.CantidadFacturas
-                </div>
+                <a asp-controller="Pedido" asp-action="Mesero">
+                    <div class="tile-icon full-reset"><i class="zmdi zmdi-cocktail"></i></div>
+                    <div class="tile-name all-tittles">Vista Mesero</div>
+                    <div class="tile-num02 full-reset">
+                         Pedido pendientes: @ViewBag.CantidadMesero
+                    </div>
+                </a>
             </article>
             <article class="tile">
-                <div class="tile-icon full-reset"><i class="zmdi zmdi-assignment-o"></i></div>
-                <div class="tile-name all-tittles">inventario</div>
-                <div class="tile-num full-reset">7</div>
+                <a asp-controller="Pedido" asp-action="Cocina">
+                    <div class="tile-icon full-reset"><i class="zmdi zmdi-cutlery"></i></div>
+                    <div class="tile-name all-tittles">Vista Cocina</div>
+                    <div class="tile-num02 full-reset">
+                         Pedido en Cocina: @ViewBag.CantidadCocina
+                    </div>
+                </a>
             </article>
             <article class="tile">
-                <div class="tile-icon full-reset"><i class="zmdi zmdi-trending-up"></i></div>
-                <div class="tile-name all-tittles" style="width: 90%;">reportes y estadísticas</div>
-                <div class="tile-num full-reset">&nbsp;</div>
+                <a asp-controller="Reporte" asp-action="Index">
+                    <div class="tile-icon full-reset"><i class="zmdi zmdi-collection-text"></i></div>
+                    <div class="tile-name all-tittles" style="width: 90%;">reportes y estadísticas</div>
+                    <div class="tile-num full-reset">&nbsp;</div>
+                </a>
+                
             </article>
         </section>
         <div class="modal fade" tabindex="-1" role="dialog" id="ModalHelp">

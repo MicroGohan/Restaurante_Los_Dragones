@@ -1,4 +1,5 @@
 using Bar_Restaurante_Los_Dragones.Models;
+using Dal.Dragones;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
@@ -28,12 +29,35 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
 
             int cantidadUsuarios = await _context.Usuarios.CountAsync();
 
-            int cantidad = await _context.Platos.CountAsync();
+            int cantidadOrdenes = await _context.Pedidos.CountAsync();
 
-            // Pasa la cantidad de facturas a la vista
+            int cantidadRoles = await _context.Roles.CountAsync();
+
+            int cantidadMesas = await _context.Mesas.CountAsync();
+
+            int cantidadCocina = await _context.Pedidos
+                .Where(p => p.Estado == "LISTO PARA PREPARAR")
+                .CountAsync();
+
+            int cantidadMesero = await _context.Pedidos
+                .Where(p => p.Estado != "ENTREGADO")
+                .CountAsync();
+
+            ViewBag.CantidadMesas = cantidadMesas;
+
+            ViewBag.CantidadRoles = cantidadRoles;
+
             ViewBag.CantidadFacturas = cantidadFacturas;
 
             ViewBag.CantidadComidas = cantidadComidas;
+
+            ViewBag.CantidadUsuarios = cantidadUsuarios;
+
+            ViewBag.CantidadOrdenes = cantidadOrdenes;
+
+            ViewBag.CantidadCocina = cantidadCocina;
+
+            ViewBag.CantidadMesero = cantidadMesero;
 
             return View();
         }

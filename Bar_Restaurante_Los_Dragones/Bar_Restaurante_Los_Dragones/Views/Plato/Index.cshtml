@@ -123,13 +123,14 @@
                             {
                                 var imageBase64 = Convert.ToBase64String(item.ImagenData);
                                 var imageUrl = $"data:image;base64,{imageBase64}";
-                                <img src="@imageUrl" alt="Auto Image" class="img-thumbnail" style="width: 200px; height: 140px;" />
+                                <img src="@imageUrl" alt="Auto Image" class="img-thumbnail" style="width: 200px; height: 140px; display: block; margin: auto auto;" />
                             }
                             else
                             {
                                 <span>No hay imagen</span>
                             }
                         </td>
+
                         <td>
                             @Html.DisplayFor(modelItem => item.Disponible)
                         </td>

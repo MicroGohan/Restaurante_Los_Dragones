@@ -9,27 +9,37 @@ $(document).ready(function(){
         }
     });
 
+    $(document).ready(function () {
+        $('.desktop-menu-button').on('click', function (e) {
+            e.preventDefault();
+            var NavLateral = $('.navbar-lateral');
+            var ContentPage = $('.content-page-container');
+
+            if (NavLateral.is(':visible')) {
+                // Oculta el menú lateral y ajusta el padding
+                NavLateral.hide();
+                ContentPage.css('padding-left', '0');
+            } else {
+                // Muestra el menú lateral y ajusta el padding
+                NavLateral.show();
+                ContentPage.css('padding-left', '300px');
+            }
+        });
+    });
+
     $(window).on('resize', function () {
         var mobileMenu = $('.navbar-lateral');
+        var ContentPage = $('.content-page-container');
+
         if ($(window).width() <= 923) {
             mobileMenu.hide();
+            ContentPage.css('padding-left', '0'); // Asegúrate de ajustar el padding en dispositivos móviles
         } else {
             mobileMenu.show();
+            ContentPage.css('padding-left', '300px'); // Ajusta el padding cuando el menú lateral está visible
         }
     });
 
-    $('.desktop-menu-button').on('click', function(e){
-        e.preventDefault();
-        var NavLateral=$('.navbar-lateral'); 
-        var ContentPage=$('.content-page-container');   
-        if(NavLateral.hasClass('desktopMenu')){
-            NavLateral.removeClass('desktopMenu');
-            ContentPage.removeClass('desktopMenu');
-        }else{
-            NavLateral.addClass('desktopMenu');
-            ContentPage.addClass('desktopMenu');
-        }
-    });
     $('.dropdown-menu-button').on('click', function(e){
         e.preventDefault();
         var icon=$(this).children('.icon-sub-menu');

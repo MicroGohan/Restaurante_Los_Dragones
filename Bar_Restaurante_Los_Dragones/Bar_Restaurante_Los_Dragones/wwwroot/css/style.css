@@ -52,13 +52,14 @@ span.label-mhover{
     width: 100%;
 }
 /*********==========Login*/
-.login-container{
-  background-image: url('../assets/img/font-login.png');
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.login-container {
+    background-image: url('../assets/img/font-login.png');
+    background-image: url('../assets/img/font-login.png');
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 .form-container{
     color: #fff;
@@ -529,25 +530,35 @@ input.material-control:focus ~ .highlight {
     cursor: pointer;
     margin: 10px;
 }
-.tile-icon,.tile-num{
+.tile-icon,.tile-num, .tile-num02{
     height: 110px;
     line-height: 110px;
     position: relative;
 }
-.tile-icon{
-    color: #B71C1C;
+.tile-icon {
+    color: #BF2121;
     border-bottom: 1px solid #E1E1E1;
     font-size: 50px;
 }
 .tile-icon i{
     transition: all .3s ease-in-out;
 }
-.tile-num{
+.tile-num {
+    color: black;
     background-color: #F5F5F5;
     font-size: 40px;
 }
-.tile-name{
+
+.tile-num02 {
+    color: black;
+    background-color: #F5F5F5;
+    font-size: 20px;
+}
+
+
+.tile-name {
     position: absolute;
+    color: black;
     top: 50%;
     left: 50%;
     transform: translate(-50%,-50%);
@@ -694,7 +705,23 @@ input.material-control:focus ~ .highlight {
         width: calc(100% - 320px);
         max-width: calc(100% - 40px);
     }
+    .navbar-lateral {
+        display: block; /* O el estilo por defecto que prefieras */
+        width: 300px;
+    }
+    .desktopMenu {
+        display: none !important; /* Asegúrate de usar !important si es necesario para sobreescribir otras reglas */
+    }
 
+    .content-page-container {
+        height: 100%;
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        background-color: #fff;
+        padding-left: 300px; /* Ajuste inicial para que coincida con el ancho del menú lateral */
+        box-sizing: border-box;
+    }
     .modal-backdrop {
         position: fixed;
         top: 0;
@@ -712,6 +739,23 @@ input.material-control:focus ~ .highlight {
         margin-right: 20px;
         width: calc(100% - 320px);
         max-width: calc(100% - 30px);
+    }
+    .navbar-lateral {
+        display: block; /* O el estilo por defecto que prefieras */
+        width: 300px;
+    }
+    .desktopMenu {
+        display: none !important; /* Asegúrate de usar !important si es necesario para sobreescribir otras reglas */
+    }
+
+    .content-page-container {
+        height: 100%;
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        background-color: #fff;
+        padding-left: 300px; /* Ajuste inicial para que coincida con el ancho del menú lateral */
+        box-sizing: border-box;
     }
 
     .modal-backdrop {
@@ -731,6 +775,23 @@ input.material-control:focus ~ .highlight {
         margin-right: 30px;
         width: calc(100% - 320px);
         max-width: calc(100% - 30px);
+    }
+    .navbar-lateral {
+        display: block; /* O el estilo por defecto que prefieras */
+        width: 300px;
+    }
+    .desktopMenu {
+        display: none !important; /* Asegúrate de usar !important si es necesario para sobreescribir otras reglas */
+    }
+
+    .content-page-container {
+        height: 100%;
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        background-color: #fff;
+        padding-left: 300px; /* Ajuste inicial para que coincida con el ancho del menú lateral */
+        box-sizing: border-box;
     }
 
     .modal-backdrop {

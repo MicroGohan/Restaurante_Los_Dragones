@@ -10,8 +10,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Estilos -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 
     <style>
@@ -27,24 +25,6 @@
             cursor: pointer;
             font-size: 27px;
         }
-
-        table thead th {
-            background-color: #343a40;
-            color: white;
-        }
-
-        .btn-link {
-            color: #007bff;
-            text-decoration: none;
-            background-color: transparent;
-            border: none;
-            padding: 0;
-            cursor: pointer;
-        }
-
-            .btn-link:hover {
-                text-decoration: underline;
-            }
     </style>
 </head>
 <body>
@@ -105,9 +85,9 @@
             <div class="row">
                 <div class="col-xs-12 lead">
                     <ol class="breadcrumb">
-                        <li class="active">Listado de Pedidos</li>
+                        <li><a asp-controller="Pedido" asp-action="Mesero">Mesero</a></li>
+                        <li class="active">Lista de pedidos</li>
                         <li><a asp-controller="Pedido" asp-action="CrearPedido">Crear Pedido</a></li>
-                        
                     </ol>
                 </div>
             </div>
@@ -117,7 +97,7 @@
         <div class="container-table">
             <h2>Pedidos</h2>
 
-            <table class="table table-bordered table-hover" id="tablaPedidos">
+            <table class="table table-bordered table-hover" id="tabla">
                 <thead class="thead-dark">
                     <tr>
                         <th>Mesa</th>
@@ -138,8 +118,10 @@
                             <td>@pedido.Fecha</td>
                             <td>@pedido.Total</td>
                             <td>@pedido.Estado</td>
-                            <td class="text-center">
-                                <a asp-action="DetallesPedido" asp-route-id="@pedido.Id" class="btn btn-primary tooltips-general" data-toggle="tooltip" data-placement="top" title="Detalles"><i class="zmdi zmdi-info"></i></a>
+                            <td style="text-align: center; vertical-align: middle;">
+                                <a asp-action="DetallesPedido" asp-route-id="@pedido.Id" class="btn btn-primary tooltips-general" data-toggle="tooltip" data-placement="top" title="Detalles">
+                                    <i class="zmdi zmdi-info"></i>
+                                </a>
                             </td>
                             <td class="text-center">
                                 <form id="form-delete-@pedido.Id" asp-action="EliminarPedido" asp-route-id="@pedido.Id" method="post">
@@ -215,10 +197,10 @@
                 language: {
                     processing: "Procesando...",
                     search: "Buscar:",
-                    lengthMenu: "Mostrar MENU elementos",
-                    info: "Mostrando del START al END de un total de TOTAL elementos",
+                    lengthMenu: "Mostrar _MENU_ elementos",
+                    info: "Mostrando del _START_ al _END_ de un total de _TOTAL_ elementos",
                     infoEmpty: "Mostrando 0 elementos",
-                    infoFiltered: "(filtrado de un total de MAX elementos)",
+                    infoFiltered: "(filtrado de un total de _MAX_ elementos)",
                     infoPostFix: "",
                     loadingRecords: "Cargando...",
                     zeroRecords: "No se encontraron registros coincidentes",
