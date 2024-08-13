@@ -36,23 +36,25 @@
 
         .btn {
             vertical-align: bottom !important;
+            margin-left: 5px !important;
         }
 
-        @@media (min-width: 768px) 
-        {
+        @@media (min-width: 768px) {
             .form-inline .form-control {
                 display: block !important;
                 width: 200px !important;
             }
         }
-            }
+
+        }
 
         .form-group {
             margin-bottom: 1rem;
         }
 
         .btn-group {
-            margin-top: 1rem;
+            margin-right: 5px !important;
+            vertical-align: bottom !important;
         }
 
         .modal-content {
@@ -106,26 +108,7 @@
                     </ol>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-xs-12">
-                    <div class="form-inline">
-                        <div class="form-group">
-                            <label for="minPrice">Precio Mínimo:</label>
-                            <input type="number" id="minPrice" class="form-control input-fixed-width" placeholder="Precio Mínimo">
-                        </div>
-                        <div class="form-group">
-                            <label for="maxPrice">Precio Máximo:</label>
-                            <input type="number" id="maxPrice" class="form-control input-fixed-width" placeholder="Precio Máximo">
-                        </div>
-                        <button id="filterButton" class="btn btn-primary">Filtrar</button>
-                        <button id="reloadButton" class="btn btn-secondary">Recargar Datos</button>
-                    </div>
-                </div>
-            </div>
         </div>
-        </div>
-        <br />
-        
 
         <div class="container-fluid mt-4">
             <!-- Formulario de Filtros por Fecha -->
@@ -143,7 +126,7 @@
                     <button type="button" id="reloadButton" class="btn btn-secondary" data-toggle="tooltip" title="Recarga todos los registros sin aplicar filtros.">Recargar Datos</button>
                 </div>
             </form>
-
+            <br />
             <!-- Formulario de Filtros por Monto -->
             <form id="amountFilterForm" class="form-inline mb-4">
                 <div class="form-group mr-3">
@@ -159,6 +142,7 @@
                     <button type="button" class="btn btn-info" data-toggle="modal" data-target="#helpModal">¿Cómo usar Filtros?</button>
                 </div>
             </form>
+
         </div>
 
         <br />
@@ -254,7 +238,6 @@
             </div>
         </div>
     </div>
-
 
     <script>
         $(document).ready(function () {
@@ -361,12 +344,6 @@
         });
 
     </script>
-
-
-
-
-
-
 
     <script>
         const sound = new Audio('/assets/Sonido02.mp3');
