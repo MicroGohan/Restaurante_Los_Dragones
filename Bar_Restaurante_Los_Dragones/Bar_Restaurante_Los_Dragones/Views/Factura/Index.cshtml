@@ -17,6 +17,22 @@
             max-width: 90%; /* Ajusta el ancho máximo de la tabla */
             margin: auto; /* Centra la tabla en el contenedor */
         }
+
+        .toast-custom {
+            top: 50%; /* Centra verticalmente */
+            right: 0; /* Alineado a la derecha */
+            transform: translateY(-50%); /* Ajusta la posición para centrar */
+        }
+
+            .toast-custom .toast-message {
+                font-size: 18px; /* Tamaño de la fuente */
+                font-weight: bold; /* Opcional: para que el texto sea negrita */
+            }
+
+            .toast-custom .toast-title {
+                font-size: 20px; /* Tamaño de la fuente del título de la notificación */
+                font-weight: bold; /* Opcional: para que el título sea negrita */
+            }
     </style>
 </head>
 <body>
@@ -191,10 +207,53 @@
                         sortAscending: ": activar para ordenar la columna de manera ascendente",
                         sortDescending: ": activar para ordenar la columna de manera descendente"
                     }
+
                 }
             });
         });
     </script>
 
+
+    <script>
+        const sound = new Audio('/assets/Sonido02.mp3');
+        const notificationKey = 'notificacionFactura50k';
+
+        $(document).ready(function () {
+            toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": true,
+                "positionClass": "toast-custom",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            };
+
+            function NotificacionAlta() {
+                if (!localStorage.getItem(notificationKey)) {
+        @foreach (var item in Model)
+        {
+            if (item.TotalPagar > 50000)
+            {
+                <text>
+                                toastr["success"]("Se ha registrado una factura con un monto mayor a 50,000", "Factura registrada");
+                </text>
+            }
+        }
+                        localStorage.setItem(notificationKey, 'true');
+                }
+            }
+
+            NotificacionAlta();
+        });
+    </script>
 </body>
 </html>
