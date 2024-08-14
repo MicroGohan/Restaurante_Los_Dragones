@@ -234,11 +234,10 @@
                         <a asp-action="DetallesPedido" asp-route-id="@pedido.Id" class="btn btn-primary">Detalles</a>
 
                         <div class="btn-actions">
-                            @if (pedido.Estado == "ORDEN LISTA" || SoloContieneBebidas(pedido))
-                            {
-                                <button class="btn btn-info" onclick="verificarDetallesPendientes('@pedido.Id')">Facturar</button>
-                            }
-                            else if (pedido.Estado == "PENDIENTE" && !SoloContieneBebidas(pedido))
+
+                            <button class="btn btn-info" onclick="verificarDetallesPendientes('@pedido.Id')">Facturar</button>
+
+                            @if (pedido.Estado == "PENDIENTE" && !SoloContieneBebidas(pedido))
                             {
                                 <button class="btn btn-info" onclick="mandarACocina('@pedido.Id')">Mandar a cocina</button>
                             }
@@ -340,10 +339,8 @@
                                     accionesHtml02 = `
                                                         <button class="btn btn-info" onclick="mandarACocina('${pedido.id}')">Mandar a cocina</button>`;
                                 }
-                                if (pedido.estado == "ORDEN LISTA" || soloContieneBebidas) {
                                     accionesHtml02 += `
-                                                                        <button class="btn btn-info" onclick="verificarDetallesPendientes('${pedido.id}')">Facturar</button>`;
-                                }
+                                                    <button class="btn btn-info" onclick="verificarDetallesPendientes('${pedido.id}')">Facturar</button>`;
 
 
                                 $('#pedidos-container').append(

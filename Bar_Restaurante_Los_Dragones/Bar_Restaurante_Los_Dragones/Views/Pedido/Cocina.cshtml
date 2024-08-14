@@ -207,9 +207,6 @@
                             </p>
                         }
                         <a asp-action="DetallesCocina" asp-route-id="@pedido.Id" class="btn btn-primary">Ver Orden</a>
-                        <div class="btn-actions">
-                            <button class="btn btn-info" onclick="verificarDetallesPendientes('@pedido.Id')">Finalizar Pedido</button>
-                        </div>
                         
                     </div>
                 </div>
@@ -304,9 +301,6 @@
                                             <p class="card-text">Detalles:</p>
                                             ${detallesHtml}
                                             <a href="/Pedido/DetallesCocina/${pedido.id}" class="btn btn-primary">Ver Orden</a>
-                                            <div class="btn-actions">
-                                                        <button class="btn btn-info" onclick="verificarDetallesPendientes('${pedido.id}')">Finalizar Pedido</button>
-                                            </div>
                                         </div>
                                     </div>`
                                 );
