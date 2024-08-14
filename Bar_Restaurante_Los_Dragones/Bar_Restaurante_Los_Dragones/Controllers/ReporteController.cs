@@ -132,7 +132,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
             {
                 // Crear el documento PDF
                 var document = new Document(iTextSharp.text.PageSize.A4);
-                PdfWriter writer = null;
+                PdfWriter writer;
 
                 try
                 {
@@ -142,21 +142,27 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
                     // Abrir el documento
                     document.Open();
 
+                    // Crear una cultura personalizada para el símbolo de colón
+                    var cultureInfo = new System.Globalization.CultureInfo("es-CR");
+                    cultureInfo.NumberFormat.CurrencySymbol = "₡";
+
                     // Agregar título
                     document.Add(new iTextSharp.text.Paragraph(titulo));
+                    document.Add(new iTextSharp.text.Paragraph("(Expresado en colones)"));
                     document.Add(new iTextSharp.text.Paragraph(""));
 
                     // Agregar total facturado
-                    document.Add(new iTextSharp.text.Paragraph($"Total Facturado: {totalFacturado:C}"));
+                    document.Add(new iTextSharp.text.Paragraph($"Total Facturado: {totalFacturado.ToString("C", cultureInfo)}"));
                     document.Add(new iTextSharp.text.Paragraph(""));
 
                     // Agregar las facturas al documento
                     foreach (var factura in facturas)
                     {
+                        document.Add(new iTextSharp.text.Paragraph($"Fecha: {factura.Fecha.ToString("dd/MM/yyyy")}"));
                         document.Add(new iTextSharp.text.Paragraph($"Nombre Cliente: {factura.NombreCliente}"));
-                        document.Add(new iTextSharp.text.Paragraph($"Subtotal: {factura.Subtotal}"));
-                        document.Add(new iTextSharp.text.Paragraph($"IVA: {factura.Iva}"));
-                        document.Add(new iTextSharp.text.Paragraph($"Total a Pagar: {factura.TotalPagar}"));
+                        document.Add(new iTextSharp.text.Paragraph($"Subtotal: {factura.Subtotal.ToString("C", cultureInfo)}"));
+                        document.Add(new iTextSharp.text.Paragraph($"IVA: {factura.Iva.ToString("C", cultureInfo)}"));
+                        document.Add(new iTextSharp.text.Paragraph($"Total a Pagar: {factura.TotalPagar.ToString("C", cultureInfo)}"));
                         document.Add(new iTextSharp.text.Paragraph(""));
                         document.Add(new iTextSharp.text.Paragraph("---------------------------------------------------"));
                     }
@@ -172,10 +178,6 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
                     if (document != null)
                     {
                         document.Close();
-                    }
-                    if (writer != null)
-                    {
-                        writer.Close();
                     }
                 }
 
@@ -210,7 +212,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
             {
                 // Crear el documento PDF
                 var document = new Document(iTextSharp.text.PageSize.A4);
-                PdfWriter writer = null;
+                PdfWriter writer;
 
                 try
                 {
@@ -220,12 +222,17 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
                     // Abrir el documento
                     document.Open();
 
+                    // Crear una cultura personalizada para el símbolo de colón
+                    var cultureInfo = new System.Globalization.CultureInfo("es-CR");
+                    cultureInfo.NumberFormat.CurrencySymbol = "₡";
+
                     // Agregar título
                     document.Add(new iTextSharp.text.Paragraph(titulo));
+                    document.Add(new iTextSharp.text.Paragraph("(Expresado en colones)"));
                     document.Add(new iTextSharp.text.Paragraph(""));
 
                     // Agregar total facturado
-                    document.Add(new iTextSharp.text.Paragraph($"Total Facturado: {totalFacturado:C}"));
+                    document.Add(new iTextSharp.text.Paragraph($"Total Facturado: {totalFacturado.ToString("C", cultureInfo)}" + "₡"));
                     document.Add(new iTextSharp.text.Paragraph(""));
 
                     // Agregar las facturas al documento
@@ -233,9 +240,9 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
                     {
                         document.Add(new iTextSharp.text.Paragraph($"Fecha: {factura.Fecha.ToString("dd/MM/yyyy")}"));
                         document.Add(new iTextSharp.text.Paragraph($"Nombre Cliente: {factura.NombreCliente}"));
-                        document.Add(new iTextSharp.text.Paragraph($"Subtotal: {factura.Subtotal:C}"));
-                        document.Add(new iTextSharp.text.Paragraph($"IVA: {factura.Iva:C}"));
-                        document.Add(new iTextSharp.text.Paragraph($"Total a Pagar: {factura.TotalPagar:C}"));
+                        document.Add(new iTextSharp.text.Paragraph($"Subtotal: {factura.Subtotal.ToString("C", cultureInfo)}"));
+                        document.Add(new iTextSharp.text.Paragraph($"IVA: {factura.Iva.ToString("C", cultureInfo)}"));
+                        document.Add(new iTextSharp.text.Paragraph($"Total a Pagar: {factura.TotalPagar.ToString("C", cultureInfo)}"));
                         document.Add(new iTextSharp.text.Paragraph(""));
                         document.Add(new iTextSharp.text.Paragraph("---------------------------------------------------"));
                     }
@@ -251,10 +258,6 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
                     if (document != null)
                     {
                         document.Close();
-                    }
-                    if (writer != null)
-                    {
-                        writer.Close();
                     }
                 }
 
@@ -278,7 +281,7 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
             {
                 // Crear el documento PDF
                 var document = new Document(iTextSharp.text.PageSize.A4);
-                PdfWriter writer = null;
+                PdfWriter writer;
 
                 try
                 {
@@ -288,12 +291,17 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
                     // Abrir el documento
                     document.Open();
 
+                    // Crear una cultura personalizada para el símbolo de colón
+                    var cultureInfo = new System.Globalization.CultureInfo("es-CR");
+                    cultureInfo.NumberFormat.CurrencySymbol = "₡";
+
                     // Agregar título
                     document.Add(new iTextSharp.text.Paragraph(titulo));
+                    document.Add(new iTextSharp.text.Paragraph("(Expresado en colones)"));
                     document.Add(new iTextSharp.text.Paragraph(""));
 
                     // Agregar total facturado
-                    document.Add(new iTextSharp.text.Paragraph($"Total Facturado: {totalFacturado:C}"));
+                    document.Add(new iTextSharp.text.Paragraph($"Total Facturado: {totalFacturado.ToString("C", cultureInfo)}"));
                     document.Add(new iTextSharp.text.Paragraph(""));
 
                     // Agregar las facturas al documento
@@ -301,9 +309,9 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
                     {
                         document.Add(new iTextSharp.text.Paragraph($"Fecha: {factura.Fecha.ToString("dd/MM/yyyy")}"));
                         document.Add(new iTextSharp.text.Paragraph($"Nombre Cliente: {factura.NombreCliente}"));
-                        document.Add(new iTextSharp.text.Paragraph($"Subtotal: {factura.Subtotal:C}"));
-                        document.Add(new iTextSharp.text.Paragraph($"IVA: {factura.Iva:C}"));
-                        document.Add(new iTextSharp.text.Paragraph($"Total a Pagar: {factura.TotalPagar:C}"));
+                        document.Add(new iTextSharp.text.Paragraph($"Subtotal: {factura.Subtotal.ToString("C", cultureInfo)}"));
+                        document.Add(new iTextSharp.text.Paragraph($"IVA: {factura.Iva.ToString("C", cultureInfo)}"));
+                        document.Add(new iTextSharp.text.Paragraph($"Total a Pagar: {factura.TotalPagar.ToString("C", cultureInfo)}"));
                         document.Add(new iTextSharp.text.Paragraph(""));
                         document.Add(new iTextSharp.text.Paragraph("---------------------------------------------------"));
                     }
@@ -319,10 +327,6 @@ namespace Bar_Restaurante_Los_Dragones.Controllers
                     if (document != null)
                     {
                         document.Close();
-                    }
-                    if (writer != null)
-                    {
-                        writer.Close();
                     }
                 }
 
