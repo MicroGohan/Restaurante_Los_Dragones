@@ -335,12 +335,15 @@
 
                                 let accionesHtml = `
                                                                     <a href="/Pedido/DetallesPedido/${pedido.id}" class="btn btn-primary">Detalles</a>`;
+
+                                accionesHtml02 = `
+                                                  <button class="btn btn-info" onclick="verificarDetallesPendientes('${pedido.id}')">Facturar</button>`;
+
                                 if (pedido.estado == 'PENDIENTE' && !soloContieneBebidas) {
-                                    accionesHtml02 = `
+                                    accionesHtml02 += `
                                                         <button class="btn btn-info" onclick="mandarACocina('${pedido.id}')">Mandar a cocina</button>`;
                                 }
-                                    accionesHtml02 += `
-                                                    <button class="btn btn-info" onclick="verificarDetallesPendientes('${pedido.id}')">Facturar</button>`;
+                                    
 
 
                                 $('#pedidos-container').append(
